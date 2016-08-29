@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express')
 const jsonParser = require('body-parser').json()
 const mongoose = require('mongoose')
@@ -7,20 +9,56 @@ const BasicStrategy = require('passport-http')
 
 const app = express()
 
-// GET endpoints:
-// 1. Word pair
+
+let words = [{
+  french: 	'être',	
+  english: 'to be, being',
+  weight: 10
+	},
+	{
+  french: 'je',
+  english: 'I', 
+  weight: 10
+	},
+	{
+	french: 'de',
+	english: 'of, from, by, than, in, with',
+	weight: 10
+	},
+	{
+  french: 'ne',	
+  english: 'not',
+  weight: 10
+	},
+	{
+  french: 'pas',	
+  english: 'not; step, pace',
+  weight: 10
+	},
+	{
+  french: 'le',	
+  english: 'the; him, it', 
+  weight: 10
+	},
+	{
+  french: 'la',	
+  english: 'the; her, it',
+  weight: 10
+}]
+
+
+
+// GET endpoints for word pair
 app.get('/words', function(req, res) {
-	// Provide next word pair
-	
+	return res.json(words)
 })
 
 
 
-// PUT endpoints:
-// 1. Submit answer, update score
+// PUT endpoint to submit answer and update score
 app.put('/submitanswer', jsonParser, function(req, res) {
-	// Calls algorithm and updates user score
-
+	// Calls algorithm and updates user score 
+  
 })
 
 

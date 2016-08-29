@@ -22,7 +22,8 @@
     "express": "^4.14.0",
     "mongoose": "^4.5.10",
     "passport": "^0.3.2",
-    "passport-google-oauth2": "^0.1.6"
+    "passport-google-oauth2": "^0.1.6",
+    "passport-http": "^0.3.0"
   },
   "devDependencies": {
     "chai-http": "^3.0.0",
