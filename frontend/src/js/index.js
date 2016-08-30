@@ -1,17 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import connect from 'react-redux.connect';
-import Provider from 'react-redux.Provider';
+import React from 'react'
+import ReactDOM from 'react-dom'
+var Provider = require('react-redux').Provider;
+// import Provider from 'react-redux.Provider'
 
-import store from './store';
+import store from './store'
 
-import Landing from './Landing';
+import Landing from './components/Landing/Landing'
+import QuizContainer from'./components/Quiz/Quiz-Container'
 
-import './style.css';
-
-ReactDOM.render(
-<Provider store={store}>
-  <Landing />
-</Provider>,
-  document.getElementById('root')
-);
+document.addEventListener('DOMContentLoaded', () => {
+	ReactDOM.render(
+		<Provider store={store}>
+		  <QuizContainer />
+		</Provider>, document.getElementById('root')
+	)
+})

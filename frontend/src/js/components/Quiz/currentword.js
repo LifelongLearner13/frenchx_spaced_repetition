@@ -1,6 +1,6 @@
 var React = require('react');
 
-var CurrentWord = React.createClass( {
+var CurrentWord = React.createClass({
   render: function() {
     return (
       <div className="current-word">
@@ -8,6 +8,6 @@ var CurrentWord = React.createClass( {
       </div>
     );
   }
-};
+});
 
 module.exports = CurrentWord;

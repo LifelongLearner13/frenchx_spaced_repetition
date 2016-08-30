@@ -3,7 +3,7 @@
 var React = require('react');
 
 //class Cards extends Component {
-var Answer = React.createClass( {
+var Answer = React.createClass({
   render: function() {
     return (
     	<div>
@@ -12,6 +12,6 @@ var Answer = React.createClass( {
     	</div>
     );
   }
-};
+});
 
 module.exports = Answer;

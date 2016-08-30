@@ -1,10 +1,9 @@
-import redux from 'redux';
-import createStore from 'redux.createStore';
-import applyMiddleware from 'redux.applyMiddleware';
-import thunk from 'redux-thunk.default';
+import {createStore, applyMiddleware, compose} from 'redux'
+import reducers from './reducers'
+import actions from './actions'
+// import thunk, {default} from 'redux-thunk'
+var thunk = require('redux-thunk').default;
 
-import reducers from './reducers';
+let store = createStore(reducers, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f))
 
-let store = createStore(reducers.wordReducer, applyMiddleware(thunk));
-
-export default store;
+module.exports = store

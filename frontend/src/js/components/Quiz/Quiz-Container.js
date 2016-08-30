@@ -7,7 +7,7 @@ var Answer = require('./answer');
 var Score = require('./score');
 
 
-var quizContainer = React.createClass( {
+var QuizContainer = React.createClass({
   logOutUser: function() {
   // TODO: Needs to dispatch action to log out user
   },
@@ -31,7 +31,7 @@ var quizContainer = React.createClass( {
 
     );
   }
-};
+});
 
 var mapStateToProps = function(state, props) {
   return {
@@ -41,5 +41,5 @@ var mapStateToProps = function(state, props) {
   }
 };
 
-var Container = connect(mapStateToProps)(Quiz);
+var Container = connect(mapStateToProps)(QuizContainer);
 module.exports = Container;

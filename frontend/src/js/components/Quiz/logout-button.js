@@ -6,8 +6,8 @@ var LogOutButton = React.createClass({
 			<div>
 				<button type="button" onClick={this.props.logOutUser}>Log Out</button>
 			</div>
-		)
-	};
+		);
+	}
 });
 
 module.exports = LogOutButton;

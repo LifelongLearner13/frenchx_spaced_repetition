@@ -27,7 +27,7 @@ let updateWord = (word) => {
 }
 
 // GET Request for Word Pair
-export let getWords = (username) => {
+export const getWords = (username) => {
 	const url = 'http://localhost:3000/word'
   return fetch (url, {
   	method: 'GET'
@@ -52,12 +52,6 @@ export let getWords = (username) => {
 
 
 
-
-
-
-
-
-
 // Other functions
 let fetchWords = () => {
 	// do the fetch
@@ -65,7 +59,14 @@ let fetchWords = () => {
 }
 
 
-
-
 /*----------- ACTIONS ------------*/
+
+exports.GET_PAIR = GET_PAIR
+exports.getPair = getPair
+
+exports.UPDATE_WORD = UPDATE_WORD
+exports.updateWord = updateWord
+
+
+
 
