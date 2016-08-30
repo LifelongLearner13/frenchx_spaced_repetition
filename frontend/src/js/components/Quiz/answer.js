@@ -6,11 +6,12 @@ var React = require('react');
 var Answer = React.createClass( {
   render: function() {
     return (
-      <div className="current-word">
-        <p>{this.props.word}</p>
-      </div>
+    	<div>
+    		<input type="text" placeholder="Enter Your Answer" />
+    		<button type="Submit" onClick={this.props.checkAnswer} >Submit</button>
+    	</div>
     );
   }
 };
 
-module.exports = CurrentWord;
+module.exports = Answer;

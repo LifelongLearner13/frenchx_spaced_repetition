@@ -1,14 +1,13 @@
-class WordCount extends Component {
-  render() {
+var React = require('react');
+
+var Score = React.createClass({
+  render: function() {
     return (
-      <div className="Landing">
-        <div className="Landing-header">
-          <h2>FrenchX Header</h2>
-        </div>
-        <div className="Landing-login">
-          <button type="submit" onClick={this.userLogin} placeholder="Login With Google"></button>
-        </div>
+      <div>
+        <h2>You're current score is: {this.props.score}</h2>
       </div>
     );
   }
-}
+});
+
+module.exports = Score;
