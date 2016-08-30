@@ -9,7 +9,7 @@ const BasicStrategy = require('passport-http')
 const Word = require('./models/word')
 const User = require('./models/user')
 const Weight = require('./models/weight')
-const configDB = require('./config/database');
+// const configDB = require('./config/database');
 
 const app = express()
 
@@ -54,11 +54,11 @@ app.put('/submitanswer', jsonParser, function(req, res) {
 
 
 const runServer = function(callback) {
-  var databaseUri = process.env.DATABASE_URI || global.databaseUri || configDB.url;
+  var databaseUri = process.env.DATABASE_URI
   mongoose.connect(databaseUri).then(function() {
-    const port = process.env.PORT || 8080;
+    const port = process.env.PORT || 8080
     const server = app.listen(port, function() {
-      console.log('Listening on port:' + port);
+      console.log('Listening on port:' + port)
       if (callback) {
         callback(server);
       }
