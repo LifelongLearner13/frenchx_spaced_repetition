@@ -1,34 +1,37 @@
 {
-  "name": "frenchx_spaced_repetition",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LifelongLearner13/frenchx_spaced_repetition.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LifelongLearner13/frenchx_spaced_repetition/issues"
-  },
-  "homepage": "https://github.com/LifelongLearner13/frenchx_spaced_repetition#readme",
-  "dependencies": {
-    "bcrypt": "^0.8.7",
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "mongoose": "^4.5.10",
-    "mongoose-deep-populate": "^3.0.0",
-    "passport": "^0.3.2",
-    "passport-google-oauth2": "^0.1.6",
-    "passport-http": "^0.3.0"
-  },
-  "devDependencies": {
-    "chai-http": "^3.0.0",
-    "mocha": "^3.0.2",
-    "url-pattern": "^1.0.1"
-  }
+    "name": "frenchx_spaced_repetition",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "engines": {
+        "node": "6.4.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/LifelongLearner13/frenchx_spaced_repetition.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/LifelongLearner13/frenchx_spaced_repetition/issues"
+    },
+    "homepage": "https://github.com/LifelongLearner13/frenchx_spaced_repetition#readme",
+    "dependencies": {
+        "bcrypt": "^0.8.7",
+        "body-parser": "^1.15.2",
+        "express": "^4.14.0",
+        "mongoose": "^4.5.10",
+        "mongoose-deep-populate": "^3.0.0",
+        "passport": "^0.3.2",
+        "passport-google-oauth2": "^0.1.6",
+        "passport-http": "^0.3.0"
+    },
+    "devDependencies": {
+        "chai-http": "^3.0.0",
+        "mocha": "^3.0.2",
+        "url-pattern": "^1.0.1"
+    }
 }
