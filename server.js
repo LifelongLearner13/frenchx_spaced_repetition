@@ -9,9 +9,15 @@ const BasicStrategy = require('passport-http')
 const Word = require('./models/word')
 const User = require('./models/user')
 const Weight = require('./models/weight')
-// const configDB = require('./config/database');
-
+const configDB = !process.env.DATABASE_URI ? require('./config/database') : {url: ''}
 const app = express()
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  next();
+});
 
 
 // GET endpoints for word pair
@@ -54,7 +60,7 @@ app.put('/submitanswer', jsonParser, function(req, res) {
 
 
 const runServer = function(callback) {
-  var databaseUri = process.env.DATABASE_URI
+  var databaseUri = process.env.DATABASE_URI || configDB.url
   mongoose.connect(databaseUri).then(function() {
     const port = process.env.PORT || 8080
     const server = app.listen(port, function() {
