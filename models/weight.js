@@ -3,12 +3,13 @@ const mongoose = require('mongoose')
 const WeightSchema = new mongoose.Schema({
 	weight: {
 		type: Number,
-		required: true
+		required: true,
+    default: 1
 	},
 	user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true	
+    required: true
   },
   word: {
   	type: mongoose.Schema.Types.ObjectId,
@@ -17,6 +18,6 @@ const WeightSchema = new mongoose.Schema({
   }
 })
 
-const Weight = mongoose.model('Weight', UserSchema)
+const Weight = mongoose.model('Weight', WeightSchema)
 
 module.exports = Weight

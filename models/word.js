@@ -11,12 +11,8 @@ const WordSchema = new mongoose.Schema({
 		required: true,
 		unique: true
 	}
-	weight: {
-		type: Number,
-		ref: 'User'
-	}
 })
 
-const Word = mongoose.model('Word', UserSchema)
+const Word = mongoose.model('Word', WordSchema)
 
 module.exports = Word
