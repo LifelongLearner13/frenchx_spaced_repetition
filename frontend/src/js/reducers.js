@@ -1,5 +1,4 @@
 import {GET_PAIR, UPDATE_WORD} from './actions'
-import * as actions from './actions'
 import {combineReducers} from 'redux'
 
 
@@ -7,12 +6,12 @@ import {combineReducers} from 'redux'
 let quizReducer = (state, action) => {
 	state = state || {}
 
-	if (action.type === actions.GET_PAIR) {
-		console.log('hello')
+	if (action.type === GET_PAIR) {
+		 
 		return state
 
-	} else if (action.type === actions.UPDATE_WORD) {
-		console.log('hello')
+	} else if (action.type === UPDATE_WORD) {
+
 		return state
 	}
 	return state

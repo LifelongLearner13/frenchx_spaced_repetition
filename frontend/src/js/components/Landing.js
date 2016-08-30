@@ -5,9 +5,11 @@ var connect = require('react-redux').connect
 
 //class Landing extends Component {
 var Landing = React.createClass({
+
   userLogin: function() {
     //TODO: authentication / login
   },
+  
   render: function() {
     return (
       <div className="Landing">
