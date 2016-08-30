@@ -5,8 +5,8 @@ var Provider = require('react-redux').Provider;
 
 import store from './store'
 
-import Landing from './components/Landing/Landing'
-import QuizContainer from'./components/Quiz/Quiz-Container'
+import Landing from './components/Landing'
+import QuizContainer from'./components/Quiz-Container'
 
 document.addEventListener('DOMContentLoaded', () => {
 	ReactDOM.render(

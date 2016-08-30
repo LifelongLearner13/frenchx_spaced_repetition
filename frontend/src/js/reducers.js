@@ -2,9 +2,8 @@ import {GET_PAIR, UPDATE_WORD} from './actions'
 import * as actions from './actions'
 import {combineReducers} from 'redux'
 
-// let initialWordState = {
 
-// };
+
 let quizReducer = (state, action) => {
 	state = state || {}
 
