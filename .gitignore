@@ -44,6 +44,7 @@ mongo_data/*
 
 # Config files
 database.js
+auth.js
 
 # OS
 .DS_Store

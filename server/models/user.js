@@ -32,8 +32,6 @@ UserSchema.methods.getWeightedWords = function(callback) {
     this.model('User').findById(this._id, 'trained').populate('Word').exec(function(error, results) {
         let newWords = []
         Word.find({}, function(error, allWords) {
-            console.log('results.trained: ', results.trained)
-            console.log('allwords: ', allWords)
             if (results.trained.length) {
                 let userWordIds = results.trained.map((el) => el.word.toString())
                 console.log(userWordIds)

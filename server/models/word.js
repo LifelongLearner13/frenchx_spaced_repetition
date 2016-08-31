@@ -2,12 +2,12 @@
 const mongoose = require('mongoose')
 
 const WordSchema = new mongoose.Schema({
-	french: {
+	word1: {
 		type: String,
 		required: true,
 		unique: true
 	},
-	english: {
+	word2: {
 		type: String,
 		required: true,
 		unique: true
