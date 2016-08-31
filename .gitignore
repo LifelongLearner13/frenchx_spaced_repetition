@@ -30,6 +30,7 @@ build/Release
 # Dependency directories
 node_modules
 jspm_packages
+server/mongo_data/*
 mongo_data/*
 
 # Optional npm cache directory
@@ -43,3 +44,6 @@ mongo_data/*
 
 # Config files
 database.js
+
+# OS
+.DS_Store
