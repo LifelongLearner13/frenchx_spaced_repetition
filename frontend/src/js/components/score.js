@@ -4,7 +4,7 @@ var Score = React.createClass({
   render: function() {
     return (
       <div>
-        <h2>You're score: {this.props.score}</h2>
+        <h2>Your score: {this.props.score}</h2>
       </div>
     );
   }

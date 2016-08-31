@@ -11,6 +11,7 @@ var Correct = React.createClass({
     return (
       <div className={classes}>
         <h1>Correct!</h1>
+        <button>OK</button>
       </div>
     );
   }

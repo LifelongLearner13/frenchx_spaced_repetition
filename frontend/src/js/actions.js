@@ -82,13 +82,26 @@ const fetchWordsError = (error) => {
 
 /*----------- ACTIONS ------------*/
 
+const CORRECT_DISPLAY = 'CORRECT_DISPLAY'
+const correctDisplay = () => {
+  return {
+    type: CORRECT_DISPLAY
+  }
+}
 
+const INCREMENT_SCORE = 'INCREMENT_SCORE'
+const incrementScore = () => {
+  return {
+    type: INCREMENT_SCORE
+  }
+}
 
-
-
-
-
-
+const DECREMENT_SCORE = 'DECREMENT_SCORE'
+const decrementScore = () => {
+  return {
+    type: DECREMENT_SCORE
+  }
+}
 
 
 
@@ -100,6 +113,15 @@ exports.getPair = getPair
 
 exports.UPDATE_WORD = UPDATE_WORD
 exports.updateWord = updateWord
+
+exports.CORRECT_DISPLAY = CORRECT_DISPLAY
+exports.correctDisplay = correctDisplay
+
+exports.INCREMENT_SCORE = INCREMENT_SCORE
+exports.incrementScore = incrementScore
+
+exports.DECREMENT_SCORE = DECREMENT_SCORE
+exports.decrementScore = decrementScore
 
 exports.FETCH_WORDS_SUCCESS = FETCH_WORDS_SUCCESS
 exports.fetchWordsSuccess = fetchWordsSuccess

@@ -10,8 +10,6 @@ import Landing from './components/Landing'
 import QuizContainer from'./components/Quiz-Container'
 
 document.addEventListener('DOMContentLoaded', () => {
-	store.dispatch(actions.fetchWords())
-
 	ReactDOM.render(
 		<Provider store={store}>
 		  <QuizContainer />

@@ -19,9 +19,18 @@ var QuizContainer = React.createClass({
   // TODO: Needs to dispatch action to log out user
   },
 
-  checkAnswer: function() {
-    // TODO: Needs to dispatch action that sends boolean for right/wrong answer
-  },
+  // checkAnswer: function() {
+  //   // TODO: Needs to dispatch action that sends boolean for right/wrong answer
+  //   var answer = this.refs.answer.value;
+  //   console.log(answer, '<-- Answer value');
+  //   if (answer === this.props.english) {
+  //     this.props.dispatch(actions.correctDisplay());
+  //     this.props.dispatch(actions.incrementScore());
+  //   } else {
+  //     this.props.dispatch(actions.decrementScore());
+  //   }
+  //   this.props.dispatch(actions.fetchWords());
+  // },
 
   render: function() {
     return (

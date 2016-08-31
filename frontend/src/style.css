@@ -36,3 +36,11 @@ body {
   
 }
 
+.correct-display {
+  color: green;
+}
+
+.hidden {
+  display: none;
+}
+
