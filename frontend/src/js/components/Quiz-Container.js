@@ -19,6 +19,10 @@ var QuizContainer = React.createClass({
   // TODO: Needs to dispatch action to log out user
   },
 
+  toggleCorrect: function() {
+    this.props.dispatch(actions.correctDisplay())
+  },
+
   // checkAnswer: function() {
   //   // TODO: Needs to dispatch action that sends boolean for right/wrong answer
   //   var answer = this.refs.answer.value;
@@ -39,7 +43,7 @@ var QuizContainer = React.createClass({
           <h2>FrenchX Header</h2>
           <LogOutButton logOutUser={this.logOutUser} />
         </div>
-        <Correct correct={this.props.correct} />
+        <Correct correct={this.props.correct} toggleCorrect={this.toggleCorrect} />
         <CurrentWord french={this.props.french} />      
         <Answer checkAnswer={this.checkAnswer} english={this.props.english} />
         <Score score={this.props.score} />

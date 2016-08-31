@@ -47,9 +47,8 @@ export const fetchWords = (username) => {
       return response.json()
     })
     .then((data) => {
-      console.log(data, ' <--data')
       let french = data.french
-      let english = data.english
+      let english = data.english.split(';').join().split(', ')
       return dispatch(
         fetchWordsSuccess(french, english)
       )

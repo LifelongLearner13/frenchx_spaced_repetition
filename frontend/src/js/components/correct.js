@@ -11,7 +11,7 @@ var Correct = React.createClass({
     return (
       <div className={classes}>
         <h1>Correct!</h1>
-        <button>OK</button>
+        <button onClick={this.props.toggleCorrect} >OK</button>
       </div>
     );
   }
