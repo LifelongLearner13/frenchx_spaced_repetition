@@ -48,3 +48,4 @@ auth.js
 
 # OS
 .DS_Store
+*/.DS_Store
