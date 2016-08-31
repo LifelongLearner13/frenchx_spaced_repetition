@@ -39,7 +39,6 @@ export const fetchWords = (username) => {
     }
     return fetch (url, request)
     .then((response) => {
-      console.log(response, ' <--response')
       if (response.status < 200 || response.status >= 300) {
         let error = new Error(response.statusText)
         error.response = response
@@ -49,8 +48,10 @@ export const fetchWords = (username) => {
     })
     .then((data) => {
       console.log(data, ' <--data')
+      let french = data.french
+      let english = data.english
       return dispatch(
-        fetchWordsSuccess(data)
+        fetchWordsSuccess(french, english)
       )
     })
     .catch((error) => {
@@ -62,10 +63,11 @@ export const fetchWords = (username) => {
 }
 
 const FETCH_WORDS_SUCCESS = 'FETCH_WORDS_SUCCESS'
-const fetchWordsSuccess = (words) => {
+const fetchWordsSuccess = (french, english) => {
   return {
     type: FETCH_WORDS_SUCCESS,
-    words: words
+    french: french,
+    english: english
   }
 }
 
@@ -98,3 +100,10 @@ exports.getPair = getPair
 
 exports.UPDATE_WORD = UPDATE_WORD
 exports.updateWord = updateWord
+
+exports.FETCH_WORDS_SUCCESS = FETCH_WORDS_SUCCESS
+exports.fetchWordsSuccess = fetchWordsSuccess
+
+exports.FETCH_WORDS_ERROR = FETCH_WORDS_ERROR
+exports.fetchWordsError = fetchWordsError
+
