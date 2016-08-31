@@ -5,7 +5,7 @@ var GoogleStrategy = require('passport-google-oauth2').Strategy;
 var User       = require('../models/user');
 
 // load the auth variables
-var configAuth = require('./auth');
+var configAuth = !process.env.AUTH_CLIENTID ? require('./auth') : {clientID: ''};
 
 module.exports = function(passport) {
 

@@ -13,6 +13,7 @@ const configDB = !process.env.DATABASE_URI ? require('./config/database') : {url
 const logger = require('morgan')
 const app = express()
 
+
 require('./config/passport')(passport)
 
 // Enable CORS from client-side
