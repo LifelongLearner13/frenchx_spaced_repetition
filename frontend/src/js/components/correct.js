@@ -1,8 +1,11 @@
 var React = require('react');
 
+
 var Correct = React.createClass({
-  // TODO: If answer is correct, toggle css class to unhide
+
   render: function() {
+
+    // If answer isn't correct (state is false) , add 'hidden' class to 'correct' display. 
     var classes = 'correct-display ';
     if (!this.props.correct) {
       classes += 'hidden';
@@ -11,7 +14,7 @@ var Correct = React.createClass({
     return (
       <div className={classes}>
         <h1>Correct!</h1>
-        <button onClick={this.props.toggleCorrect} >OK</button>
+        <button onClick={this.props.toggleCorrect} >X</button>
       </div>
     );
   }

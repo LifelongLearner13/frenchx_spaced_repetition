@@ -8,9 +8,9 @@ var Answer = require('./answer');
 var Score = require('./score');
 
 
-
 var QuizContainer = React.createClass({
 
+  // Fetches new word pair on initial mounting of component
   componentDidMount: function() {
     this.props.dispatch(actions.fetchWords())
   },
@@ -19,22 +19,10 @@ var QuizContainer = React.createClass({
   // TODO: Needs to dispatch action to log out user
   },
 
+  // Toggles 'correct' state boolean to show/hide 'Correct!' display
   toggleCorrect: function() {
     this.props.dispatch(actions.correctDisplay())
   },
-
-  // checkAnswer: function() {
-  //   // TODO: Needs to dispatch action that sends boolean for right/wrong answer
-  //   var answer = this.refs.answer.value;
-  //   console.log(answer, '<-- Answer value');
-  //   if (answer === this.props.english) {
-  //     this.props.dispatch(actions.correctDisplay());
-  //     this.props.dispatch(actions.incrementScore());
-  //   } else {
-  //     this.props.dispatch(actions.decrementScore());
-  //   }
-  //   this.props.dispatch(actions.fetchWords());
-  // },
 
   render: function() {
     return (
@@ -45,7 +33,7 @@ var QuizContainer = React.createClass({
         </div>
         <Correct correct={this.props.correct} toggleCorrect={this.toggleCorrect} />
         <CurrentWord french={this.props.french} />      
-        <Answer checkAnswer={this.checkAnswer} english={this.props.english} />
+        <Answer checkAnswer={this.checkAnswer} english={this.props.english} answerInput={this.props.answerInput} />
         <Score score={this.props.score} />
       </div>
 
@@ -58,7 +46,8 @@ var mapStateToProps = function(state, props) {
     correct: state.correct,
     french: state.french,
     english: state.english,
-    score: state.score
+    score: state.score,
+    answerInput: state.answerInput
   }
 };
 

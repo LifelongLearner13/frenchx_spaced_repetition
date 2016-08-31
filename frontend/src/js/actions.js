@@ -47,6 +47,8 @@ export const fetchWords = (username) => {
       return response.json()
     })
     .then((data) => {
+      // Returns the word pair, splitting the English word into an array
+      console.log(data, '<--- Fetch data')
       let french = data.french
       let english = data.english.split(';').join().split(', ')
       return dispatch(

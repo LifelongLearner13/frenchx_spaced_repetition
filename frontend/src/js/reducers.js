@@ -11,9 +11,9 @@ const initialState = {
 
 let quizReducer = (state, action) => {
 	state = state || initialState
-
+	// TODO: Remove GET_PAIR and UPDATE_WORD 
 	if (action.type === GET_PAIR) {
-		 
+		
 		return state
 
 	} else if (action.type === UPDATE_WORD) {

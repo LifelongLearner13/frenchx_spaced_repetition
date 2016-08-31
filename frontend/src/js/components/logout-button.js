@@ -1,5 +1,6 @@
 var React = require('react');
 
+
 var LogOutButton = React.createClass({
 	render: function() {
 		return (

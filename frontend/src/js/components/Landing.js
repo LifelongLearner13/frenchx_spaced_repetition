@@ -1,9 +1,7 @@
-//import React, { Component } from 'react';
-//import './index.css';
 var React = require('react');
 var connect = require('react-redux').connect
 
-//class Landing extends Component {
+
 var Landing = React.createClass({
 
   userLogin: function() {
@@ -25,19 +23,9 @@ var Landing = React.createClass({
 });
 
 
-/* let mapStateToProps = (state, props) => {
-  return {
-    state: state
-  }
-}
-
-let Landing = connect(mapStateToProps)(Landing);
-
-export default Landing; */
-
 var mapStateToProps = function(state, props) {
   return {
-    state: state
+
   }
 };
 
