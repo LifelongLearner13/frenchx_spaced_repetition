@@ -30,6 +30,8 @@ build/Release
 # Dependency directories
 node_modules
 jspm_packages
+server/mongo_data/*
+mongo_data/*
 
 # Optional npm cache directory
 .npm
@@ -39,4 +41,10 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
-Contact GitHub API Training Shop Blog About
+
+# Config files
+database.js
+auth.js
+
+# OS
+.DS_Store
