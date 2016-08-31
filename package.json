@@ -1,5 +1,5 @@
 {
-  "name": "frenchx_spaced_repetition",
+  "name": "huttese_stone_spaced_repetition",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -25,6 +25,7 @@
     "express-session": "^1.14.1",
     "mongoose": "^4.5.10",
     "mongoose-deep-populate": "^3.0.0",
+    "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "passport-google-oauth2": "^0.1.6",
     "passport-http": "^0.3.0"
