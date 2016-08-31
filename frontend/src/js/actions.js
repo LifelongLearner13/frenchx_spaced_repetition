@@ -29,7 +29,7 @@ let updateWord = (word) => {
 // GET Request for Word Pair
 export const fetchWords = (username) => {
   return (dispatch) => {
-  	let url = 'https://frenchx.herokuapp.com/word'
+    let url = 'https://frenchx.herokuapp.com/word'
     let request = {
       method: 'GET',
       headers: {
