@@ -2,8 +2,8 @@ import {GET_PAIR, UPDATE_WORD, CORRECT_DISPLAY, INCREMENT_SCORE, DECREMENT_SCORE
 import {combineReducers} from 'redux'
 
 const initialState = {
-	french: '',
-	english: '',
+	word1: '',
+	word2: '',
 	correct: false, 
 	score: 0,
 	answerInput: 'Enter Your Answer'
@@ -42,12 +42,12 @@ let quizReducer = (state, action) => {
 		})
 
 	} else if (action.type === FETCH_WORDS_SUCCESS) {
-		let frenchWord = action.french
-		let englishWord = action.english
-		console.log(englishWord, '<-- english word')
+		let newWord1 = action.word1
+		let newWord2 = action.word2
+		console.log(word2, '<-- english word')
 		return Object.assign({}, state, {
-			french: frenchWord,
-			english: englishWord,
+			word1: word1,
+			word2: word2,
 			answerInput: 'Enter Your Answer'
 		})
 

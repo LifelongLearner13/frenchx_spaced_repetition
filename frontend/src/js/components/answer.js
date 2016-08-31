@@ -7,24 +7,24 @@ var Answer = React.createClass({
 
   checkAnswer: function() {
     var answer = this.refs.answer.value;
-    var englishWords = this.props.english;
+    var word2Array = this.props.word2;
     var foundWord;
-    console.log(this.props.english, '<-- Eng Props')
+    console.log(this.props.word2, '<-- Eng Props')
 
     /* 
     Loops through English words array for user's answer. If a match, show 'Correct!',
     increment score, and fetch new word pair. If not match, decrement score and fetch
     new word pair
     */
-    for (var i = 0; i < englishWords.length; i++) {
-    	if (answer.toLowerCase() === englishWords[i].toLowerCase()) {
+    for (var i = 0; i < word2Array.length; i++) {
+    	if (answer.toLowerCase() === word2Array[i].toLowerCase()) {
     		foundWord = true;
             this.props.dispatch(actions.correctDisplay());
             this.props.dispatch(actions.incrementScore());
             this.props.dispatch(actions.fetchWords());
             break
     	} 
-        if (i === englishWords.length - 1 && !foundWord) {
+        if (i === word2Array.length - 1 && !foundWord) {
             this.props.dispatch(actions.decrementScore());
             this.props.dispatch(actions.fetchWords());
         }

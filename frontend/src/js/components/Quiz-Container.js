@@ -32,8 +32,8 @@ var QuizContainer = React.createClass({
           <LogOutButton logOutUser={this.logOutUser} />
         </div>
         <Correct correct={this.props.correct} toggleCorrect={this.toggleCorrect} />
-        <CurrentWord french={this.props.french} />      
-        <Answer checkAnswer={this.checkAnswer} english={this.props.english} answerInput={this.props.answerInput} />
+        <CurrentWord word1={this.props.word1} />      
+        <Answer checkAnswer={this.checkAnswer} word2={this.props.word2} answerInput={this.props.answerInput} />
         <Score score={this.props.score} />
       </div>
 
@@ -44,8 +44,8 @@ var QuizContainer = React.createClass({
 var mapStateToProps = function(state, props) {
   return {
     correct: state.correct,
-    french: state.french,
-    english: state.english,
+    word1: state.word1,
+    word2: state.word2,
     score: state.score,
     answerInput: state.answerInput
   }

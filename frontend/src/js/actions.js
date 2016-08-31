@@ -2,8 +2,8 @@
 import fetch from 'isomorphic-fetch'
 
 /* {
-french: 'de'  
-english: 'of, from, by, than, in, with'
+word1: 'Huttese Word'  
+word2: 'English Translation'
 weight: 10
 }
 
@@ -47,12 +47,12 @@ export const fetchWords = (username) => {
       return response.json()
     })
     .then((data) => {
-      // Returns the word pair, splitting the English word into an array
+      // Returns the word pair, splitting word2 into an array
       console.log(data, '<--- Fetch data')
-      let french = data.french
-      let english = data.english.split(';').join().split(', ')
+      let word1 = data.word1
+      let word2 = data.word2.split(';').join().split(', ')
       return dispatch(
-        fetchWordsSuccess(french, english)
+        fetchWordsSuccess(word1, word2)
       )
     })
     .catch((error) => {
@@ -64,11 +64,11 @@ export const fetchWords = (username) => {
 }
 
 const FETCH_WORDS_SUCCESS = 'FETCH_WORDS_SUCCESS'
-const fetchWordsSuccess = (french, english) => {
+const fetchWordsSuccess = (word1, word2) => {
   return {
     type: FETCH_WORDS_SUCCESS,
-    french: french,
-    english: english
+    word1: word1,
+    word2: word2
   }
 }
 
