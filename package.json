@@ -7,19 +7,15 @@
     "node": "6.4.0"
   },
   "scripts": {
-    "start": "node server/server.js"
+    "start": "node server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LifelongLearner13/frenchx_spaced_repetition.git"
+    "url": "git+https://github.com/LifelongLearner13/huttese_stone_spaced_repetition.git"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LifelongLearner13/frenchx_spaced_repetition/issues"
-  },
-  "homepage": "https://github.com/LifelongLearner13/frenchx_spaced_repetition#readme",
   "dependencies": {
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
