@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema({
         email: String,
         name: String
     },
+    justAsked: {type: mongoose.Schema.Types.ObjectId, ref: 'Word'},
     trained: [{
         word: {
             type: mongoose.Schema.Types.ObjectId,
