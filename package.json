@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node server/server.js",
-    "postinstall": "npm run build",
+    "postinstall": "echo $PATH && npm run build",
     "test": "mocha --compilers js:babel-register test/**/*.js*",
     "mkdir": "mkdir -p frontend/build",
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js",
@@ -71,7 +71,7 @@
     "http-server": "^0.9.0",
     "mocha": "^2.5.3",
     "react-addons-test-utils": "^15.2.1",
-    "webpack": "^1.13.1",
+      "webpack": "^1.13.1",
     "morgan": "^1.7.0",
     "url-pattern": "^1.0.1"
   }
