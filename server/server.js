@@ -46,7 +46,7 @@ app.use(express.static('frontend/build'));
 
 
 app.get('/', function(request, response) {
-  console.log('user inside /: ', request.user)
+    console.log('user inside /: ', request.user)
     console.log('Cookies: ', request.cookies)
     console.log(request.session)
 
@@ -54,36 +54,37 @@ app.get('/', function(request, response) {
 
 // GET endpoints for word pair
 app.get('/word', function(req, res) {
-  let userId = '57c75a3cc7fdfc5517713efb'
-  spaced_repitition.getFirstWord(userId).then(function(results, error) {
-    res.json(results)
-  })
+    let userId = '57c75a3cc7fdfc5517713efb'
+    spaced_repitition.getFirstWord(userId).then(function(results, error) {
+        res.json(results)
+    })
 })
 
 // PUT endpoint to submit answer and update score
 //
 app.put('/submitanswer', jsonParser, function(req, res) {
-    if (typeof req.body.wordId !== 'string' || typeof req.body.isCorrect !== 'string') {
-        res.status(422).json({
+  console.log(req.body.score, '<==== req')
+    if (typeof req.body.wordId !== 'string' || typeof req.body.isCorrect !== 'string' || typeof req.body.score !== 'number') {
+        return res.status(422).json({
             message: 'Incorrect field type'
         })
     }
     let userId = '57c75a3cc7fdfc5517713efb'
     if (req.body.wordId === '' && req.body.isCorrect === '') {
-      spaced_repitition.getFirstWord(userId).then(function(results, error) {
-        res.json(results)
-      })
+        spaced_repitition.getFirstWord(userId, req.body.score).then(function(results, error) {
+            res.json(results)
+        })
     } else {
-      if(req.body.isCorrect === 'true') {
-      spaced_repitition.getNextWord(userId, req.body.wordId, true).then(function(results, error) {
-        res.json(results)
-      })
-      } else {
-      spaced_repitition.getNextWord(userId, req.body.wordId, false).then(function(results, error) {
-        res.json(results)
-      })
+        if (req.body.isCorrect === 'true') {
+            spaced_repitition.getNextWord(userId, req.body.wordId, true, req.body.score).then(function(results, error) {
+                res.json(results)
+            })
+        } else {
+            spaced_repitition.getNextWord(userId, req.body.wordId, false, req.body.score).then(function(results, error) {
+                res.json(results)
+            })
+        }
     }
-  }
 })
 
 
