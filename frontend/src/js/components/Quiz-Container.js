@@ -24,14 +24,14 @@ var QuizContainer = React.createClass({
         foundWord = true;
             this.props.dispatch(actions.correctDisplay());
             this.props.dispatch(actions.incrementScore());
-            this.props.dispatch(actions.fetchWords());
+            //this.props.dispatch(actions.fetchWords());
             this.props.dispatch(actions.fetchSubmit(this.props.wordId, 'true'))
             break
       } 
       // If not match, decrement score and fetch new word pair
       if (i === word2Array.length - 1 && !foundWord) {
           this.props.dispatch(actions.decrementScore());
-          this.props.dispatch(actions.fetchWords());
+          //this.props.dispatch(actions.fetchWords());
           this.props.dispatch(actions.fetchSubmit(this.props.wordId, 'false'))
       }
     }
@@ -39,7 +39,7 @@ var QuizContainer = React.createClass({
 
   // Fetches new word pair on initial mounting of component
   componentDidMount: function() {
-    this.props.dispatch(actions.fetchWords())
+    this.props.dispatch(actions.fetchSubmit("",""))
   },
 
   logOutUser: function() {

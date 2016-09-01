@@ -65,12 +65,22 @@ export const fetchSubmit = (wordId, isCorrect) => {
       }
       return response.json()
     })
-    .then((data) => {
+   .then((data) => {
+      // Returns the word pair, splitting word2 into an array
+      console.log(data, '<--- Word data')
+      let wordId = data._id
+      let word1 = data.word1
+      let word2 = data.word2.split(';').join().split(', ')
+      return dispatch(
+        fetchWordsSuccess(word1, word2, wordId)
+      )
+    })
+    /*.then((data) => {
       console.log(data, '<-- Submit data')
       return dispatch(
         fetchSubmitSuccess(wordId, isCorrect)
       )
-    })
+    })*/
     .catch((error) => {
       return dispatch(
         fetchSubmitError(error)
