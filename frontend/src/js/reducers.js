@@ -1,12 +1,11 @@
-import {CORRECT_DISPLAY, INCREMENT_SCORE, DECREMENT_SCORE, FETCH_WORDS_SUCCESS, FETCH_WORDS_ERROR, FETCH_SUBMIT_SUCCESS, FETCH_SUBMIT_ERROR} from './actions'
+import {CORRECT_DISPLAY, FETCH_SUBMIT_SUCCESS} from './actions'
 import {combineReducers} from 'redux'
 
 const initialState = {
 	word1: '',
 	word2: '',
 	correct: false, 
-	score: 0,
-	answerInput: 'Enter Your Answer'
+	score: 0
 }
 
 let quizReducer = (state, action) => {
@@ -23,26 +22,12 @@ let quizReducer = (state, action) => {
 			})
 		}
 
-	} else if (action.type === INCREMENT_SCORE) {
+	} else if (action.type === FETCH_SUBMIT_SUCCESS) {	
 		return Object.assign({}, state, {
-			score: state.score + 10
-		})
-
-	} else if (action.type === DECREMENT_SCORE) {
-		return Object.assign({}, state, {
-			score: state.score - 10
-		})
-
-	} else if (action.type === FETCH_WORDS_SUCCESS) {
-		let newWord1 = action.word1
-		let newWord2 = action.word2
-		let wordId = action.wordId
-		console.log(word2, '<-- english word')
-		return Object.assign({}, state, {
-			word1: newWord1,
-			word2: newWord2,
-			wordId: newWordId,
-			answerInput: 'Enter Your Answer'
+			word1: action.word1,
+			word2: action.word2,
+			wordId: action.wordId,
+			score: action.score || 0
 		})
 
 	} 
