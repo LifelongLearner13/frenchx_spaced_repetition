@@ -33,8 +33,10 @@ UserSchema.plugin(deepPopulate)
 UserSchema.methods.getWeightedWords = function(callback) {
         return new Promise(function(resolve, reject) {
                 console.log('inside getWeightedWords')
+                console.log(this, '<---- this')
                 let that = this
-                this.model('User').findById(this._id, 'trained').populate('Word').exec(function(error, results) {
+                let id = this._id
+                this.model('User').findById(id, 'trained').populate('Word').exec(function(error, results) {
                     let newWords = []
                     Word.find({}, function(error, allWords) {
                         if (results.trained.length) {
