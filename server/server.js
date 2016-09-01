@@ -12,6 +12,7 @@ const User = require('./models/user')
 const configDB = !process.env.DATABASE_URI ? require('./config/database') : {
     url: ''
 }
+const spaced_repitition = require('./spaced_repitition')
 const logger = require('morgan')
 const app = express()
 
@@ -53,74 +54,40 @@ app.get('/', function(request, response) {
 
 // GET endpoints for word pair
 app.get('/word', function(req, res) {
-  // console.log('user inside word: ', req.user.google.email)
-    User.findById('57c75a3cc7fdfc5517713efb', 'trained justAsked').exec(function(error, docs) {
-        console.log(docs, '<---- docs')
-        // Mongoose does not return a plain object, convert to plain object so we can manipulate it
-        docs = docs.toObject()
-        // save the array of word/weight objects into a temp variable so it is more readable
-        let wordArray = docs.trained
-        // sort the array of word/weight so the smallest weights are on top
-        wordArray.sort(function(a, b) {
-            return a.weight - b.weight
-        })
-        console.log('inside findById user', wordArray)
-        console.log(docs.hasOwnProperty('justAsked'))
-
-        // If the first word/weight object was not just sent to the user i.e. was not the last question asked
-        // then update the justAsked property and send back the populated object
-        if(docs.hasOwnProperty('justAsked') && wordArray[0].word.toString() !== docs.justAsked.toString()) {
-          console.log(`${wordArray[0].word.toString()} !== ${docs.justAsked.toString()} ---> ${wordArray[0].word.toString() !== docs.justAsked.toString()}`)
-          console.log('inside if')
-          User.findByIdAndUpdate('57c75a3cc7fdfc5517713efb', {justAsked: wordArray[0].word}, function(error) {
-            if (error) {
-              throw error
-            }
-          })
-          Word.findById(wordArray[0].word).exec(function(error, result) {
-            console.log('findById Word: ', result)
-            res.json(result)
-          })
-          // We just sent the first word/weight object to the user, send the next one in the list.
-          // this will only be called if the user did not answer the pervious question correctly
-        } else {
-          User.findByIdAndUpdate('57c75a3cc7fdfc5517713efb', {justAsked: wordArray[1].word}, function(error) {
-            if (error) {
-              throw error
-            }
-          })
-          Word.findById(wordArray[1].word).exec(function(error, result) {
-            console.log('findById Word: ', result)
-            res.json(result)
-          })
-        }
-    })
+  let userId = '57c75a3cc7fdfc5517713efb'
+  spaced_repitition.getFirstWord(userId).then(function(results, error) {
+    res.json(results)
+  })
 })
 
 // PUT endpoint to submit answer and update score
 //
 app.put('/submitanswer', jsonParser, function(req, res) {
-    // Calls algorithm and updates user score
-    if (!req.body.wordId || !req.body.isCorrect) {
-        res.status(422).json({
-            message: 'Missing Fields'
-        })
-    }
     if (typeof req.body.wordId !== 'string' || typeof req.body.isCorrect !== 'string') {
         res.status(422).json({
             message: 'Incorrect field type'
         })
     }
-    // if(req.body.isCorrect === 'true') {
-
-    // } else {
-    //
-    // }
-
-    // update algorithm
-    // update database with new weight
-
+    let userId = '57c75a3cc7fdfc5517713efb'
+    if (req.body.wordId === '' && req.body.isCorrect === '') {
+      spaced_repitition.getFirstWord(userId).then(function(results, error) {
+        res.json(results)
+      })
+    } else {
+      if(req.body.isCorrect === 'true') {
+      spaced_repitition.getNextWord(userId, req.body.wordId, true).then(function(results, error) {
+        res.json(results)
+      })
+      } else {
+      spaced_repitition.getNextWord(userId, req.body.wordId, false).then(function(results, error) {
+        res.json(results)
+      })
+    }
+  }
 })
+
+
+
 
 // =====================================
 // GOOGLE ROUTES =======================
