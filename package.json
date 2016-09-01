@@ -19,7 +19,7 @@
     "build:html": "npm run clean:html && cp frontend/index.html frontend/build/",
     "watch:html": "npm run build:html && chokidar frontend/index.html -c 'npm run build:html'",
     "clean:html": "rm -f frontend/build/index.html",
-    "build:css": "npm run clean:css && cp src/style.css build/",
+    "build:css": "npm run clean:css && cp frontend/src/style.css frontend/build/",
     "clean:css": "rm -f frontend/build/style.css",
     "watch:css": "npm run build:css && chokidar frontend/src/style.css -c 'npm run build:css'",
     "build:js": "npm run clean:js && webpack",
