@@ -4,7 +4,7 @@ body {
   font-family: sans-serif;
 }
 
-.Cards {
+.QuizContainer {
   text-align: center;
 }
 
@@ -24,16 +24,10 @@ body {
   margin-top: 100px;
 }
 
-.Cards-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
+.Login {
+  border: 1px;
+  padding: 4em 10em;
 
-.Cards-questions {
-  font-size: large;
-  
 }
 
 .correct-display {

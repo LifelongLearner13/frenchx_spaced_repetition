@@ -12,10 +12,10 @@ var Landing = React.createClass({
     return (
       <div className="Landing">
         <div className="Landing-header">
-          <h2>FrenchX Header</h2>
+          <h2>HutteStone Header</h2>
         </div>
         <div className="Landing-login">
-          <button className="Login" type="submit" onClick={this.userLogin} placeholder="Login With Google"></button>
+          <a href="https://huttese-stone.herokuapp.com/auth/google"><button className="Login" type="submit">Login / Register</button></a>
         </div>
       </div>
     );
