@@ -30,7 +30,7 @@ app.use(function(req, res, next) {
 // Setting up basic middleware for all Express requests
 app.use(logger('dev')); // Log requests to API using morgan
 
-app.use(cookieParser())
+app.use(cookieParser('changemelater'))
 
 app.use(session({
     secret: 'changemelater',
@@ -41,8 +41,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(express.static('frontend/build'));
+
 
 app.get('/', function(request, response) {
+  console.log('user inside /: ', request.user)
     console.log('Cookies: ', request.cookies)
     console.log(request.session)
 
@@ -50,7 +53,9 @@ app.get('/', function(request, response) {
 
 // GET endpoints for word pair
 app.get('/word', function(req, res) {
-    User.findById('57c72200288f5f320ede61bb', 'trained justAsked').exec(function(error, docs) {
+  // console.log('user inside word: ', req.user.google.email)
+    User.findById('57c75a3cc7fdfc5517713efb', 'trained justAsked').exec(function(error, docs) {
+        console.log(docs, '<---- docs')
         // Mongoose does not return a plain object, convert to plain object so we can manipulate it
         docs = docs.toObject()
         // save the array of word/weight objects into a temp variable so it is more readable
@@ -60,12 +65,14 @@ app.get('/word', function(req, res) {
             return a.weight - b.weight
         })
         console.log('inside findById user', wordArray)
-        console.log(`${wordArray[0].word.toString()} !== ${docs.justAsked.toString()} ---> ${wordArray[0].word.toString() !== docs.justAsked.toString()}`)
+        console.log(docs.hasOwnProperty('justAsked'))
+
         // If the first word/weight object was not just sent to the user i.e. was not the last question asked
         // then update the justAsked property and send back the populated object
-        if(wordArray[0].word.toString() !== docs.justAsked.toString()) {
+        if(docs.hasOwnProperty('justAsked') && wordArray[0].word.toString() !== docs.justAsked.toString()) {
+          console.log(`${wordArray[0].word.toString()} !== ${docs.justAsked.toString()} ---> ${wordArray[0].word.toString() !== docs.justAsked.toString()}`)
           console.log('inside if')
-          User.findByIdAndUpdate('57c72200288f5f320ede61bb', {justAsked: wordArray[0].word}, function(error) {
+          User.findByIdAndUpdate('57c75a3cc7fdfc5517713efb', {justAsked: wordArray[0].word}, function(error) {
             if (error) {
               throw error
             }
@@ -77,7 +84,7 @@ app.get('/word', function(req, res) {
           // We just sent the first word/weight object to the user, send the next one in the list.
           // this will only be called if the user did not answer the pervious question correctly
         } else {
-          User.findByIdAndUpdate('57c72200288f5f320ede61bb', {justAsked: wordArray[1].word}, function(error) {
+          User.findByIdAndUpdate('57c75a3cc7fdfc5517713efb', {justAsked: wordArray[1].word}, function(error) {
             if (error) {
               throw error
             }
@@ -104,11 +111,11 @@ app.put('/submitanswer', jsonParser, function(req, res) {
             message: 'Incorrect field type'
         })
     }
-    if(req.body.isCorrect === 'true') {
+    // if(req.body.isCorrect === 'true') {
 
-    } else {
-
-    }
+    // } else {
+    //
+    // }
 
     // update algorithm
     // update database with new weight
@@ -128,8 +135,8 @@ app.get('/auth/google', passport.authenticate('google', {
 // the callback after google has authenticated the user
 app.get('/auth/google/callback',
     passport.authenticate('google', {
-        successRedirect: '/word',
-        failureRedirect: '/'
+        successRedirect: '/#/quiz',
+        failureRedirect: '/#/'
     }));
 
 // LOGOUT ==============================

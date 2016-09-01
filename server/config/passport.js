@@ -26,9 +26,9 @@ module.exports = function(passport) {
     // =========================================================================
     passport.use(new GoogleStrategy({
 
-        clientID        : configAuth.clientID || process.env.AUTH_CLIENTID,
-        clientSecret    : configAuth.clientSecret || process.env.AUTH_CLIENCTSECRET,
-        callbackURL     : configAuth.callbackURL || process.env.AUTHCALLBACK_URL,
+        clientID        : configAuth.clientID,
+        clientSecret    : configAuth.clientSecret,
+        callbackURL     : configAuth.callbackURL,
 
     },
     function(token, refreshToken, profile, done) {
@@ -61,9 +61,10 @@ module.exports = function(passport) {
                     newUser.save(function(err) {
                         if (err)
                             throw err;
-                        newUser.getWeightedWords()
-                        return done(null, newUser);
-                    });
+                        newUser.getWeightedWords().then(function() {
+                          return done(null, newUser);
+                        })
+                    })
                 }
             });
         });

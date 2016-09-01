@@ -11,7 +11,10 @@ const UserSchema = new mongoose.Schema({
         email: String,
         name: String
     },
-    justAsked: {type: mongoose.Schema.Types.ObjectId, ref: 'Word'},
+    justAsked: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Word'
+    },
     trained: [{
         word: {
             type: mongoose.Schema.Types.ObjectId,
@@ -28,47 +31,55 @@ UserSchema.plugin(deepPopulate)
 
 // Only call when a user first logs in or user registers
 UserSchema.methods.getWeightedWords = function(callback) {
-    console.log('inside getWeightedWords')
-    let that = this
-    this.model('User').findById(this._id, 'trained').populate('Word').exec(function(error, results) {
-        let newWords = []
-        Word.find({}, function(error, allWords) {
-            if (results.trained.length) {
-                let userWordIds = results.trained.map((el) => el.word.toString())
-                console.log(userWordIds)
-                newWords = allWords.filter((word) => {
-                    return !userWordIds.includes(word._id.toString())
-                })
-                newWords = newWords.map(function(word) {
-                    return {
-                        word: word._id,
-                        weight: 1
-                    }
-                })
-            } else {
-                newWords = allWords.map(function(word) {
-                    return {
-                        word: word._id,
-                        weight: 1
-                    }
-                })
-            }
+        return new Promise(function(resolve, reject) {
+                console.log('inside getWeightedWords')
+                let that = this
+                this.model('User').findById(this._id, 'trained').populate('Word').exec(function(error, results) {
+                    let newWords = []
+                    Word.find({}, function(error, allWords) {
+                        if (results.trained.length) {
+                            let userWordIds = results.trained.map((el) => el.word.toString())
+                            console.log(userWordIds)
+                            newWords = allWords.filter((word) => {
+                                return !userWordIds.includes(word._id.toString())
+                            })
+                            newWords = newWords.map(function(word) {
+                                return {
+                                    word: word._id,
+                                    weight: 1
+                                }
+                            })
+                        } else {
+                            newWords = allWords.map(function(word) {
+                                return {
+                                    word: word._id,
+                                    weight: 1
+                                }
+                            })
+                        }
 
-            that.model('User').findByIdAndUpdate(that._id, {
-                $push: {
-                    trained: {
-                        $each: newWords
-                    }
-                }
-            }, {
-                safe: true,
-                upsert: true,
-                new: true
-            }).deepPopulate('trained.word').exec(callback)
-        })
-    })
-}
+                        that.model('User').findByIdAndUpdate(that._id, {
+                            $push: {
+                                trained: {
+                                    $each: newWords
+                                }
+                            }
+                        }, {
+                            safe: true,
+                            upsert: true,
+                            new: true
+                        }).deepPopulate('trained.word').exec(function(error, result) {
+                            if (error) {
+                                reject(error)
+                            }
+                            resolve(callback)
+                        })
+                        console.log('updating user schema')
+                    })
+                })
+            })
+        }
 
-const User = mongoose.model('User', UserSchema)
+        const User = mongoose.model('User', UserSchema)
 
-module.exports = User
+        module.exports = User
