@@ -8,7 +8,7 @@ import store from './store'
 
 import Landing from './components/Landing'
 import QuizContainer from'./components/Quiz-Container'
-
+console.log('hello from index')
 document.addEventListener('DOMContentLoaded', () => {
 	ReactDOM.render(
 		<Provider store={store}>
