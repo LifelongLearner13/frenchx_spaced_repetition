@@ -16,7 +16,7 @@ export const fetchSubmit = (wordId = '', isCorrect = '', score = 1) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(
-        {wordId: wordId, isCorrect: isCorrect, score: score}
+        {wordId: wordId, isCorrect: isCorrect, score: 0}
       )}
       console.log(request, '<-- request')
     return fetch(url, request)
