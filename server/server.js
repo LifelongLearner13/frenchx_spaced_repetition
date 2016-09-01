@@ -52,13 +52,13 @@ app.get('/', function(request, response) {
 
 })
 
-// GET endpoints for word pair
-app.get('/word', function(req, res) {
-    let userId = '57c75a3cc7fdfc5517713efb'
-    spaced_repitition.getFirstWord(userId).then(function(results, error) {
-        res.json(results)
-    })
-})
+// // GET endpoints for word pair
+// app.get('/word', function(req, res) {
+//     let userId = '57c75a3cc7fdfc5517713efb'
+//     spaced_repitition.getFirstWord(userId).then(function(results, error) {
+//         res.json(results)
+//     })
+// })
 
 // PUT endpoint to submit answer and update score
 //
