@@ -18,6 +18,7 @@ export const fetchSubmit = (wordId = '', isCorrect = '', score = 1) => {
       body: JSON.stringify(
         {wordId: wordId, isCorrect: isCorrect, score: score}
       )}
+      console.log(body, '<-- body')
     return fetch(url, request)
     .then((response) => {
       if (response.status < 200 || response.status >= 300) {
