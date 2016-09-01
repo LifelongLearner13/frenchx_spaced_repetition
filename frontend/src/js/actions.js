@@ -1,35 +1,13 @@
-/*------------ FETCH ACTIONS -------------*/
 import fetch from 'isomorphic-fetch'
 
-/* {
-word1: 'Huttese Word'  
-word2: 'English Translation'
-weight: 10
-}
+/*------------ FETCH ACTIONS -------------*/
 
-The GET enpoint to get the next word pair is ‘/word’ and the PUT enpoint for updating the words ‘’weight” or memory value is ‘/submitanswer'
-*/
-
-const GET_PAIR = 'GET_PAIR'
-let getPair = (words) => {
-  return {
-    type: GET_PAIR,
-    words: words
-  }
-}
-
-const UPDATE_WORD = 'UPDATE_WORD'
-let updateWord = (word) => {
-  return {
-    type: UPDATE_WORD,
-    word: word
-  }
-}
+// Authentication url https://huttese-stone.herokuapp.com/auth/google
 
 // GET Request for Word Pair
 export const fetchWords = (username) => {
   return (dispatch) => {
-    let url = 'https://frenchx.herokuapp.com/word'
+    let url = 'https://huttese-stone.herokuapp.com/word'
     let request = {
       method: 'GET',
       headers: {
@@ -48,11 +26,12 @@ export const fetchWords = (username) => {
     })
     .then((data) => {
       // Returns the word pair, splitting word2 into an array
-      console.log(data, '<--- Fetch data')
+      console.log(data, '<--- Word data')
+      let wordId = data._id
       let word1 = data.word1
       let word2 = data.word2.split(';').join().split(', ')
       return dispatch(
-        fetchWordsSuccess(word1, word2)
+        fetchWordsSuccess(word1, word2, wordId)
       )
     })
     .catch((error) => {
@@ -63,22 +42,43 @@ export const fetchWords = (username) => {
   }
 }
 
-const FETCH_WORDS_SUCCESS = 'FETCH_WORDS_SUCCESS'
-const fetchWordsSuccess = (word1, word2) => {
-  return {
-    type: FETCH_WORDS_SUCCESS,
-    word1: word1,
-    word2: word2
+
+// POST request to submit answer
+export const fetchSubmit = (wordId, isCorrect) => {
+  return (dispatch) => {
+    let url = 'https://huttese-stone.herokuapp.com/submitanswer'
+    let request = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        {wordId: wordId, isCorrect: isCorrect}
+      )}
+    return fetch(url, request)
+    .then((response) => {
+      if (response.status < 200 || response.status >= 300) {
+        let error = new Error(response.statusText)
+        error.response = response
+        throw error
+      }
+      return response.json()
+    })
+    .then((data) => {
+      console.log(data, '<-- Submit data')
+      return dispatch(
+        fetchSubmitSuccess(wordId, isCorrect)
+      )
+    })
+    .catch((error) => {
+      return dispatch(
+        fetchSubmitError(error)
+      )
+    })
   }
 }
 
-const FETCH_WORDS_ERROR = 'FETCH_WORDS_ERROR'
-const fetchWordsError = (error) => {
-  return {
-    type: FETCH_WORDS_ERROR,
-    error: error
-  }
-}
 
 
 /*----------- ACTIONS ------------*/
@@ -104,16 +104,44 @@ const decrementScore = () => {
   }
 }
 
+const FETCH_WORDS_SUCCESS = 'FETCH_WORDS_SUCCESS'
+const fetchWordsSuccess = (word1, word2, wordId) => {
+  return {
+    type: FETCH_WORDS_SUCCESS,
+    word1: word1,
+    word2: word2,
+    wordId: wordId
+  }
+}
 
+const FETCH_WORDS_ERROR = 'FETCH_WORDS_ERROR'
+const fetchWordsError = (error) => {
+  return {
+    type: FETCH_WORDS_ERROR,
+    error: error
+  }
+}
+
+const FETCH_SUBMIT_SUCCESS = 'FETCH_SUBMIT_SUCCESS'
+const fetchSubmitSuccess = (wordId, isCorrect) => {
+  return {
+    type: FETCH_SUBMIT_SUCCESS,
+    wordId: wordId,
+    isCorrect: isCorrect
+  }
+}
+
+const FETCH_SUBMIT_ERROR = 'FETCH_SUBMIT_ERROR'
+const fetchSubmitError = (error) => {
+  return {
+    type: FETCH_SUBMIT_ERROR,
+    error: error
+  }
+}
 
 
 
 /*--------  EXPORTS --------*/
-exports.GET_PAIR = GET_PAIR
-exports.getPair = getPair
-
-exports.UPDATE_WORD = UPDATE_WORD
-exports.updateWord = updateWord
 
 exports.CORRECT_DISPLAY = CORRECT_DISPLAY
 exports.correctDisplay = correctDisplay
@@ -129,4 +157,10 @@ exports.fetchWordsSuccess = fetchWordsSuccess
 
 exports.FETCH_WORDS_ERROR = FETCH_WORDS_ERROR
 exports.fetchWordsError = fetchWordsError
+
+exports.FETCH_SUBMIT_SUCCESS = FETCH_SUBMIT_SUCCESS
+exports.fetchSubmitSuccess = fetchSubmitSuccess
+
+exports.FETCH_SUBMIT_ERROR = FETCH_SUBMIT_ERROR
+exports.fetchSubmitError = fetchSubmitError
 

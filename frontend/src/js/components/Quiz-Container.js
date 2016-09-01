@@ -9,32 +9,31 @@ var Score = require('./score');
 
 
 var QuizContainer = React.createClass({
-  // Parent --> Child : checkAnswer function
-  // Child  --> Parent: pass refs
-  // 
+
   checkAnswer: function(answer) {
     console.log('in checkAnswer, answer is ', answer);
     var word2Array = this.props.word2;
     var foundWord;
-    console.log(this.props.word2, '<-- Eng Props')
+    console.log(this.props.word2, '<-- word2 Props')
+    console.log(this.props.wordId, '<-- Word ID Props')
 
-    /* 
-    Loops through English words array for user's answer. If a match, show 'Correct!',
-    increment score, and fetch new word pair. If not match, decrement score and fetch
-    new word pair
-    */
+    // Loops through English words array for user's answer.  
     for (var i = 0; i < word2Array.length; i++) {
+      // If a match, show 'Correct!', increase score, fetch new words, submit to backend
       if (answer.toLowerCase() === word2Array[i].toLowerCase()) {
         foundWord = true;
             this.props.dispatch(actions.correctDisplay());
             this.props.dispatch(actions.incrementScore());
             this.props.dispatch(actions.fetchWords());
+            this.props.dispatch(actions.fetchSubmit(this.props.wordId, 'true'))
             break
       } 
-        if (i === word2Array.length - 1 && !foundWord) {
-            this.props.dispatch(actions.decrementScore());
-            this.props.dispatch(actions.fetchWords());
-        }
+      // If not match, decrement score and fetch new word pair
+      if (i === word2Array.length - 1 && !foundWord) {
+          this.props.dispatch(actions.decrementScore());
+          this.props.dispatch(actions.fetchWords());
+          this.props.dispatch(actions.fetchSubmit(this.props.wordId, 'false'))
+      }
     }
   },  
 
@@ -74,6 +73,7 @@ var mapStateToProps = function(state, props) {
     correct: state.correct,
     word1: state.word1,
     word2: state.word2,
+    wordId: state.wordId,
     score: state.score,
     answerInput: state.answerInput
   }
