@@ -12,7 +12,7 @@
     "watch": "npm run watch:html & npm run watch:css & npm run watch:js",
     "clean": "rm -rf build",
     "build:html": "npm run clean:html && cp index.html build/",
-    "build:img": "npm run clean:img && cp img/. build/"
+    "build:img": "npm run clean:img && cp img/. build/",
     "watch:html": "npm run build:html && chokidar index.html -c 'npm run build:html'",
     "clean:html": "rm -f build/index.html",
     "clean:img": "rm -f build/img/*",
