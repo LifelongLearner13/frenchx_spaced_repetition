@@ -54,7 +54,7 @@ var QuizContainer = React.createClass({
           <div className = "Quiz">
 
             <div className="quiz-header">
-                <img src="../huttlogo.png" />
+                <img src="./src/img/huttlogo.png" />
                 <div>
                     <a href="https://huttese-stone.herokuapp.com/logout"> <button className="logout-button">Log Out</button></a>
                 </div>
