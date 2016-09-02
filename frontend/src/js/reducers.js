@@ -1,4 +1,4 @@
-import {CORRECT_DISPLAY, FETCH_SUBMIT_SUCCESS} from './actions'
+import {CORRECT_DISPLAY, HIDE_CORRECT, FETCH_SUBMIT_SUCCESS} from './actions'
 import {combineReducers} from 'redux'
 
 const initialState = {
@@ -30,9 +30,12 @@ let quizReducer = (state, action) => {
 			score: action.score || 0
 		})
 
+	} else if (action.type === HIDE_CORRECT) {
+		return Object.assign({}, state, {
+			correct: false
+		})
 	} 
 
-	
 	return state
 } 
 

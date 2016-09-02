@@ -18,7 +18,6 @@ export const fetchSubmit = (wordId, isCorrect, score) => {
       body: JSON.stringify(
         {wordId: wordId, isCorrect: isCorrect, score: score}
       )}
-      console.log(request, '<-- request')
     return fetch(url, request)
     .then((response) => {
       if (response.status < 200 || response.status >= 300) {
@@ -33,8 +32,10 @@ export const fetchSubmit = (wordId, isCorrect, score) => {
       console.log(data, '<--- Word data')
       let wordId = data._id
       let word1 = data.word1
+      // let word2 = data.word2.split(', ').join().split(' ')
       let word2 = data.word2.split(';').join().split(', ')
       let score = data.score
+      console.log(word2, '<-- English Word array')
       console.log(score, '<-- Score response ')
       return dispatch(
         fetchSubmitSuccess(word1, word2, wordId, score)
@@ -59,6 +60,13 @@ const correctDisplay = () => {
   }
 }
 
+const HIDE_CORRECT = 'HIDE_CORRECT'
+const hideCorrect = () => {
+  return {
+    type: HIDE_CORRECT
+  }
+}
+
 const FETCH_SUBMIT_SUCCESS = 'FETCH_SUBMIT_SUCCESS'
 const fetchSubmitSuccess = (word1, word2, wordId, score) => {
   return {
@@ -80,10 +88,14 @@ const fetchSubmitError = (error) => {
 
 
 
+
 /*--------  EXPORTS --------*/
 
 exports.CORRECT_DISPLAY = CORRECT_DISPLAY
 exports.correctDisplay = correctDisplay
+
+exports.HIDE_CORRECT = HIDE_CORRECT
+exports.hideCorrect = hideCorrect
 
 exports.FETCH_SUBMIT_SUCCESS = FETCH_SUBMIT_SUCCESS
 exports.fetchSubmitSuccess = fetchSubmitSuccess
