@@ -45,26 +45,32 @@ let getNextWord = (user, wordId, isCorrect, score) => {
                 // value will be at a lower index
                 words = words.sort(sortByWeight)
 
-                console.log(`${words[0].word._id.toString()} !== ${returnedUser.justAsked.toString()} ---> ${words[0].word.toString() !== returnedUser.justAsked.toString()}`)
+                let index = returnedUser.currentSortedIndex
+                if(index >= words.length) {
+                  index = 0
+                }
+
                     // if the first word in the sorted array does not equal
                     // the word stored in the justAsked property
-                if (words[0].word._id.toString() !== returnedUser.justAsked.toString()) {
+                if (words[index].word._id.toString() !== returnedUser.justAsked.toString()) {
                     // Then update the user's justAsked property to the first
                     // word in the array. If score was passed to the function,
                     // update it, else keep it the same. Update the words array
                     // regardless.
-                    returnedUser.justAsked = words[0].word
+                    returnedUser.justAsked = words[index].word
                     returnedUser.score = score || returnedUser.score
                     returnedUser.trained = words
+                    returnedUser.currentSortedIndex = index + 1
 
                     // Else, the first word in the sorted array was asked in the
                     // previous session
                 } else {
                     // Update the user's justAsked property to the second word
                     // in the array and update the score and trained arrays
-                    returnedUser.justAsked = words[1].word
+                    returnedUser.justAsked = words[index + 1].word
                     returnedUser.score = score || returnedUser.score
                     returnedUser.trained = words
+                    returnedUser.currentSortedIndex = index + 1
                 }
 
                 // Save the updated user document back to the database

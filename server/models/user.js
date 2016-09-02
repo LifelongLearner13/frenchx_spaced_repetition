@@ -25,9 +25,13 @@ const UserSchema = new mongoose.Schema({
             default: 1
         }
     }],
+    currentSortedIndex: {
+      type: Number,
+      default: 0
+    },
     score: {
         type: Number,
-        defualt: 0
+        default: 0
     }
 })
 UserSchema.plugin(deepPopulate)

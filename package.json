@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node server/server.js",
-    "postinstall": "echo $PATH && npm run build",
+    "postinstall": "npm run build",
     "test": "mocha --compilers js:babel-register test/**/*.js*",
     "mkdir": "mkdir -p frontend/build",
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js",
