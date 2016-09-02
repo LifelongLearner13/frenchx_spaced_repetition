@@ -2,10 +2,12 @@
 
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 
-var User       = require('../models/user');
+var User = require('../models/user');
 
 // load the auth variables
-var configAuth = !process.env.AUTH_CLIENTID ? require('./auth') : {clientID: ''};
+var configAuth = !process.env.AUTH_CLIENTID ? require('./auth') : {
+    clientID: ''
+};
 
 module.exports = function(passport) {
 
@@ -26,49 +28,52 @@ module.exports = function(passport) {
     // =========================================================================
     passport.use(new GoogleStrategy({
 
-        clientID        : configAuth.clientID || process.env.AUTH_CLIENTID,
-        clientSecret    : configAuth.clientSecret || process.env.AUTH_CLIENCTSECRET,
-        callbackURL     : configAuth.callbackURL || process.env.AUTHCALLBACK_URL,
+            clientID: configAuth.clientID || process.env.AUTH_CLIENTID,
+            clientSecret: configAuth.clientSecret || process.env.AUTH_CLIENCTSECRET,
+            callbackURL: configAuth.callbackURL || process.env.AUTHCALLBACK_URL,
 
-    },
-    function(token, refreshToken, profile, done) {
+        },
+        function(token, refreshToken, profile, done) {
 
-        // make the code asynchronous
-        // User.findOne won't fire until we have all our data back from Google
-        process.nextTick(function() {
-            console.log('inside nextTick')
-            console.log(profile)
-            // try to find the user based on their google id
-            User.findOne({ 'google.id' : profile.id }, function(err, user) {
-                if (err)
-                    return done(err);
+            // make the code asynchronous
+            // User.findOne won't fire until we have all our data back from Google
+            process.nextTick(function() {
+                console.log('inside nextTick')
+                console.log(profile)
+                    // try to find the user based on their google id
+                User.findOne({
+                    'google.id': profile.id
+                }, function(err, user) {
+                    if (err)
+                        return done(err)
 
-                if (user) {
+                    if (user) {
 
-                    // if a user is found, log them in
-                    return done(null, user);
-                } else {
-                    // if the user isnt in our database, create a new user
-                    var newUser          = new User();
+                        // if a user is found, log them in
+                        return done(null, user)
+                    } else {
+                        // if the user isnt in our database, create a new user
+                        var newUser = new User()
 
-                    // set all of the relevant information
-                    newUser.google.id    = profile.id;
-                    newUser.google.token = token;
-                    newUser.google.name  = profile.displayName;
-                    newUser.google.email = profile.emails[0].value; // pull the first email
+                        // set all of the relevant information
+                        newUser.google.id = profile.id
+                        newUser.google.token = token
+                        newUser.google.name = profile.displayName
+                        newUser.google.email = profile.emails[0].value // pull the first email
 
-                    // save the user
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err;
-                        newUser.getWeightedWords().then(function() {
-                          return done(null, newUser);
+                        // save the user
+                        newUser.save(function(err, result) {
+                            console.log(result, '<--- result of newUser.save')
+                            if (err)
+                                throw err;
+                            result.getWeightedWords().then(function() {
+                                return done(null, newUser)
+                            })
                         })
-                    })
-                }
-            });
-        });
+                    }
+                })
+            })
 
-    }));
+        }))
 
-};
+}

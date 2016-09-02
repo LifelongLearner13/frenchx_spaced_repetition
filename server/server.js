@@ -7,111 +7,111 @@ const passport = require('passport')
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const logger = require('morgan')
+const app = express()
 const Word = require('./models/word')
 const User = require('./models/user')
+    // If on Heroku use process.env.DATABASE_URI, else use local database.js file
 const configDB = !process.env.DATABASE_URI ? require('./config/database') : {
     url: ''
 }
 const spaced_repitition = require('./spaced_repitition')
-const logger = require('morgan')
-const app = express()
 
 
+/* ------ Authentication Setup ------ */
 require('./config/passport')(passport)
-
-// Enable CORS from client-side
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
-    res.header("Access-Control-Allow-Credentials", "true");
-    next();
-});
-
-// Setting up basic middleware for all Express requests
-app.use(logger('dev')); // Log requests to API using morgan
-
 app.use(cookieParser('changemelater'))
-
 app.use(session({
     secret: 'changemelater',
     saveUninitialized: true,
     resave: true
 }))
-
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
-app.use(express.static('frontend/build'));
+app.use(passport.initialize())
+app.use(passport.session()) // persistent login sessions
+app.use(flash()) // use connect-flash for flash messages stored in session
 
 
-app.get('/', function(request, response) {
-    console.log('user inside /: ', request.user)
-    console.log('Cookies: ', request.cookies)
-    console.log(request.session)
+// Enable CORS from client-side
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS')
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials")
+    res.header("Access-Control-Allow-Credentials", "true")
+    next();
+});
 
-})
+/* ------ Logging of API Requests ------ */
+app.use(logger('dev'))
 
-// // GET endpoints for word pair
-// app.get('/word', function(req, res) {
-//     let userId = '57c75a3cc7fdfc5517713efb'
-//     spaced_repitition.getFirstWord(userId).then(function(results, error) {
-//         res.json(results)
-//     })
-// })
+/* ------ Serve static frontend files ------ */
+app.use(express.static('frontend/build'))
 
-// PUT endpoint to submit answer and update score
-//
+
+/* ------ PUT Endpoint ------ */
+
+// Updates database with results, if neccessary, and returns a new word
 app.put('/submitanswer', jsonParser, function(req, res) {
-  console.log(req.body.score, '<==== req')
-    if (typeof req.body.wordId !== 'string' || typeof req.body.isCorrect !== 'string' || typeof req.body.score !== 'number') {
+    let userId = '57c75a3cc7fdfc5517713efb' // fake authentication
+    let wordId = req.body.wordId
+    let isCorrect = req.body.isCorrect
+    let score = req.body.score
+
+    if (typeof wordId !== 'string' || typeof isCorrect !== 'string') {
         return res.status(422).json({
-            message: 'Incorrect field type'
+            message: 'Incorrect field type: wordId and isCorrect must be a string'
         })
     }
-    let userId = '57c75a3cc7fdfc5517713efb'
-    if (req.body.wordId === '' && req.body.isCorrect === '') {
-        spaced_repitition.getFirstWord(userId, req.body.score).then(function(results, error) {
+    if (typeof score !== 'number' && score !== '') {
+        return res.status(422).json({
+            message: 'Incorrect field type: score must be a number or ""'
+        })
+    }
+    if (!(isCorrect === 'true' || isCorrect === 'false' || isCorrect === '')) {
+        return res.status(422).json({
+            message: 'Incorrect value for isCorrect, must be "true", "false" or ""'
+        })
+    }
+
+    // User has just logged in and we need to load the first word
+    if (wordId === '' && isCorrect === '' && score === '') {
+        spaced_repitition.getNextWord(userId).then((results, error) => {
+            if (error) {
+                throw error
+            }
             res.json(results)
         })
     } else {
-        if (req.body.isCorrect === 'true') {
-            spaced_repitition.getNextWord(userId, req.body.wordId, true, req.body.score).then(function(results, error) {
+        spaced_repitition
+            .getNextWord(userId, wordId, isCorrect === 'true', score)
+            .then((results, error) => {
+                if (error) {
+                    throw error
+                }
                 res.json(results)
             })
-        } else {
-            spaced_repitition.getNextWord(userId, req.body.wordId, false, req.body.score).then(function(results, error) {
-                res.json(results)
-            })
-        }
     }
 })
 
+/* ------ Google OAuth2 Authentication Routes ------ */
 
-
-
-// =====================================
-// GOOGLE ROUTES =======================
-// =====================================
-// send to google to do the authentication
-// profile gets us their basic information including their name
-// email gets their emails
+// This initiates the authication process. Scope is the
+// information we are asking google to send us about the
+// person sigining in.
 app.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
 
-// the callback after google has authenticated the user
+// Called when Google has finished authenticating, redirects based
+// on whether the login was successful.
 app.get('/auth/google/callback',
     passport.authenticate('google', {
         successRedirect: '/#/quiz',
         failureRedirect: '/#/'
     }));
 
-// LOGOUT ==============================
+// Logout
 app.get('/logout', function(req, res) {
-    console.log('before logout', req.user)
     req.logout();
-    console.log('after logout', req.user)
     res.redirect('/');
 });
 

@@ -25,63 +25,79 @@ const UserSchema = new mongoose.Schema({
             default: 1
         }
     }],
-    score: Number
+    score: {
+        type: Number,
+        defualt: 0
+    }
 })
 UserSchema.plugin(deepPopulate)
 
 // Only call when a user first logs in or user registers
+// Populates the trained array with all the words in the Word document.
 UserSchema.methods.getWeightedWords = function(callback) {
-        return new Promise(function(resolve, reject) {
-                console.log('inside getWeightedWords')
-                console.log(this, '<---- this')
-                let that = this
-                let id = this._id
-                this.model('User').findById(id, 'trained').populate('Word').exec(function(error, results) {
-                    let newWords = []
-                    Word.find({}, function(error, allWords) {
-                        if (results.trained.length) {
-                            let userWordIds = results.trained.map((el) => el.word.toString())
-                            console.log(userWordIds)
-                            newWords = allWords.filter((word) => {
-                                return !userWordIds.includes(word._id.toString())
-                            })
-                            newWords = newWords.map(function(word) {
-                                return {
-                                    word: word._id,
-                                    weight: 1
-                                }
-                            })
-                        } else {
-                            newWords = allWords.map(function(word) {
-                                return {
-                                    word: word._id,
-                                    weight: 1
-                                }
-                            })
-                        }
+    let currentUser = this
 
-                        that.model('User').findByIdAndUpdate(that._id, {
-                            $push: {
-                                trained: {
-                                    $each: newWords
-                                }
+    // Use promise to ensure authentication redirect does not happen until
+    // after the database has been updated
+    return new Promise((resolve, reject) => {
+        let id = currentUser._id
+
+        // Find the current user in the database
+        currentUser.model('User').findById(id, 'trained')
+            .exec((error, results) => {
+                let newWords = []
+
+                // Retrieve all words stored in the database
+                Word.find({},(error, allWords) => {
+
+                    // If the user does have something in their trained
+                    // array use map and filter to find the words that exist
+                    // in the Word document but do not exist in the users
+                    // trained array.
+                    if (results.trained.length) {
+                        let userWordIds = results.trained.map((el) => el.word.toString())
+                        newWords = allWords.filter((word) => {!userWordIds.includes(word._id.toString())})
+                        newWords = newWords.map(function(word) {
+                            return {
+                                word: word._id,
+                                weight: 1
                             }
-                        }, {
-                            safe: true,
-                            upsert: true,
-                            new: true
-                        }).deepPopulate('trained.word').exec(function(error, result) {
-                            if (error) {
-                                reject(error)
-                            }
-                            resolve(callback)
                         })
-                        console.log('updating user schema')
+                    // First time user has logged in. Populate their trained
+                    // array with all word currently in database
+                    } else {
+                        newWords = allWords.map(function(word) {
+                            return {
+                                word: word._id,
+                                weight: 1
+                            }
+                        })
+                    }
+
+                    // Update the user to include the new information
+                    currentUser.model('User')
+                      .findByIdAndUpdate(currentUser._id, {
+                        $push: {
+                            trained: {
+                                $each: newWords
+                            }
+                        },
+                        justAsked: newWords[0].word
+                    }, {
+                        safe: true,
+                        upsert: true,
+                        new: true
+                    }).exec((error, result) => {
+                        if (error) {
+                            reject(error)
+                        }
+                        resolve(callback)
                     })
                 })
             })
-        }
+    })
+}
 
-        const User = mongoose.model('User', UserSchema)
+const User = mongoose.model('User', UserSchema)
 
-        module.exports = User
+module.exports = User

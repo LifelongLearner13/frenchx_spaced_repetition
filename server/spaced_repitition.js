@@ -2,125 +2,89 @@ const mongoose = require('mongoose')
 const Word = require('./models/word')
 const User = require('./models/user')
 
+let updateWeight = (wordsArray, wordId, isCorrect) => {
+  // Loop over array of word/weight pairs to find and update the
+  // weight of the word that was just asked
+  for (let i = 0; i < wordsArray.length; i++) {
+      if (wordsArray[i].word._id.toString() === wordId.toString()) {
+          if (isCorrect) {
+              wordsArray[i].weight *= 2
+          } else {
+              wordsArray[i].weight = 1
+          }
+      }
+  }
+  return wordsArray
+}
+
 let sortByWeight = (a, b) => {
     return a.weight - b.weight
 }
 
-let getFirstWord = (user, score) => {
-    return new Promise(function(resolve, reject) {
-        console.log('inside getFirstWord')
-        User.findById(user).exec(function(error, docs) {
-            console.log(error, '<== error')
-            console.log(score, '<==== score')
-            let wordArray = docs.trained
-            wordArray.sort(sortByWeight)
-            if (docs.hasOwnProperty('justAsked') && wordArray[0].word.toString() !== docs.justAsked.toString()) {
-
-                console.log(`${wordArray[0].word.toString()} !== ${docs.justAsked.toString()} ---> ${wordArray[0].word.toString() !== docs.justAsked.toString()}`)
-                console.log('inside if')
-                User.findByIdAndUpdate(user, {
-                    justAsked: wordArray[0].word, score: score
-                }, function(error) {
-                    if (error) {
-                        throw error
-                    }
-                })
-                Word.findById(wordArray[0].word).exec(function(error, result) {
-                    console.log('findById Word: ', result)
-                    result.score = score
-                    resolve(result)
-                })
-
-            } else {
-
-                User.findByIdAndUpdate(user, {
-                    justAsked: wordArray[1].word, score: score
-                }, function(error) {
-                    if (error) {
-                        throw error
-                    }
-                })
-                Word.findById(wordArray[1].word).exec(function(error, result) {
-                    console.log('findById Word: ', result)
-                    result.score = score
-                    resolve(result)
-                })
-
-            }
-        })
-    })
-}
-
 let getNextWord = (user, wordId, isCorrect, score) => {
-    return new Promise(function(resolve, reject) {
+
+    // Create new promise so results will not be sent to user until async
+    // database actions have completed.
+    return new Promise((resolve, reject) => {
         console.log('inside getNextWord')
-        User.findById(user).exec(function(error, returnedUser) {
-            console.log(error)
-            console.log(returnedUser)
-            let words = returnedUser.trained
-            console.log(words, '<--- Words')
-            for(let i = 0; i < words.length; i++) {
-              if(words[i].word.toString() === wordId.toString()) {
-                console.log('word id matches')
-                if(isCorrect) {
-                  console.log('isCorrect')
-                  words[i].weight *= 2
-                  console.log('isCorrect: ', words[i])
-                } else {
-                  words[i].weight = 1
+            // Find user by Id (i.e. user)
+        User.findById(user).populate('trained.word')
+            .exec(function(error, returnedUser) {
+                console.log(error, '<-- error')
+
+                // Store the array of word/weight pairs in the words variable
+                let words = returnedUser.trained
+
+                if(typeof isCorrect !== 'undefined') {
+                  console.log('isCorrect is ', isCorrect)
+                  words = updateWeight(words, wordId, isCorrect)
+                  console.log(words, '<---- words after updateWeight')
                 }
-              }
-            }
-            console.log(words, '<--- Words after')
 
-            words = words.sort(sortByWeight)
+                // Sort the array by weight value; pairs with a smaller weight
+                // value will be at a lower index
+                words = words.sort(sortByWeight)
 
-            console.log(words, '<---- Words after sort')
-            console.log(`${words[0].word.toString()} !== ${returnedUser.justAsked.toString()} ---> ${words[0].word.toString() !== returnedUser.justAsked.toString()}`)
-            if (words[0].word.toString() !== returnedUser.justAsked.toString()) {
-                console.log('inside if')
-                returnedUser.justAsked = words[0].word
-                returnedUser.score = score
-                returnedUser.trained = words
-                console.log(returnedUser, '<--- returnedUser')
-                User.findByIdAndUpdate(returnedUser._id, returnedUser, function(error, result) {
-                  console.log('did not save: ', error)
-                  console.log('did save: ', result)
+                console.log(`${words[0].word._id.toString()} !== ${returnedUser.justAsked.toString()} ---> ${words[0].word.toString() !== returnedUser.justAsked.toString()}`)
+                    // if the first word in the sorted array does not equal
+                    // the word stored in the justAsked property
+                if (words[0].word._id.toString() !== returnedUser.justAsked.toString()) {
+                    // Then update the user's justAsked property to the first
+                    // word in the array. If score was passed to the function,
+                    // update it, else keep it the same. Update the words array
+                    // regardless.
+                    returnedUser.justAsked = words[0].word
+                    returnedUser.score = score || returnedUser.score
+                    returnedUser.trained = words
+
+                    // Else, the first word in the sorted array was asked in the
+                    // previous session
+                } else {
+                    // Update the user's justAsked property to the second word
+                    // in the array and update the score and trained arrays
+                    returnedUser.justAsked = words[1].word
+                    returnedUser.score = score || returnedUser.score
+                    returnedUser.trained = words
+                }
+
+                // Save the updated user document back to the database
+                returnedUser.save((error, result) => {
                     if (error) {
-                        throw error
+                        reject(error)
                     }
-                })
-                Word.findById(words[0].word).exec(function(error, result) {
-                    console.log('findById Word: ', result)
-                    result.score = score
-                    resolve(result)
-                })
 
-            } else {
-
-              returnedUser.justAsked = words[1].word
-              returnedUser.score = score
-              returnedUser.trained = words
-
-              User.findByIdAndUpdate(returnedUser._id, returnedUser, function(error, result) {
-                console.log('did not save: ', error)
-                console.log('did save: ', result)
-                  if (error) {
-                      throw error
-                  }
-              })
-                Word.findById(words[1].word).exec(function(error, result) {
-                    console.log('findById Word: ', result)
-                    result.score = score
-                    resolve(result)
+                    // create the reply object and send it back
+                    let objectToReturn = {
+                        _id: returnedUser.justAsked._id,
+                        word1: returnedUser.justAsked.word1,
+                        word2: returnedUser.justAsked.word2,
+                        score: score
+                    }
+                    resolve(objectToReturn)
                 })
 
-            }
-
-        })
+            })
     })
 }
 
-
-exports.getFirstWord = getFirstWord
 exports.getNextWord = getNextWord
