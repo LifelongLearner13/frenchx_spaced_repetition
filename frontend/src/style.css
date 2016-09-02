@@ -4,10 +4,7 @@ body {
   font-family: sans-serif;
 }
 
-.QuizContainer {
-  text-align: center;
-}
-
+/* LANDING PAGE */
 .Landing {
   text-align: center;
 }
@@ -27,6 +24,41 @@ body {
 .Login {
   border: 1px;
   padding: 4em 10em;
+
+}
+
+/* QUIZ PAGE */
+
+.Quiz {
+  text-align: center;
+}
+
+.logout {
+  margin-left: 600px;
+}
+
+.quiz-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.cards {
+
+}
+
+.current-word {
+  float: left;
+}
+
+.answer {
+  float: right;
+}
+
+.score {
+  margin-left: 600px;
+  margin-top: 400px;
 
 }
 

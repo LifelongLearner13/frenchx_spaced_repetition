@@ -5,7 +5,7 @@ var LogOutButton = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<button type="button" onClick={this.props.logOutUser}>Log Out</button>
+				<a href="/logout"><button type="button">Log Out</button></a>
 			</div>
 		);
 	}
