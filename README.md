@@ -6,7 +6,9 @@
 
 1. Clone the repo using `git clone https://github.com/LifelongLearner13/huttese_stone_spaced_repetition.git`
 2. `cd` to the `huttese_stone_spaced_repetition`
-3.
+3. run `npm run build`
+4. run `node server/server.js`
+5. Open to <http://localhost:8080/> to have fun
 
 ## Project
 
