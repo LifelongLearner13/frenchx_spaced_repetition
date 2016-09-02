@@ -1,3 +1,4 @@
+'use strict'
 const mongoose = require('mongoose')
 const Word = require('./models/word')
 const User = require('./models/user')

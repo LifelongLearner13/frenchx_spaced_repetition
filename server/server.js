@@ -1,5 +1,4 @@
 'use strict'
-
 const express = require('express')
 const jsonParser = require('body-parser').json()
 const mongoose = require('mongoose')
@@ -38,7 +37,7 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials")
     res.header("Access-Control-Allow-Credentials", "true")
     next();
-});
+})
 
 /* ------ Logging of API Requests ------ */
 app.use(logger('dev'))

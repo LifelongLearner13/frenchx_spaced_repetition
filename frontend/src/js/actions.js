@@ -6,7 +6,7 @@ import fetch from 'isomorphic-fetch'
 
 // PUT request to submit answer
 // On initial mounting of component, send empty strings and receive a random word pair back
-export const fetchSubmit = (wordId = '', isCorrect = '', score = 1) => {
+export const fetchSubmit = (wordId, isCorrect, score) => {
   return (dispatch) => {
     let url = 'https://huttese-stone.herokuapp.com/submitanswer'
     let request = {
@@ -16,7 +16,7 @@ export const fetchSubmit = (wordId = '', isCorrect = '', score = 1) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(
-        {wordId: wordId, isCorrect: isCorrect, score: 0}
+        {wordId: wordId, isCorrect: isCorrect, score: score}
       )}
       console.log(request, '<-- request')
     return fetch(url, request)
