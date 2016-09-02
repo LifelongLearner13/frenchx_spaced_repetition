@@ -6,6 +6,7 @@
 
 1. Clone the repo using `git clone https://github.com/LifelongLearner13/huttese_stone_spaced_repetition.git`
 2. `cd` to the `huttese_stone_spaced_repetition`
+3.
 
 ## Project
 
