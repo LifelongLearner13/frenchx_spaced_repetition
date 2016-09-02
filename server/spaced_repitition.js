@@ -37,41 +37,32 @@ let getNextWord = (user, wordId, isCorrect, score) => {
                 let words = returnedUser.trained
 
                 if(typeof isCorrect !== 'undefined') {
-                  console.log('isCorrect is ', isCorrect)
                   words = updateWeight(words, wordId, isCorrect)
-                  console.log(words, '<---- words after updateWeight')
                 }
 
                 // Sort the array by weight value; pairs with a smaller weight
                 // value will be at a lower index
                 words = words.sort(sortByWeight)
 
-                let index = returnedUser.currentSortedIndex
-                if(index >= words.length) {
-                  index = 0
-                }
-
                     // if the first word in the sorted array does not equal
                     // the word stored in the justAsked property
-                if (words[index].word._id.toString() !== returnedUser.justAsked.toString()) {
+                if (words[0].word._id.toString() !== returnedUser.justAsked.toString()) {
                     // Then update the user's justAsked property to the first
                     // word in the array. If score was passed to the function,
                     // update it, else keep it the same. Update the words array
                     // regardless.
-                    returnedUser.justAsked = words[index].word
+                    returnedUser.justAsked = words[0].word
                     returnedUser.score = score || returnedUser.score
                     returnedUser.trained = words
-                    returnedUser.currentSortedIndex = index + 1
 
                     // Else, the first word in the sorted array was asked in the
                     // previous session
                 } else {
                     // Update the user's justAsked property to the second word
                     // in the array and update the score and trained arrays
-                    returnedUser.justAsked = words[index + 1].word
+                    returnedUser.justAsked = words[1].word
                     returnedUser.score = score || returnedUser.score
                     returnedUser.trained = words
-                    returnedUser.currentSortedIndex = index + 1
                 }
 
                 // Save the updated user document back to the database
@@ -85,7 +76,7 @@ let getNextWord = (user, wordId, isCorrect, score) => {
                         _id: returnedUser.justAsked._id,
                         word1: returnedUser.justAsked.word1,
                         word2: returnedUser.justAsked.word2,
-                        score: score
+                        score: score || returnedUser.score
                     }
                     resolve(objectToReturn)
                 })

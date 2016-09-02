@@ -25,10 +25,6 @@ const UserSchema = new mongoose.Schema({
             default: 1
         }
     }],
-    currentSortedIndex: {
-      type: Number,
-      default: 0
-    },
     score: {
         type: Number,
         default: 0

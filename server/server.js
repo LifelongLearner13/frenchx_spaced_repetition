@@ -55,6 +55,9 @@ app.put('/submitanswer', jsonParser, function(req, res) {
     let isCorrect = req.body.isCorrect
     let score = req.body.score
 
+    // Check request body, send an error if a problem occurs
+    // wordId and isCorrect must be strings. isCorrect must be true, false, or
+    // empty string. Score must be a number or an empty string.
     if (typeof wordId !== 'string' || typeof isCorrect !== 'string') {
         return res.status(422).json({
             message: 'Incorrect field type: wordId and isCorrect must be a string'
@@ -79,6 +82,7 @@ app.put('/submitanswer', jsonParser, function(req, res) {
             }
             res.json(results)
         })
+    // The user has answered a word and needs a new one to train on
     } else {
         spaced_repitition
             .getNextWord(userId, wordId, isCorrect === 'true', score)
@@ -98,7 +102,7 @@ app.put('/submitanswer', jsonParser, function(req, res) {
 // person sigining in.
 app.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
-}));
+}))
 
 // Called when Google has finished authenticating, redirects based
 // on whether the login was successful.
@@ -106,26 +110,26 @@ app.get('/auth/google/callback',
     passport.authenticate('google', {
         successRedirect: '/#/quiz',
         failureRedirect: '/#/'
-    }));
+    }))
 
 // Logout
 app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
+    req.logout()
+    res.redirect('/')
+})
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
-        return next();
+        return next()
 
     // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.redirect('/')
 }
 
-
+// Connect to the MongoDB database and start the server
 const runServer = function(callback) {
     var databaseUri = process.env.DATABASE_URI || configDB.url
     mongoose.connect(databaseUri).then(function() {
@@ -135,8 +139,8 @@ const runServer = function(callback) {
             if (callback) {
                 callback(server);
             }
-        });
-    });
+        })
+    })
 };
 
 if (require.main === module) {
