@@ -51,33 +51,34 @@ var QuizContainer = React.createClass({
 
     render: function() {
       return (
-      <div className = "Quiz">
+          <div className = "Quiz">
 
-        <div className="quiz-header">
-          <div className = "logout" >
-            <a href = "https://huttese-stone.herokuapp.com/logout" > <button>Log Out</button></a>
-          </div>
-          <img src="../rosettabg.png" />
-        </div>
-        
-        <div className="cards">
-          <div className="current-word">
-            <CurrentWord word1={this.props.word1} />
-          </div>
-          <div className="answer">    
-            <Answer checkAnswer={this.checkAnswer} word2={this.props.word2} answerInput={this.props.answerInput} />
-          </div>
-        </div>
+            <div className="quiz-header">
+                <img src="../rosettabg.png" />
+                <div>
+                    <a href="https://huttese-stone.herokuapp.com/logout" > <button className="logout-button">Log Out</button></a>
+                </div>
+            </div>
 
-        <div className="correct">
-          <Correct correct={this.props.correct} toggleCorrect={this.toggleCorrect} />
-        </div>
+            <div className="score">
+                <Score score={this.props.score} />
+            </div>
 
-        <div className="score">
-          <Score score={this.props.score} / >
-        </div>
-      </div>
-        );
+            <div className="correct-div">
+              <Correct correct={this.props.correct} toggleCorrect={this.toggleCorrect} />
+            </div>
+            
+            <div className="cards">
+              <div className="current-word">
+                <CurrentWord word1={this.props.word1} />
+              </div>
+              <div className="answer-div">    
+                <Answer checkAnswer={this.checkAnswer} word2={this.props.word2} answerInput={this.props.answerInput} />
+              </div>
+            </div>
+
+          </div>
+      );
     }
 });
 

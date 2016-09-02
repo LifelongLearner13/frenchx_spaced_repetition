@@ -11,11 +11,15 @@ var Landing = React.createClass({
   render: function() {
     return (
       <div className="Landing">
-        <div className="Landing-header">
-          <h2>HutteStone Header</h2>
+        <div className="landing-header">
+          <img className="hutt-header" src="frontend/src/huttlogo.png" />
         </div>
-        <div className="Landing-login">
-          <a href="https://huttese-stone.herokuapp.com/auth/google"><button className="Login" type="submit">Login / Register</button></a>
+        <div>
+          <div className="jaba-div">
+            <img className="jaba-pic" src="frontend/src/jabapic_alpha.png" alt="JabaTheHutt" />
+          </div>
+          <h1 className="landing-text">Learn the language of intergalactic "businessmen"!</h1>
+          <a href="https://huttese-stone.herokuapp.com/auth/google"><button className="login-button" type="submit">Login / Register</button></a>
         </div>
       </div>
     );
