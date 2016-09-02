@@ -21,14 +21,12 @@ var QuizContainer = React.createClass({
                 foundWord = true;
                 let score = this.props.score + 10
                 this.props.dispatch(actions.correctDisplay());
-                //  this.props.dispatch(actions.incrementScore());
                 this.props.dispatch(actions.fetchSubmit('', '', score))
                 break
             }
             // If not match, decrement score and fetch new word pair
             if (i === word2Array.length - 1 && !foundWord) {
                 let score = this.props.score - 10
-                    //  this.props.dispatch(actions.decrementScore());
                 this.props.dispatch(actions.fetchSubmit(this.props.wordId, 'false', score))
             }
         }
@@ -44,9 +42,11 @@ var QuizContainer = React.createClass({
         // TODO: Needs to dispatch action to log out user
     },
 
-    // Toggles 'correct' state boolean to show/hide 'Correct!' display
-    toggleCorrect: function() {
-        this.props.dispatch(actions.correctDisplay())
+    // Toggles 'correct' state to false to hide 'Correct!' if state is true
+    hideCorrect: function() {
+        if (this.props.correct) {
+            this.props.dispatch(actions.hideCorrect())
+        }
     },
 
     render: function() {
@@ -56,7 +56,7 @@ var QuizContainer = React.createClass({
             <div className="quiz-header">
                 <img src="../rosettabg.png" />
                 <div>
-                    <a href="https://huttese-stone.herokuapp.com/logout" > <button className="logout-button">Log Out</button></a>
+                    <a href="https://huttese-stone.herokuapp.com/logout"> <button className="logout-button">Log Out</button></a>
                 </div>
             </div>
 
@@ -73,7 +73,7 @@ var QuizContainer = React.createClass({
                 <CurrentWord word1={this.props.word1} />
               </div>
               <div className="answer-div">    
-                <Answer checkAnswer={this.checkAnswer} word2={this.props.word2} answerInput={this.props.answerInput} />
+                <Answer checkAnswer={this.checkAnswer} hideCorrect={this.hideCorrect} word2={this.props.word2} answerInput={this.props.answerInput} />
               </div>
             </div>
 

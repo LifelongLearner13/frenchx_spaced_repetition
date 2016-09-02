@@ -12,7 +12,7 @@ var Answer = React.createClass({
   render: function() {
     return (
     	<div>
-    		<input type="text" className="answer-input" ref="answer" placeholder={this.props.answerInput} />
+    		<input onClick={this.props.hideCorrect} type="text" className="answer-input" ref="answer" placeholder={this.props.answerInput} />
     		<button className="login-button" onClick={this.submitAnswer} >Submit</button>
     	</div>
     );
