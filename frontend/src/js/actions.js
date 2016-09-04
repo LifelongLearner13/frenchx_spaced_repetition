@@ -2,10 +2,7 @@ import fetch from 'isomorphic-fetch'
 
 /*------------ FETCH ACTIONS -------------*/
 
-// Authentication url https://huttese-stone.herokuapp.com/auth/google
-
-// PUT request to submit answer
-// On initial mounting of component, send empty strings and receive a random word pair back
+// PUT request to submit answer and GET new word pair / score
 export const fetchSubmit = (wordId, isCorrect, score) => {
   return (dispatch) => {
     let url = 'https://huttese-stone.herokuapp.com/submitanswer'
@@ -52,7 +49,6 @@ export const fetchSubmit = (wordId, isCorrect, score) => {
 
 
 /*----------- ACTIONS ------------*/
-
 const CORRECT_DISPLAY = 'CORRECT_DISPLAY'
 const correctDisplay = () => {
   return {

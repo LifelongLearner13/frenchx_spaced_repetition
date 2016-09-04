@@ -18,7 +18,7 @@ a {
 }
 
 
-/* LANDING PAGE */
+/*--------- LANDING PAGE ---------*/
 .Landing {
   text-align: center;
 }
@@ -64,9 +64,9 @@ a {
 }
 
 .login-button:hover {
-  background:#fff;
-  box-shadow:0px 2px 10px 5px #97B1BF;
-  color:#000;
+  background: #fff;
+  box-shadow: 0px 2px 10px 5px #97B1BF;
+  color: #000;
 }
 
 .login-button:after {
@@ -89,12 +89,6 @@ a {
   opacity: 1;
   transition: 0s
 }
-
-
-
-
-
-
 
 
 /*--------- QUIZ PAGE ----------*/
@@ -192,8 +186,7 @@ a {
 }
 
 
-
-
+/*-- Hide Correct --*/
 .hidden {
   display: none;
 }

@@ -5,15 +5,15 @@ var Correct = React.createClass({
 
   render: function() {
 
-    // If answer isn't correct (state is false) , add 'hidden' class to 'correct' display. 
+    // If answer isn't correct (state is false) , add 'hidden' class to 'correct' display.
     var classes = 'correct-display ';
     if (!this.props.correct) {
       classes += 'hidden';
     }
 
     return (
-      <div className={classes}>
-        <h1>Correct!</h1>
+      <div className="correct-div">
+        <h1 className={classes}>Correct!</h1>
       </div>
     );
   }
