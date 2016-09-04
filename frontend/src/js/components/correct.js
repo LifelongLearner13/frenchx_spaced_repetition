@@ -1,12 +1,10 @@
-var React = require('react');
+import React from 'react'
 
+class Correct extends React.Component {
 
-var Correct = React.createClass({
-
-  render: function() {
-
+  render() {
     // If answer isn't correct (state is false) , add 'hidden' class to 'correct' display.
-    var classes = 'correct-display ';
+    let classes = 'correct-display ';
     if (!this.props.correct) {
       classes += 'hidden';
     }
@@ -15,8 +13,10 @@ var Correct = React.createClass({
       <div className="correct-div">
         <h1 className={classes}>Correct!</h1>
       </div>
-    );
+    )
   }
-});
+
+}
+
 
 module.exports = Correct

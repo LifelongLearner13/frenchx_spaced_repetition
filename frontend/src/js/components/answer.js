@@ -3,9 +3,13 @@ import React from 'react'
 
 class Answer extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.submitAnswer = this.submitAnswer.bind(this)
+  }
+
   submitAnswer() {
-    console.log('in submitAnswer, answer is ', this.refs.answer.value);
-    const answer = this.refs.answer.value;
+    let answer = this.refs.answer.value;
     this.props.checkAnswer(answer);
   }
 
@@ -17,6 +21,7 @@ class Answer extends React.Component {
     	</div>
     )
   }
+
 }
 
 
