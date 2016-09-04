@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import LogOutButton from './logout-button'
 import Correct from './correct'
 import CurrentWord from './currentword'
 import Answer from './answer'
@@ -9,6 +8,7 @@ import Score from './score'
 
 
 class QuizContainer extends React.Component {
+
   // We need to manually bind instance methods in ES6
   constructor(props) {
     super(props)
@@ -17,7 +17,7 @@ class QuizContainer extends React.Component {
   }
 
   checkAnswer(answer) {
-    const word2Array = this.props.word2;
+    let word2Array = this.props.word2;
     let foundWord;
 
     // Loops through English words array for user's answer.
@@ -25,14 +25,14 @@ class QuizContainer extends React.Component {
       // If a match, show 'Correct!', increase score, fetch new words, submit to backend
       if (answer.toLowerCase() === word2Array[i].toLowerCase()) {
         foundWord = true;
-        const score = this.props.score + 10
+        let score = this.props.score + 10
         this.props.dispatch(actions.correctDisplay());
         this.props.dispatch(actions.fetchSubmit('', '', score))
         break
       }
       // If not match, decrement score and fetch new word pair
       if (i === word2Array.length - 1 && !foundWord) {
-        const score = this.props.score - 10
+        let score = this.props.score - 10
         this.props.dispatch(actions.fetchSubmit(this.props.wordId, 'false', score))
       }
     }
@@ -65,6 +65,7 @@ class QuizContainer extends React.Component {
       </div>
     )
   }
+
 }
 
 
@@ -78,5 +79,6 @@ var mapStateToProps = (state, props) => {
       answerInput: state.answerInput
   }
 }
+
 
 export default connect(mapStateToProps)(QuizContainer)

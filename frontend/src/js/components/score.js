@@ -1,14 +1,17 @@
-var React = require('react');
+import React from 'react'
 
 
-var Score = React.createClass({
-  render: function() {
+class Score extends React.Component {
+
+  render() {
     return (
       <div className="score" >
         <h2>Your score: {this.props.score}</h2>
       </div>
-    );
+    )
   }
-});
 
-module.exports = Score;
+}
+
+
+export default Score

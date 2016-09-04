@@ -1,14 +1,9 @@
-var React = require('react');
-var connect = require('react-redux').connect
+import React from 'react'
 
 
-var Landing = React.createClass({
+class Landing extends React.Component {
 
-  userLogin: function() {
-    //TODO: authentication / login
-  },
-
-  render: function() {
+  render() {
     return (
       <div className="Landing">
         <div className="landing-header">
@@ -22,16 +17,10 @@ var Landing = React.createClass({
           <a href="https://huttese-stone.herokuapp.com/auth/google"><button className="login-button" type="submit">Login / Register</button></a>
         </div>
       </div>
-    );
+    )
   }
-});
+
+}
 
 
-var mapStateToProps = function(state, props) {
-  return {
-
-  }
-};
-
-var Container = connect(mapStateToProps)(Landing);
-module.exports = Container;
+export default Landing

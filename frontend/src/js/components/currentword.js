@@ -1,14 +1,17 @@
-var React = require('react');
+import React from 'react'
 
 
-var CurrentWord = React.createClass({
-  render: function() {
+class CurrentWord extends React.Component {
+
+  render() {
     return (
       <div className="current-word">
         <h1>{this.props.word1}</h1>
       </div>
-    );
+    )
   }
-});
 
-module.exports = CurrentWord;
+}
+
+
+export default CurrentWord

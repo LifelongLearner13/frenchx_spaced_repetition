@@ -2,13 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {Router, Route, hashHistory} from 'react-router'
 import {Provider} from 'react-redux'
-
 import * as actions from './actions'
 import store from './store'
-
 import Landing from './components/Landing'
 import QuizContainer from'./components/Quiz-Container'
-console.log('hello from index')
+
+
 document.addEventListener('DOMContentLoaded', () => {
 	ReactDOM.render(
 		<Provider store={store}>
