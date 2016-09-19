@@ -12,7 +12,7 @@ var Landing = React.createClass({
     return (
       <div className="Landing">
         <div className="landing-header">
-          <img className="hutt-header" src="./src/img/huttlogo.png" />
+          <img className="hutt-header" src="huttlogo.png" />
         </div>
         <div>
           <div className="jaba-div">
