@@ -1,12 +1,10 @@
 import fetch from 'isomorphic-fetch'
 
+
 /*------------ FETCH ACTIONS -------------*/
 
-// Authentication url https://huttese-stone.herokuapp.com/auth/google
-
-// PUT request to submit answer
-// On initial mounting of component, send empty strings and receive a random word pair back
-export const fetchSubmit = (wordId, isCorrect, score) => {
+// PUT request to submit answer and GET new word pair / score
+export var fetchSubmit = (wordId, isCorrect, score) => {
   return (dispatch) => {
     let url = 'https://huttese-stone.herokuapp.com/submitanswer'
     let request = {
@@ -29,14 +27,13 @@ export const fetchSubmit = (wordId, isCorrect, score) => {
     })
    .then((data) => {
       // Returns the word pair, splitting word2 into an array
-      console.log(data, '<--- Word data')
       let wordId = data._id
       let word1 = data.word1
       // let word2 = data.word2.split(', ').join().split(' ')
       let word2 = data.word2.split(';').join().split(', ')
       let score = data.score
-      console.log(word2, '<-- English Word array')
-      console.log(score, '<-- Score response ')
+      console.log(word2, '<-- Answer')
+      console.log(score, '<-- Score response')
       return dispatch(
         fetchSubmitSuccess(word1, word2, wordId, score)
       )
@@ -53,22 +50,22 @@ export const fetchSubmit = (wordId, isCorrect, score) => {
 
 /*----------- ACTIONS ------------*/
 
-const CORRECT_DISPLAY = 'CORRECT_DISPLAY'
-const correctDisplay = () => {
+export const CORRECT_DISPLAY = 'CORRECT_DISPLAY'
+export var correctDisplay = () => {
   return {
     type: CORRECT_DISPLAY
   }
 }
 
-const HIDE_CORRECT = 'HIDE_CORRECT'
-const hideCorrect = () => {
+export const HIDE_CORRECT = 'HIDE_CORRECT'
+export var hideCorrect = () => {
   return {
     type: HIDE_CORRECT
   }
 }
 
-const FETCH_SUBMIT_SUCCESS = 'FETCH_SUBMIT_SUCCESS'
-const fetchSubmitSuccess = (word1, word2, wordId, score) => {
+export const FETCH_SUBMIT_SUCCESS = 'FETCH_SUBMIT_SUCCESS'
+export var fetchSubmitSuccess = (word1, word2, wordId, score) => {
   return {
     type: FETCH_SUBMIT_SUCCESS,
     word1: word1,
@@ -78,27 +75,10 @@ const fetchSubmitSuccess = (word1, word2, wordId, score) => {
   }
 }
 
-const FETCH_SUBMIT_ERROR = 'FETCH_SUBMIT_ERROR'
-const fetchSubmitError = (error) => {
+export const FETCH_SUBMIT_ERROR = 'FETCH_SUBMIT_ERROR'
+export var fetchSubmitError = (error) => {
   return {
     type: FETCH_SUBMIT_ERROR,
     error: error
   }
 }
-
-
-
-
-/*--------  EXPORTS --------*/
-
-exports.CORRECT_DISPLAY = CORRECT_DISPLAY
-exports.correctDisplay = correctDisplay
-
-exports.HIDE_CORRECT = HIDE_CORRECT
-exports.hideCorrect = hideCorrect
-
-exports.FETCH_SUBMIT_SUCCESS = FETCH_SUBMIT_SUCCESS
-exports.fetchSubmitSuccess = fetchSubmitSuccess
-
-exports.FETCH_SUBMIT_ERROR = FETCH_SUBMIT_ERROR
-exports.fetchSubmitError = fetchSubmitError
