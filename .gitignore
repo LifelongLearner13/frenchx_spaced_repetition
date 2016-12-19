@@ -49,6 +49,9 @@ mongo_data/*
 database.js
 auth.js
 
+# Build folder
+frontend/build
+
 # OS
 .DS_Store
 */.DS_Store
