@@ -11,9 +11,9 @@ const propTypes = {
 };
 
 function Navbar(props) {
-  const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
+  const lock = new Auth0Lock('LpL1GiDax9bQAfvc6qBaYSyBDCowcVRY', 'sgregg.auth0.com', {
     auth: {
-      redirectUrl: `${SERVER_URL}/#/main`,
+      redirectUrl: `${SERVER_URL}/#/quiz`,
       responseType: 'token',
       params: {
         scope: 'name email',
@@ -27,6 +27,7 @@ function Navbar(props) {
   });
 
   lock.on('authenticated', (authResult) => {
+      console.log('authResult ->', authResult)
     props.getProfile(lock, authResult);
   });
 

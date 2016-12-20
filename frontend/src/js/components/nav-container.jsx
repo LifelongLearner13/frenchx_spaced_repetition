@@ -31,7 +31,7 @@ export class NavbarContainer extends React.Component {
       if (err) {
 //        this.props.dispatch(actions.loginError(err));
       }
-
+console.log(idToken);
 //      this.props.dispatch(actions.loginSuccess(authResult.idToken, profile));
 //      this.props.dispatch(actions.getFolders(authResult.idToken));
 //      this.props.dispatch(actions.getBookmarks(authResult.idToken));
