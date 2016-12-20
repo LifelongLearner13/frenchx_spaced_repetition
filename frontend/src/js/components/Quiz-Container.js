@@ -55,7 +55,7 @@ class QuizContainer extends React.Component {
     return (
         <div className = "Quiz">
           <div className="quiz-header">
-            <img src="./src/img/huttlogo.png" />
+            <img src="huttlogo.png" />
             <a href="https://huttese-stone.herokuapp.com/logout"> <button className="logout-button">Log Out</button></a>
           </div>
           <Score score={this.props.score} />

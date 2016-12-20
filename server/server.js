@@ -1,23 +1,24 @@
-'use strict'
-const express = require('express')
-const jsonParser = require('body-parser').json()
-const mongoose = require('mongoose')
-const passport = require('passport')
-const flash = require('connect-flash');
-const cookieParser = require('cookie-parser')
-const session = require('express-session')
-const logger = require('morgan')
-const app = express()
-const Word = require('./models/word')
-const User = require('./models/user')
-    // If on Heroku use process.env.DATABASE_URI, else use local database.js file
-const configDB = !process.env.DATABASE_URI ? require('./config/database') : {
-    url: ''
-}
-const spaced_repitition = require('./spaced_repitition')
+// ========== General Setup ================
+const express       = require('express');
+const app           = express();
+const port          = process.env.PORT || 8080;
 
+const jsonParser    = require('body-parser').json()
+const cookieParser  = require('cookie-parser');
+const passport      = require('passport')
+const flash         = require('connect-flash');
+const session       = require('express-session')
+const logger        = require('morgan')
+const spaced_repitition = require('./spaced_repitition');
 
-/* ------ Authentication Setup ------ */
+// ========== Database Setup ================
+const mongoose      = require('mongoose');
+const Word          = require('./models/word');
+const User          = require('./models/user');
+// Determine database url
+const configDB      = require('./config/database'); 
+
+// ========= Authentication Setup ============
 require('./config/passport')(passport)
 app.use(cookieParser('changemelater'))
 app.use(session({
@@ -29,21 +30,14 @@ app.use(passport.initialize())
 app.use(passport.session()) // persistent login sessions
 app.use(flash()) // use connect-flash for flash messages stored in session
 
-
-// Enable CORS from client-side
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS')
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials")
-    res.header("Access-Control-Allow-Credentials", "true")
-    next();
-})
-
-/* ------ Logging of API Requests ------ */
+// =========== Log API Requests ================
 app.use(logger('dev'))
 
-/* ------ Serve static frontend files ------ */
+// ======== Serve static frontend files ========
 app.use(express.static('frontend/build'))
+
+// ================ Routes =====================
+require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passpo
 
 
 /* ------ PUT Endpoint ------ */
@@ -133,7 +127,6 @@ function isLoggedIn(req, res, next) {
 const runServer = function(callback) {
     var databaseUri = process.env.DATABASE_URI || configDB.url
     mongoose.connect(databaseUri).then(function() {
-        const port = process.env.PORT || 8080
         const server = app.listen(port, function() {
             console.log('Listening on port:' + port)
             if (callback) {
