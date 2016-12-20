@@ -7,7 +7,7 @@ var packageData = require('./package.json');
 var filename = [packageData.name, packageData.version, 'js'];
 
 module.exports = {
-  entry: path.resolve(__dirname, 'frontend/src/js/index.js'),
+  entry: path.resolve(__dirname, 'frontend/src/js/index.jsx'),
   output: {
     path: path.resolve(__dirname, 'frontend/build'),
     filename: filename.join('.')

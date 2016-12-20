@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../actions'
+import * as actions from '../redux/actions'
 import Correct from './correct'
 import CurrentWord from './currentword'
 import Answer from './answer'
