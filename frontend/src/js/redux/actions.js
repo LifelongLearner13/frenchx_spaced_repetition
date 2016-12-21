@@ -25,7 +25,7 @@ export function loginError(error) {
 
 export function logoutSuccess() {
   return {
-    type: actionTypes.LOGOUT_SUCCESS,
+    type: LOGOUT_SUCCESS,
   };
 };
 

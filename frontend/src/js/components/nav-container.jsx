@@ -12,6 +12,12 @@ export class NavbarContainer extends React.Component {
         'LpL1GiDax9bQAfvc6qBaYSyBDCowcVRY', 
         'sgregg.auth0.com');
       
+    browserHistory.listen(location => {
+        console.log('browserHistory.listen ->', location)
+        if (/access_token/.test(location.hash) || /error/.test(location.hash)) {
+            this.auth.loginHash(location.hash);
+        }
+    });  
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
