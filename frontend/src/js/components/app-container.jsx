@@ -19,7 +19,7 @@ export function AppContainer(props) {
   return (
     <div>
       <NavContainer />
-      {display}
+      {props.children}
     </div>
   );
 };

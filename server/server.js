@@ -1,6 +1,7 @@
 // ========== General Setup ================
 const express       = require('express');
 const app           = express();
+const path = require('path')
 const port          = process.env.PORT || 8080;
 
 const jsonParser    = require('body-parser').json();
@@ -34,7 +35,8 @@ const configDB      = require('./config/database');
 app.use(logger('dev'));
 
 // ======== Serve static frontend files ========
-app.use(express.static('frontend/build'))
+app.use(express.static(path.resolve(__dirname, '../frontend/build/')))
+
 
 // ================ Routes =====================
 //require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passpo
@@ -122,6 +124,13 @@ app.put('/submitanswer', jsonParser, function(req, res) {
 //    // if they aren't redirect them to the home page
 //    res.redirect('/')
 //}
+
+// handle every other route with index.html, which will contain
+// a script tag to your application's JavaScript file(s).
+app.get('*', function (request, response){
+    console.log(path.resolve(__dirname, '../frontend/build/', 'index.html'));
+  response.sendFile(path.resolve(__dirname, '../frontend/build/', 'index.html'))
+});
 
 // Connect to the MongoDB database and start the server
 const runServer = function(callback) {

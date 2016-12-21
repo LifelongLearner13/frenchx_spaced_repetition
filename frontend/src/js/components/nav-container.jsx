@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import Navbar from './navbar';
 import actions from '../redux/actions';
 
@@ -22,7 +22,8 @@ export class NavbarContainer extends React.Component {
 //      this.props.dispatch(actions.getFolders(this.props.token));
 //      this.props.dispatch(actions.getBookmarks(this.props.token));
 //      this.props.dispatch(actions.getTags(this.props.token));
-      hashHistory.push('/quiz');
+        console.log('redirecting to /practice')
+      browserHistory.push('/practice');
     }
   }
 
@@ -37,7 +38,7 @@ console.log(idToken);
 //      this.props.dispatch(actions.getBookmarks(authResult.idToken));
 //      this.props.dispatch(actions.getTags(authResult.idToken));
 
-      hashHistory.push('/quiz');
+      browserHistory.push('/quiz');
     });
   }
 

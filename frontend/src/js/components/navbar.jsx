@@ -13,11 +13,8 @@ const propTypes = {
 function Navbar(props) {
   const lock = new Auth0Lock('LpL1GiDax9bQAfvc6qBaYSyBDCowcVRY', 'sgregg.auth0.com', {
     auth: {
-      redirectUrl: `${SERVER_URL}/#/quiz`,
+      redirectUrl: `${SERVER_URL}/practice`,
       responseType: 'token',
-      params: {
-        scope: 'name email',
-      },
     },
 
     languageDictionary: {
