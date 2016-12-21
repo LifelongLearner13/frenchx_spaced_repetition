@@ -9,7 +9,6 @@ import LandingPage from './landing-page';
 // Basically a stateless component, so the functional 
 // approach is used. 
 export function AppContainer(props) {
-    console.log(props)
   const display = !props.isAuthenticated ? (
     <LandingPage />
   ) : (
@@ -19,7 +18,7 @@ export function AppContainer(props) {
   return (
     <div>
       <NavContainer />
-      {props.children}
+      {display}
     </div>
   );
 };

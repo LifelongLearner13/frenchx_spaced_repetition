@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import routes from './routes/routes';
+import router from './routes/router';
 import store from './redux/store';
 
 document.addEventListener('DOMContentLoaded', () => {
 	ReactDOM.render(
 		<Provider store={store}>
-            {routes}
+            {router}
 		</Provider>, document.getElementById('root')
 	)
 });
