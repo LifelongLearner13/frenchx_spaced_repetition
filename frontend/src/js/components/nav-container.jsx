@@ -16,6 +16,10 @@ export class NavbarContainer extends React.Component {
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
 
+    componentDidMount() {
+        this.auth.loggedIn();
+    }
+    
   handleLoginClick() {
       this.auth.login();
   }

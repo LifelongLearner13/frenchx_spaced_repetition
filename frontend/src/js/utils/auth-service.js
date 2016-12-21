@@ -60,6 +60,8 @@ export default class AuthService extends EventEmitter {
         store.dispatch(
             actions.loginSuccess(
                 token, this.getProfile()));
+    } else {
+        browserHistory.replace('/');
     }
       
     return loggedStatus;

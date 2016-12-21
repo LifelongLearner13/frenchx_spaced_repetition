@@ -63,14 +63,14 @@ export class PracticeContainer extends React.Component {
 
 
 var mapStateToProps = (state, props) => {
-//  return {
-//      word1: state.word1,
-//      word2: state.word2,
-//      wordId: state.wordId,
-//      score: state.score,
-//      correct: state.correct,
-//      answerInput: state.answerInput
-//  }
+  return {
+      word: state.word,
+      wordId: state.wordId,
+      score: state.score,
+      correct: state.correct,
+      incorrect: state.incorrect,
+      answerInput: state.answerInput,
+  }
 }
 
 
