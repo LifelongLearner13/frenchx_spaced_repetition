@@ -14,7 +14,7 @@
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js && npm run build:img",
     "watch": "npm run watch:html & npm run watch:css & npm run watch:js",
     "clean": "rm -rf frontend/build",
-    "build:img": "cp frontend/src/img/* frontend/build/",
+    "build:img": "mkdir frontend/build/img && cp frontend/src/img/* frontend/build/img/",
     "build:html": "npm run clean:html && cp frontend/src/index.html frontend/build/",
     "watch:html": "npm run build:html && chokidar frontend/index.html -c 'npm run build:html'",
     "clean:html": "rm -f frontend/build/index.html",
