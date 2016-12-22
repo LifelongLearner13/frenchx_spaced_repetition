@@ -1,49 +1,45 @@
-'use strict'
-const express = require('express')
-const jsonParser = require('body-parser').json()
-const mongoose = require('mongoose')
-const passport = require('passport')
-const flash = require('connect-flash');
-const cookieParser = require('cookie-parser')
-const session = require('express-session')
-const logger = require('morgan')
-const app = express()
-const Word = require('./models/word')
-const User = require('./models/user')
-    // If on Heroku use process.env.DATABASE_URI, else use local database.js file
-const configDB = !process.env.DATABASE_URI ? require('./config/database') : {
-    url: ''
-}
-const spaced_repitition = require('./spaced_repitition')
+// ========== General Setup ================
+const express       = require('express');
+const app           = express();
+const path = require('path')
+const port          = process.env.PORT || 8080;
+
+const jsonParser    = require('body-parser').json();
+//const cookieParser  = require('cookie-parser');
+//const passport      = require('passport');
+//const flash         = require('connect-flash');
+//const session       = require('express-session');
+const logger        = require('morgan');
+//const spaced_repitition = require('./spaced_repitition');
+
+// ========== Database Setup ================
+const mongoose      = require('mongoose');
+//const Word          = require('./models/word');
+//const User          = require('./models/user');
+// Determine database url
+const configDB      = require('./config/database'); 
+
+// ========= Authentication Setup ============
+//require('./config/passport')(passport)
+//app.use(cookieParser('changemelater'))
+//app.use(session({
+//    secret: 'changemelater',
+//    saveUninitialized: true,
+//    resave: true
+//}))
+//app.use(passport.initialize())
+//app.use(passport.session()) // persistent login sessions
+//app.use(flash()) // use connect-flash for flash messages stored in session
+
+// =========== Log API Requests ================
+app.use(logger('dev'));
+
+// ======== Serve static frontend files ========
+app.use(express.static(path.resolve(__dirname, '../frontend/build/')))
 
 
-/* ------ Authentication Setup ------ */
-require('./config/passport')(passport)
-app.use(cookieParser('changemelater'))
-app.use(session({
-    secret: 'changemelater',
-    saveUninitialized: true,
-    resave: true
-}))
-app.use(passport.initialize())
-app.use(passport.session()) // persistent login sessions
-app.use(flash()) // use connect-flash for flash messages stored in session
-
-
-// Enable CORS from client-side
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS')
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials")
-    res.header("Access-Control-Allow-Credentials", "true")
-    next();
-})
-
-/* ------ Logging of API Requests ------ */
-app.use(logger('dev'))
-
-/* ------ Serve static frontend files ------ */
-app.use(express.static('frontend/build'))
+// ================ Routes =====================
+//require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passpo
 
 
 /* ------ PUT Endpoint ------ */
@@ -100,40 +96,48 @@ app.put('/submitanswer', jsonParser, function(req, res) {
 // This initiates the authication process. Scope is the
 // information we are asking google to send us about the
 // person sigining in.
-app.get('/auth/google', passport.authenticate('google', {
-    scope: ['profile', 'email']
-}))
+//app.get('/auth/google', passport.authenticate('google', {
+//    scope: ['profile', 'email']
+//}))
+//
+//// Called when Google has finished authenticating, redirects based
+//// on whether the login was successful.
+//app.get('/auth/google/callback',
+//    passport.authenticate('google', {
+//        successRedirect: '/#/quiz',
+//        failureRedirect: '/#/'
+//    }))
+//
+//// Logout
+//app.get('/logout', function(req, res) {
+//    req.logout()
+//    res.redirect('/')
+//})
+//
+//// route middleware to make sure a user is logged in
+//function isLoggedIn(req, res, next) {
+//
+//    // if user is authenticated in the session, carry on
+//    if (req.isAuthenticated())
+//        return next()
+//
+//    // if they aren't redirect them to the home page
+//    res.redirect('/')
+//}
 
-// Called when Google has finished authenticating, redirects based
-// on whether the login was successful.
-app.get('/auth/google/callback',
-    passport.authenticate('google', {
-        successRedirect: '/#/quiz',
-        failureRedirect: '/#/'
-    }))
-
-// Logout
-app.get('/logout', function(req, res) {
-    req.logout()
-    res.redirect('/')
-})
-
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next()
-
-    // if they aren't redirect them to the home page
-    res.redirect('/')
-}
+// handle every other route with index.html, which will contain
+// a script tag to your application's JavaScript file(s).
+app.get('*', function (request, response){
+    console.log(path.resolve(__dirname, '../frontend/build/', 'index.html'));
+  response.sendFile(path.resolve(__dirname, '../frontend/build/', 'index.html'))
+});
 
 // Connect to the MongoDB database and start the server
 const runServer = function(callback) {
-    var databaseUri = process.env.DATABASE_URI || configDB.url
+    var databaseUri = configDB.url
+    console.log(databaseUri);
     mongoose.connect(databaseUri).then(function() {
-        const port = process.env.PORT || 8080
+        console.log('connected to Database')
         const server = app.listen(port, function() {
             console.log('Listening on port:' + port)
             if (callback) {

@@ -48,6 +48,7 @@ mongo_data/*
 # Config files
 database.js
 auth.js
+auth0.js
 
 # Build folder
 frontend/build
