@@ -4,13 +4,12 @@ import { browserHistory } from 'react-router';
 import Navbar from './navbar';
 import actions from '../redux/actions';
 import AuthService from '../utils/auth-service';
+import authConfig from '../config/auth0.js'
 
 export class NavbarContainer extends React.Component {
     constructor() {
         super();
-        this.auth = new AuthService(
-            'LpL1GiDax9bQAfvc6qBaYSyBDCowcVRY', 
-            'sgregg.auth0.com');
+        this.auth = new AuthService(authConfig.clientID, authConfig.domain);
       
         // auth-lock does not fire the authenticated event when
         // user signs in with email and password.
