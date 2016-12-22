@@ -1,4 +1,4 @@
-import React from 'react'
+import React , { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../redux/actions'
 import Correct from './correct'
@@ -61,17 +61,25 @@ export class PracticeContainer extends React.Component {
 
 }
 
+const propTypes = {
+    word: PropTypes.string,
+    wordId: PropTypes.string,
+    score: PropTypes.number,
+    correct: PropTypes.number,
+    incorrect: PropTypes.number,
+    answerInput: PropTypes.string,
+};
+PracticeContainer.propTypes = propTypes;
 
 var mapStateToProps = (state, props) => {
-  return {
-      word: state.word,
-      wordId: state.wordId,
-      score: state.score,
-      correct: state.correct,
-      incorrect: state.incorrect,
-      answerInput: state.answerInput,
-  }
-}
-
+    return {
+        word: state.word,
+        wordId: state.wordId,
+        score: state.score,
+        correct: state.correct,
+        incorrect: state.incorrect,
+        answerInput: state.answerInput,
+    };
+};
 
 export default connect(mapStateToProps)(PracticeContainer)

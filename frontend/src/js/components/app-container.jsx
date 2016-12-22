@@ -4,10 +4,7 @@ import NavContainer from './nav-container';
 import LandingPage from './landing-page';
 
 // Display the landing page if no one is logged in or
-// render the quiz.
-
-// Basically a stateless component, so the functional 
-// approach is used. 
+// render the practice area. 
 export function AppContainer(props) {
   const display = !props.isAuthenticated ? (
     <LandingPage />

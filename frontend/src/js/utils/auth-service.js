@@ -1,25 +1,19 @@
-import {
-    EventEmitter
-}
-from 'events';
-import {
-    isTokenExpired
-}
-from './jwt-helper';
+import { EventEmitter } from 'events';
+import { isTokenExpired } from './jwt-helper';
 import Auth0 from 'auth0-js';
 import Auth0Lock from 'auth0-lock';
-import {
-    browserHistory
-}
-from 'react-router';
-//import router from './routes/router';
+import { browserHistory } from 'react-router';
 import store from '../redux/store.js';
 import * as actions from '../redux/actions.js';
 
+// Class to handle authentication via Auth0.
+// Most of the code was taken from this example:
+// https://auth0.com/docs/quickstart/spa/react/00-getting-started
 export default class AuthService extends EventEmitter {
     constructor(clientId, domain) {
         super();
-        // Configure Auth0
+        // Configure Auth0 - we need both inorder to deal with the case 
+        // where the authenticated event does not fire.
         this.auth0 = new Auth0({
             clientID: clientId,
             domain: domain
@@ -30,22 +24,23 @@ export default class AuthService extends EventEmitter {
                 responseType: 'token'
             }
         });
+        
         // Add callback for lock `authenticated` event
         this.lock.on('authenticated', this._doAuthentication.bind(this));
         // Add callback for lock `authorization_error` event
         this.lock.on('authorization_error', this._authorizationError.bind(this));
 
-        // binds login functions to keep this context
+        // binds functions to keep this context
         this.login = this.login.bind(this);
         this.loginHash = this.loginHash.bind(this);
     }
 
     _doAuthentication(authResult) {
-        console.log(`authResult =>`, authResult);
-        // Saves the user token
         this.setToken(authResult.idToken);
-        // navigate to the home route
+        
+        // navigate to the autherized route
         browserHistory.replace('/practice');
+        
         // Async loads the user profile data
         this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
             if (error) {
@@ -55,15 +50,17 @@ export default class AuthService extends EventEmitter {
                 store.dispatch(actions.loginSuccess(authResult.idToken, profile));
                 this.setProfile(profile);
             }
-        })
+        });
     }
 
     _authorizationError(error) {
-        // Unexpected authentication error
         store.dispatch(actions.loginError(error));
         console.log('Authentication Error', error);
     }
 
+    // Hack discussed to get around lock not firing
+    // authenticated event after email and password
+    // login
     loginHash(hash) {
         let result = this.auth0.parseHash(hash);
         console.log('loginHash ->', result)
@@ -73,15 +70,15 @@ export default class AuthService extends EventEmitter {
     }
 
     login() {
-        // Call the show method to display the widget.
+        // Display the lock widget.
         this.lock.show();
     }
 
     loggedIn() {
-        console.log('loggedIn called')
-        // Checks if there is a saved token and it's still valid
+        // Check for saved token and if it's still valid
         const token = this.getToken();
         const loggedStatus = !!token && !isTokenExpired(token);
+        
         if (loggedStatus) {
             store.dispatch(
                 actions.loginSuccess(
@@ -94,28 +91,23 @@ export default class AuthService extends EventEmitter {
     }
 
     setProfile(profile) {
-        // Saves profile data to localStorage
         localStorage.setItem('profile', JSON.stringify(profile));
     }
 
     getProfile() {
-        // Retrieves the profile data from localStorage
         const profile = localStorage.getItem('profile');
         return profile ? JSON.parse(localStorage.profile) : {};
     }
 
     setToken(idToken) {
-        // Saves user token to localStorage
         localStorage.setItem('id_token', idToken);
     }
 
     getToken() {
-        // Retrieves the user token from localStorage
         return localStorage.getItem('id_token');
     }
 
     logout() {
-        // Clear user token and profile data from localStorage
         localStorage.removeItem('id_token');
         localStorage.removeItem('profile');
         store.dispatch(actions.logoutSuccess());
