@@ -1,95 +1,137 @@
-html, body {
-  margin: 0;
-  height: 100%;
+/*--------- GENERAL STYLES ---------*/
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  background-image: url("https://i.imgur.com/wmL7tNN.png");
-  background-repeat: no-repeat;
+  background-image: url("img/background.jpg");
   background-size: cover;
-  background-position: center;
+  position: relative;
+  text-align: center;
+  height: 100%;
+  height: 100vh;
+  width: 100%;
+  width: 100vw;
+  color: #ffc021;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
 }
 
-a {
-  text-decoration: none;
+.italic {
+  font-style: italic;
 }
-
 
 /*--------- LANDING PAGE ---------*/
 .Landing {
+  padding-top: 25%;
+  padding-top: 25vh;
   text-align: center;
+  -ms-flex: 1;
+  flex: 1;
 }
 
-.landing-header {
-  margin-bottom: 3em;
+.landing-logo {
+  width: 80%;
 }
 
-
-/*-- Jaba Image --*/
-.java-div {
-  display: block;
+.landing-subtext {
+  padding: 1.5em 0;
+  font-size: 1.5em;
 }
 
-.jaba-pic {
-  height: 30em;
-  width: 30em;
-  margin-bottom: 2.3em;
+.grow {
+  -webkit-animation: grow 3s linear;
+  animation: grow 3s linear;
 }
 
-
-/*-- Landing Text --*/
-.landing-text {
-  color: white;
-  margin-bottom: 2.3em;
+.fadeIn {
+  -webkit-animation-delay: 3s;
+  animation-delay: 3s;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
 }
 
+@-webkit-@keyframes grow {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width:80%;
+  }
+}
+
+@keyframes grow {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width:80%;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
 
 /*-- Login Button --*/
 .login-button {
-  font-size: 1.5em;
   position: relative;
-  background-color: #e9ab18;
+  font-size: 1.45rem;
+  border-radius: 20px;
+  background-color: #ffc021;
+  color: #000000;
+  box-shadow: 0 8px #b28617;
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
   border: none;
-  padding: 20px;
-  width: 300px;
-  text-align: center;
-  -webkit-transition-duration: 0.4s; /* Safari */
-  transition-duration: 0.4s;
-  text-decoration: none;
-  overflow: hidden;
-  cursor: pointer;
+  padding: 0.15em 1.5em;
+  margin: 0.5em 1em;
 }
 
 .login-button:hover {
-  background: #fff;
-  box-shadow: 0px 2px 10px 5px #97B1BF;
-  color: #000;
+  box-shadow: 0 6px #b28617;
+  top: 4px;
 }
 
-.login-button:after {
-  content: "";
-  background: #f1c40f;
-  display: block;
-  position: absolute;
-  padding-top: 300%;
-  padding-left: 350%;
-  margin-left: -20px !important;
-  margin-top: -120%;
-  opacity: 0;
-  transition: all 0.8s
+.login-button:active {
+  box-shadow: 0 0 #b28617;
+  top: 8px;
 }
-
-.login-button:active:after {
-  display: block;
-  padding: 0;
-  margin: 0;
-  opacity: 1;
-  transition: 0s
-}
-
 
 /*--------- QUIZ PAGE ----------*/
 
@@ -185,8 +227,9 @@ a {
   outline: 0;
 }
 
-
-/*-- Hide Correct --*/
-.hidden {
-  display: none;
+/* ----- Show Keyboard focus ------ */
+*:focus {
+  border: none;
+  outline: none;
+  outline: 5px #ffecbc dotted;
 }

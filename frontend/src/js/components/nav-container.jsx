@@ -4,25 +4,25 @@ import { browserHistory } from 'react-router';
 import Navbar from './navbar';
 import actions from '../redux/actions';
 import AuthService from '../utils/auth-service';
-import authConfig from '../config/auth0.js'
+import authConfig from '../config/auth0.js';
 
 export class NavbarContainer extends React.Component {
     constructor() {
         super();
         this.auth = new AuthService(authConfig.clientID, authConfig.domain);
-      
+
         // auth-lock does not fire the authenticated event when
         // user signs in with email and password.
-        // This hack trys to solve the problem by monitoring 
+        // This hack trys to solve the problem by monitoring
         // browserHistory for an appropriate hash.
-        // Similar, if not exact bug (There is no official fix): 
+        // Similar, if not exact bug (There is no official fix):
         // https://github.com/auth0/lock/issues/527
         browserHistory.listen(location => {
             if (/access_token/.test(location.hash) || /error/.test(location.hash)) {
                 this.auth.loginHash(location.hash);
             }
-        });  
-    
+        });
+
         this.handleLoginClick = this.handleLoginClick.bind(this);
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
     }
@@ -30,7 +30,7 @@ export class NavbarContainer extends React.Component {
     componentDidMount() {
         this.auth.loggedIn();
     }
-    
+
     handleLoginClick() {
         this.auth.login();
     }

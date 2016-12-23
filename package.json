@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node server/server.js",
+    "dev": "nodemon server/server.js & npm run watch",
     "postinstall": "npm run build",
     "test": "mocha --compilers js:babel-register test/**/*.js*",
     "mkdir": "mkdir -p frontend/build",

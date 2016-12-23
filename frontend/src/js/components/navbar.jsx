@@ -5,12 +5,12 @@ import { Link } from 'react-router';
 const SERVER_URL = window.location.origin;
 
 function Navbar(props) {
-  
-    const { onLoginClick, 
-           onLogoutClick, 
-           profile, 
+
+    const { onLoginClick,
+           onLogoutClick,
+           profile,
            isAuthenticated } = props;
-  
+
     const content = isAuthenticated ? (
         <div className="logout">
             <Link to="/" onClick={onLogoutClick}>
@@ -38,7 +38,6 @@ const propTypes = {
   profile: PropTypes.object,
   isAuthenticated: PropTypes.bool,
 };
-
 Navbar.propTypes = propTypes;
 
 export default Navbar;

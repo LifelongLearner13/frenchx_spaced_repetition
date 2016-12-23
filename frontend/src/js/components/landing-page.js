@@ -1,17 +1,23 @@
-import React from 'react'
+import React, { PropTypes } from 'react';
 
-export default function Landing() {
+export default function Landing(props) {
+
+  const { onLoginClick } = props;
+
     return (
       <div className="Landing">
-        <div className="landing-header">
-          <img className="hutt-header" src="img/huttlogo.png" alt="Hutt Stone" />
-        </div>
-        <div>
-          <div className="jaba-div">
-            <img className="jaba-pic" src="img/jabapic_alpha.png" alt="JabaTheHutt" />
-          </div>
-          <h2 className="landing-text">Learn the language of intergalactic "businessmen"!</h2>
-        </div>
+        <hgroup className="landing-header">
+          <h1>
+            <img className="landing-logo grow" src="img/huttstone_logo.png" alt="Hutt Stone" />
+          </h1>
+          <h2 className="landing-subtext fadeIn">Master the language of intergalactic <span className="italic">businessmen</span>!</h2>
+        </hgroup>
+        <button className="login-button fadeIn" onClick={onLoginClick}>Login / Sign Up</button>
       </div>
     );
 };
+
+const propTypes = {
+  onLoginClick: PropTypes.func,
+};
+Landing.propTypes = propTypes;
