@@ -63,7 +63,7 @@ body {
   animation: grow 3s linear;
 }
 
-.fadeIn {
+.fade-in {
   -webkit-animation-delay: 3s;
   animation-delay: 3s;
   -webkit-animation-duration: 1s;
@@ -112,11 +112,9 @@ body {
     }
 }
 
-/*-- Login Button --*/
-.login-button {
+/*-- Button and Link --*/
+.bl-base {
   position: relative;
-  font-size: 1.45rem;
-  border-radius: 20px;
   background-color: #ffc021;
   color: #000000;
   box-shadow: 0 8px #b28617;
@@ -124,18 +122,41 @@ body {
   -moz-transition: none;
   transition: none;
   border: none;
-  padding: 0.15em 1.5em;
-  margin: 0.5em 1em;
 }
 
-.login-button:hover {
+.bl-base:hover {
   box-shadow: 0 6px #b28617;
   top: 4px;
 }
 
-.login-button:active {
+.bl-base:active {
   box-shadow: 0 0 #b28617;
   top: 8px;
+}
+
+button {
+   border-radius: 20px;
+}
+
+.about-link {
+  padding: 0.15em 1.5em;
+  font-size: 1.25rem;
+  margin: 2em auto;
+}
+
+.login-button {
+  font-size: 1.25rem;
+  padding: 0.15em 1.5em;
+  margin: 1em auto 2em auto;
+  display: block;
+}
+
+/*------ PRACTICE AREA --------*/
+.practice-area {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: row;
 }
 
 @media only screen and (max-width: 736px) {
@@ -143,10 +164,12 @@ body {
     font-size: 12px;
   }
 
-
+  .login-button {
+    margin: 1em auto 3em auto;
+    display: block;
+  }
 }
 @media only screen and (max-width: 450px) {
-
   .landing-subtext {
     padding: 0.5em 0.5em;
   }
@@ -157,4 +180,8 @@ body {
   border: none;
   outline: none;
   outline: 5px #ffecbc dotted;
+}
+
+a:hover, a:focus {
+  text-decoration: none;
 }
