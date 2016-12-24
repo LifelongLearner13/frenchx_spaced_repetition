@@ -9,7 +9,7 @@ export default function Landing(props) {
       <div className="Landing">
         <hgroup className="landing-header">
           <h1>
-            <img className="landing-logo grow" src="img/huttstone_logo.png" alt="Hutt Stone" />
+            <img className="logo grow" src="img/huttstone_logo.png" alt="Hutt Stone" />
           </h1>
           <h2 className="landing-subtext fade-in">Master the language of intergalactic <span className="italic">businessmen</span>!</h2>
         </hgroup>
