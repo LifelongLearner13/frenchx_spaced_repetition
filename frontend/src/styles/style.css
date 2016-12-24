@@ -3,7 +3,7 @@ html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 20px;
   font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
 }
 
@@ -16,7 +16,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-image: url("img/background.jpg");
+  background-image: url("../img/background.jpg");
   background-size: cover;
   position: relative;
   text-align: center;
@@ -40,22 +40,30 @@ body {
   font-style: italic;
 }
 
+nav {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+}
+
+nav > a {
+  margin: 1em auto;
+}
+
+.logo {
+  width: 80%;
+}
+
 /*--------- LANDING PAGE ---------*/
-.Landing {
+.Landing, .about {
   padding-top: 25%;
   padding-top: 25vh;
   text-align: center;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.landing-logo {
-  width: 80%;
 }
 
 .landing-subtext {
   padding: 1.5em 1em;
-  font-size: 1.5rem;
 }
 
 .grow {
@@ -93,23 +101,23 @@ body {
 }
 
 @-webkit-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
+  0% {
+      opacity: 0;
+  }
 
-    100% {
-        opacity: 1;
-    }
+  100% {
+      opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
+  0% {
+      opacity: 0;
+  }
 
-    100% {
-        opacity: 1;
-    }
+  100% {
+      opacity: 1;
+  }
 }
 
 /*-- Button and Link --*/
@@ -140,18 +148,18 @@ button {
 
 .about-link {
   padding: 0.15em 1.5em;
-  font-size: 1.25rem;
   margin: 2em auto;
 }
 
 .login-button {
-  font-size: 1.25rem;
   padding: 0.15em 1.5em;
   margin: 1em auto 2em auto;
   display: block;
 }
 
 /*------ PRACTICE AREA --------*/
+
+
 .practice-area {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -159,17 +167,46 @@ button {
   flex-direction: row;
 }
 
+
+
+/*------ ABOUT AREA --------*/
+.about {
+  padding-top: 15%;
+  padding-top: 15vh;
+  text-align: center;
+}
+
+.about-logo {
+  margin: 0 auto;
+}
+
+.about-header {
+  color: #2a7e8f;
+}
+
 @media only screen and (max-width: 736px) {
   html {
-    font-size: 12px;
+    font-size: 16px;
+  }
+
+  .logo {
+    width: 95%;
+  }
+
+  .bl-base {
+    font-size: 1.25em;
   }
 
   .login-button {
-    margin: 1em auto 3em auto;
+    margin: 1em auto 2em auto;
     display: block;
   }
 }
 @media only screen and (max-width: 450px) {
+  html {
+    font-size: 14px;
+  }
+
   .landing-subtext {
     padding: 0.5em 0.5em;
   }

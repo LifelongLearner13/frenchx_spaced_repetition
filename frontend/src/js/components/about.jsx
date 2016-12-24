@@ -6,11 +6,12 @@ export default function About(props) {
   const { onLoginClick } = props;
 
     return (
-      <div className="">
+      <div className="about">
         <nav>
-          <Link to={'/'}><img className="" src="img/huttstone_logo.png" alt="Hutt Stone" /></Link>
+          <img className="logo about-logo" src="img/huttstone_logo.png" alt="Hutt Stone" />
+          <Link className="about-link bl-base" to={'/'}>Back</Link>
         </nav>
-        <h1>Not so long ago in a web development bootcamp close by ...</h1>
+        <h1 className="about-header">Not so long ago in a web development bootcamp close by ...</h1>
 
         <p>Three padawans decided to use their skills in ReactJS, Redux, NodeJS, and MongoDB to help aspiring entrepreneurs learn Huttese</p>
         <p>Hutt Stone uses a <a href="https://en.wikipedia.org/wiki/Spaced_repetition">spaced repition</a> algorithm to improve a user's retension of information. Words are presented in Huttese and users are are encoraged to input the equivalent Basic (aka. English) alternative. Once a user has mastered a word, it will appear less and less frequently during training, allowing the user to focus on new words.</p>
