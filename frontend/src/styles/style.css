@@ -1,3 +1,9 @@
+/*
+  Notes:
+  - Margin-bottom are set to zero in cases where collapsing could occur.
+    - source: https://css-tricks.com/what-you-should-know-about-collapsing-margins/
+*/
+
 /*--------- GENERAL STYLES ---------*/
 html {
   -webkit-box-sizing: border-box;
@@ -48,7 +54,15 @@ nav {
 }
 
 nav > a {
-  margin: 1em auto;
+  margin: 1em auto 0 auto;
+}
+
+a {
+  color: #b28617;
+}
+
+a:hover, a:active, a:focus {
+  color: #ffc021;
 }
 
 .logo {
@@ -132,13 +146,15 @@ nav > a {
   border: none;
 }
 
-.bl-base:hover {
+.bl-base:hover, .bl-base:focus {
   box-shadow: 0 6px #b28617;
+  color: #000000;
   top: 4px;
 }
 
 .bl-base:active {
   box-shadow: 0 0 #b28617;
+  color: #000000;
   top: 8px;
 }
 
@@ -148,12 +164,14 @@ button {
 
 .about-link {
   padding: 0.15em 1.5em;
-  margin: 2em auto;
+  margin: 2em auto 0 auto;
+  display: inline-block;
+
 }
 
 .login-button {
   padding: 0.15em 1.5em;
-  margin: 1em auto 2em auto;
+  margin: 1em auto 0 auto;
   display: block;
 }
 
@@ -171,17 +189,23 @@ button {
 
 /*------ ABOUT AREA --------*/
 .about {
-  padding-top: 15%;
-  padding-top: 15vh;
+  padding-top: 5%;
+  padding-top: 5vh;
   text-align: center;
 }
 
 .about-logo {
-  margin: 0 auto;
+  width: 50%;
+  margin: 2em auto 0 auto;
 }
 
 .about-header {
-  color: #2a7e8f;
+  color: #2160ff;
+}
+
+.credits {
+  margin-bottom: 0;
+  list-style: none;
 }
 
 @media only screen and (max-width: 736px) {
@@ -198,7 +222,7 @@ button {
   }
 
   .login-button {
-    margin: 1em auto 2em auto;
+    margin: 1em auto 0 auto;
     display: block;
   }
 }
