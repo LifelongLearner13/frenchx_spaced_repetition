@@ -12,7 +12,7 @@ import * as actions from '../redux/actions.js';
 export default class AuthService extends EventEmitter {
     constructor(clientId, domain) {
         super();
-        // Configure Auth0 - we need both inorder to deal with the case 
+        // Configure Auth0 - we need both inorder to deal with the case
         // where the authenticated event does not fire.
         this.auth0 = new Auth0({
             clientID: clientId,
@@ -24,7 +24,7 @@ export default class AuthService extends EventEmitter {
                 responseType: 'token'
             }
         });
-        
+
         // Add callback for lock `authenticated` event
         this.lock.on('authenticated', this._doAuthentication.bind(this));
         // Add callback for lock `authorization_error` event
@@ -37,10 +37,10 @@ export default class AuthService extends EventEmitter {
 
     _doAuthentication(authResult) {
         this.setToken(authResult.idToken);
-        
+
         // navigate to the autherized route
         browserHistory.replace('/practice');
-        
+
         // Async loads the user profile data
         this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
             if (error) {
@@ -78,11 +78,12 @@ export default class AuthService extends EventEmitter {
         // Check for saved token and if it's still valid
         const token = this.getToken();
         const loggedStatus = !!token && !isTokenExpired(token);
-        
+
         if (loggedStatus) {
             store.dispatch(
                 actions.loginSuccess(
                     token, this.getProfile()));
+            browserHistory.replace('/practice');
         } else {
             browserHistory.replace('/');
         }

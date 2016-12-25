@@ -49,7 +49,7 @@ export class AppContainer extends React.Component {
     return (
       <div>
         {isAuthenticated ? (
-          children
+          children && React.cloneElement(children, {onLogoutClick: this.handleLogoutClick})
         ) : (
           <LandingPage onLoginClick={this.handleLoginClick} />
         )}
