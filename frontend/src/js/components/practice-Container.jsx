@@ -1,16 +1,18 @@
-import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import * as actions from '../redux/actions'
-import Correct from './correct'
-import CurrentWord from './currentword'
-import Answer from './answer'
-import Score from './score'
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../redux/actions';
+import Navbar from './navbar';
+import Correct from './correct';
+import CurrentWord from './currentword';
+import Answer from './answer';
+import Score from './score';
 
 export class PracticeContainer extends React.Component {
 
   render() {
     return (
       <div className="practice-area">
+        <Navbar onLogoutClick={this.props.onLogoutClick}/>
         <img src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
         <p>form</p>
         <p>states area</p>
@@ -20,6 +22,7 @@ export class PracticeContainer extends React.Component {
 };
 
 const propTypes = {
+    onLogoutClick: PropTypes.func,
     word: PropTypes.string,
     wordId: PropTypes.string,
     score: PropTypes.number,
