@@ -35,7 +35,7 @@ export default class WordForm extends React.Component {
 
   render () {
     return (
-      <section className="practice-area">
+      <section className="practice-area two-thirds">
         <form className="practice-form" onSubmit={ this.handleSubmit }>
           <label>
             { this.props.word }

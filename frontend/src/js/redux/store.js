@@ -18,11 +18,8 @@ const initialState = {
     feedback: true,
     previousWord: 'Boska',
     previousWordPOS: 'v.',
-    previousWordWordPron: 'bosh kah',
+    previousWordPron: 'bosh kah',
     previousWordDef: '1. Search',
-    score: 10,
-    correct: 1,
-    incorrect: 2,
   },
 };
 

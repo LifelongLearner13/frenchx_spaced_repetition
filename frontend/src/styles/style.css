@@ -58,6 +58,10 @@ a:hover, a:active, a:focus {
   width: 80%;
 }
 
+.bold {
+  font-weight: bolder;
+}
+
 /*--------- LANDING PAGE ---------*/
 .Landing, .about {
   padding-top: 25%;
@@ -220,9 +224,47 @@ nav > h1 {
   flex-direction: row;
 }
 
+.jabba-suit {
+  height: 33%;
+}
+
+/*------ Feedback -------*/
+.feedback {
+  padding: 2em 0;
+}
+.correct {
+  color: green;
+  font-size: 1em;
+}
+
+.incorrect {
+  color: red;
+  font-size: 1em;
+}
+
+dl {
+  display: block;
+  margin: 1em auto;
+  max-width: 50%;
+}
+
+dfn {
+  font-size: 1.5rem;
+  font-weight: bolder;
+}
+
+dd > p {
+  text-align: left;
+}
+
 .one-third {
   width: 33%;
-  height: 33%;
+  margin: 0 1em;
+}
+
+.two-thirds {
+  width: 66%;
+  margin: 0 1em;
 }
 /*------ ABOUT AREA --------*/
 .about {

@@ -51,9 +51,6 @@ export class PracticeContainer extends React.Component {
         <div className="practice-area">
           <img className="jabba-suit one-third" src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
           { content }
-          <StatDisplay score={ score }
-                     correct={ correct }
-                     incorrect={ incorrect } />
         </div>
       </div>
     )
@@ -69,9 +66,6 @@ const propTypes = {
     previousWordPOS: PropTypes.string,
     previousWordPron: PropTypes.string,
     previousWordDef: PropTypes.string,
-    score: PropTypes.number,
-    correct: PropTypes.number,
-    incorrect: PropTypes.number,
 };
 PracticeContainer.propTypes = propTypes;
 
@@ -84,9 +78,6 @@ var mapStateToProps = (state, props) => {
         previousWordPOS: state.practice.previousWordPOS,
         previousWordPron: state.practice.previousWordPron,
         previousWordDef: state.practice.previousWordDef,
-        score: state.practice.score,
-        correct: state.practice.correct,
-        incorrect: state.practice.incorrect,
     };
 };
 

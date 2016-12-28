@@ -7,13 +7,13 @@ export default function Feedback(props) {
     let userFeedback = feedback ? 'Correct' : 'Incorrect';
 
     return (
-        <section className="feedback">
-          <h2>{ userFeedback }</h2>
+        <section className="feedback two-thirds">
+          <h2 className={ userFeedback.toLowerCase() }>{ userFeedback }</h2>
           <dl className="word-def`">
-            <dt lang="en-GB"><dfn>{ word }</dfn></dt>
+            <dt><dfn>{ word }</dfn></dt>
             <dd>
-              <h3>{ wordPron }</h3>
-              <p>{`${wordPOS} ${wordDef}`}</p>
+              <p>{ wordPron }</p>
+              <p><span className="bold">{ wordPOS }</span> { wordDef }</p>
             </dd>
           </dl>
         </section>
