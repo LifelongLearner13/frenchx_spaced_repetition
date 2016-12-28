@@ -49,7 +49,7 @@ export class PracticeContainer extends React.Component {
       <div className="practice-container">
         <Navbar onLogoutClick={ this.props.onLogoutClick }/>
         <div className="practice-area">
-          <img src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
+          <img className="jabba-suit one-third" src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
           { content }
           <StatDisplay score={ score }
                      correct={ correct }

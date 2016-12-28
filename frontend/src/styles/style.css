@@ -170,16 +170,43 @@ nav {
   display: -ms-flexbox;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
-nav > a {
-  margin: 1em auto 0 auto;
+nav > h1 {
+  margin: 1em 0.5em;
+  display: inline-block;
+  text-align: left;
+  width: 30%;
+  vertical-align: middle;
+}
+
+.nav-logo {
+  width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.link-area {
+  margin: 2.8em 0;
+}
+
+.link-area > * {
+  margin: 0 1em;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.logout-button {
+  padding: 0.15em 1.5em;
 }
 
 /*------ PRACTICE AREA --------*/
 
 .practice-container {
+  clear: both;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -193,8 +220,10 @@ nav > a {
   flex-direction: row;
 }
 
-
-
+.one-third {
+  width: 33%;
+  height: 33%;
+}
 /*------ ABOUT AREA --------*/
 .about {
   padding-top: 5%;
@@ -215,6 +244,8 @@ nav > a {
   margin-bottom: 0;
   list-style: none;
 }
+
+/*@media only screen and (max-width: 1200px) {*/
 
 @media only screen and (max-width: 736px) {
   html {
