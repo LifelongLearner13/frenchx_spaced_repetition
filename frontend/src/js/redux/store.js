@@ -12,17 +12,17 @@ const initialState = {
     token: '',
   },
   practice: {
-    currentWord: '',
-    currentWordID: 0,
+    currentWord: 'Backa',
+    currentWordID: 1,
     userInput: '',
-    feedback: false,
-    previousWord: '',
-    previousWordWordPOS: '',
-    previousWordWordPron: '',
-    previousWordDef: '',
-    score: 0,
-    correct: 0,
-    incorect: 0
+    feedback: true,
+    previousWord: 'Boska',
+    previousWordPOS: 'v.',
+    previousWordWordPron: 'bosh kah',
+    previousWordDef: '1. Search',
+    score: 10,
+    correct: 1,
+    incorrect: 2,
   },
 };
 

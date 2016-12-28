@@ -46,13 +46,15 @@ export class PracticeContainer extends React.Component {
       );
 
     return (
-      <div className="practice-area">
+      <div className="practice-container">
         <Navbar onLogoutClick={ this.props.onLogoutClick }/>
-        <img src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
-        { content }
-        <StatDisplay score={ score }
+        <div className="practice-area">
+          <img src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
+          { content }
+          <StatDisplay score={ score }
                      correct={ correct }
                      incorrect={ incorrect } />
+        </div>
       </div>
     )
   }
@@ -69,7 +71,7 @@ const propTypes = {
     previousWordDef: PropTypes.string,
     score: PropTypes.number,
     correct: PropTypes.number,
-    incorect: PropTypes.number,
+    incorrect: PropTypes.number,
 };
 PracticeContainer.propTypes = propTypes;
 

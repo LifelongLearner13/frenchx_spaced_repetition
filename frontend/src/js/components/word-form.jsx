@@ -35,14 +35,16 @@ export default class WordForm extends React.Component {
 
   render () {
     return (
-      <form className="practice-area" onSubmit={ this.handleSubmit }>
-        <label>
-          { this.props.word }
-          <input type="text" id={ this.state.wordID } value={ this.state.value } onChange={ this.handleChange } />
+      <section className="practice-area">
+        <form className="practice-form" onSubmit={ this.handleSubmit }>
+          <label>
+            { this.props.word }
+            <input type="text" id={ this.state.wordID } value={ this.state.value } onChange={ this.handleChange } />
           </label>
 
-          <input type="submit" value="Submit" />
-          </form>
+            <input type="submit" value="Submit" />
+        </form>
+      </section>
     )
   }
 };

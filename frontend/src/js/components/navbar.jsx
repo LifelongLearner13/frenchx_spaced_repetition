@@ -7,7 +7,9 @@ export default function Navbar(props) {
 
     return (
         <nav>
-          <img className="logo grow" src="img/huttstone_logo.png" alt="Hutt Stone" />
+          <h1>
+            <img className="nav-logo" src="img/huttstone_logo.png" alt="Hutt Stone" />
+          </h1>
           <button className="logout-button bl-base" onClick={onLogoutClick}>Logout</button>
           <Link className="about-link bl-base" to={'/about'}>About / Credits</Link>
         </nav>

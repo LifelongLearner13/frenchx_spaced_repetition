@@ -5,7 +5,13 @@ export default function StatDisplay(props) {
     const { correct, incorrect, score } = props;
 
     return (
-        <div>Stat Display</div>
+        <section className="stat-display">
+          <h2>Progress</h2>
+
+          <h3>Overall Score: <span className="score">{ score }</span></h3>
+          <h3>Successful answers in current session: <span className="score">{ correct }</span></h3>
+          <h3>Missed Words in current session: <span className="score">{ incorrect }</span></h3>
+        </section>
   );
 };
 

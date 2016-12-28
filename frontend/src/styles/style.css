@@ -46,17 +46,6 @@ body {
   font-style: italic;
 }
 
-nav {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  flex-direction: column;
-}
-
-nav > a {
-  margin: 1em auto 0 auto;
-}
-
 a {
   color: #b28617;
 }
@@ -174,9 +163,28 @@ button {
   margin: 1em auto 0 auto;
   display: block;
 }
+/*------- PRACTICE NAV ---------*/
+
+nav {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+nav > a {
+  margin: 1em auto 0 auto;
+}
 
 /*------ PRACTICE AREA --------*/
 
+.practice-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+}
 
 .practice-area {
   display: -webkit-flex;
