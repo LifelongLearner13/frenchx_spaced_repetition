@@ -4,7 +4,7 @@ import * as actions from '../redux/actions';
 import store from '../redux/store.js';
 import Navbar from './navbar';
 import WordForm from './word-form';
-import Feedback from './score';
+import Feedback from './feedback';
 import StatDisplay from './stat-display';
 
 export class PracticeContainer extends React.Component {
@@ -12,36 +12,37 @@ export class PracticeContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onSubmit = this.submit.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit(event) {
-    event.preventDefault;
-
-
-  }
-
-  onChange(event) {
-
+  onSubmit(userInput, id) {
+    console.log(`onSubmit userInput -> ${userInput}`)
   }
 
   render() {
 
+    const { feedback,
+            currentWord,
+            currentWordID,
+            previousWord,
+            previousWordPOS,
+            previousWordPron,
+            previousWordDef,
+            score,
+            correct,
+            incorrect } = this.props;
+
     let content = feedback ?
       (
-        <section className="practice">
-          <WordForm onSubmit={ this.onFormSubmit }
-                    onChange={ this.onInputChange }
-                    word={ this.props.currentWord }
-                    wordID={ this.props.wordID } />
-        </section>
+        <Feedback feedback={ feedback }
+                  word={ previousWord }
+                  wordPOS={ previousWordPOS }
+                  wordPron={ previousWordPron }
+                  wordDef={ previousWordDef } />
       ) : (
-        <Feedback feedback={ this.props.feedback }
-                  previousWord={ this.props.previousWord }
-                  wordPOS={ this.props.wordPOS }
-                  wordPron={ this.props.wordPron }
-                  wordDef={ this.props.wordDef } />
+        <WordForm onSubmit={ this.onSubmit }
+                  word={ currentWord }
+                  wordID={ currentWordID } />
       );
 
     return (
@@ -49,10 +50,9 @@ export class PracticeContainer extends React.Component {
         <Navbar onLogoutClick={ this.props.onLogoutClick }/>
         <img src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
         { content }
-        <StatDisplay score={ this.props.number }
-                     correct={ this.props.correct }
-                     incorrect={ this.props.incorrect }
-        incorrect: PropTypes.number,/>
+        <StatDisplay score={ score }
+                     correct={ correct }
+                     incorrect={ incorrect } />
       </div>
     )
   }
@@ -61,28 +61,30 @@ export class PracticeContainer extends React.Component {
 const propTypes = {
     onLogoutClick: PropTypes.func,
     currentWord: PropTypes.string,
-    wordId: PropTypes.string,
-    feedback: PropTypes.string,
+    currentWordId: PropTypes.number,
+    feedback: PropTypes.bool,
     previousWord: PropTypes.string,
-    wordPOS: PropTypes.string,
-    wordPron: PropTypes.string,
-    wordDef: PropTypes.string,
-
+    previousWordPOS: PropTypes.string,
+    previousWordPron: PropTypes.string,
+    previousWordDef: PropTypes.string,
+    score: PropTypes.number,
+    correct: PropTypes.number,
+    incorect: PropTypes.number,
 };
 PracticeContainer.propTypes = propTypes;
 
 var mapStateToProps = (state, props) => {
     return {
-        word: state.word,
-        wordId: state.wordId,
-        feedback: PropTypes.string,
-        previousWord: PropTypes.string,
-        wordPOS: PropTypes.string,
-        wordPron: PropTypes.string,
-        wordDef: PropTypes.string,
-        score: state.score,
-        correct: state.correct,
-        incorrect: state.incorrect,
+        currentWord: state.practice.currentWord,
+        currentWordID: state.practice.currentWordID,
+        feedback: state.practice.feedback,
+        previousWord: state.practice.previousWord,
+        previousWordPOS: state.practice.previousWordPOS,
+        previousWordPron: state.practice.previousWordPron,
+        previousWordDef: state.practice.previousWordDef,
+        score: state.practice.score,
+        correct: state.practice.correct,
+        incorrect: state.practice.incorrect,
     };
 };
 

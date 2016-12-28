@@ -43,9 +43,8 @@ export class AppContainer extends React.Component {
   // render the practice area.
   render() {
 
-    const isAuthenticated = this.props.isAuthenticated;
-    const children = this.props.children;
-
+    const { isAuthenticated, children } = this.props;
+    console.log(`AppContainer isAuthenticated -> ${isAuthenticated}`)
     return (
       <div>
         {isAuthenticated ? (

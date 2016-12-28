@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
-function Navbar(props) {
+export default function Navbar(props) {
 
     const { onLogoutClick } = props;
 
@@ -18,5 +18,3 @@ const propTypes = {
   onLogoutClick: PropTypes.func,
 };
 Navbar.propTypes = propTypes;
-
-export default Navbar;
