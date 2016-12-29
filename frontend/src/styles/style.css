@@ -9,7 +9,7 @@ html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 20px;
+  font-size: 30px;
   font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
 }
 
@@ -37,13 +37,8 @@ body {
   flex-direction: column;
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
-.italic {
-  font-style: italic;
+h1 {
+  font-size: 1.75em;
 }
 
 a {
@@ -54,6 +49,19 @@ a:hover, a:active, a:focus {
   color: #ffc021;
 }
 
+button {
+   border-radius: 20px;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.italic {
+  font-style: italic;
+}
+
 .logo {
   width: 80%;
 }
@@ -62,10 +70,21 @@ a:hover, a:active, a:focus {
   font-weight: bolder;
 }
 
+/*------------ LAYOUT -------------*/
+.one-third {
+  width: 33%;
+  margin: 0 1em;
+}
+
+.two-thirds {
+  width: 66%;
+  margin: 0 1em;
+}
+
 /*--------- LANDING PAGE ---------*/
 .Landing, .about {
-  padding-top: 25%;
-  padding-top: 25vh;
+  padding-top: 15%;
+  padding-top: 15vh;
   text-align: center;
 }
 
@@ -79,8 +98,8 @@ a:hover, a:active, a:focus {
 }
 
 .fade-in {
-  -webkit-animation-delay: 3s;
-  animation-delay: 3s;
+  -webkit-animation-delay: 4s;
+  animation-delay: 4s;
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
   -webkit-animation-fill-mode: both;
@@ -151,15 +170,10 @@ a:hover, a:active, a:focus {
   top: 8px;
 }
 
-button {
-   border-radius: 20px;
-}
-
 .about-link {
   padding: 0.15em 1.5em;
-  margin: 2em auto 0 auto;
+  margin: 2em auto;
   display: inline-block;
-
 }
 
 .login-button {
@@ -167,8 +181,8 @@ button {
   margin: 1em auto 0 auto;
   display: block;
 }
-/*------- PRACTICE NAV ---------*/
 
+/*------- PRACTICE NAV ---------*/
 nav {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -177,20 +191,17 @@ nav {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 2em;
 }
 
 nav > h1 {
   margin: 1em 0.5em;
-  display: inline-block;
   text-align: left;
   width: 30%;
-  vertical-align: middle;
 }
 
 .nav-logo {
   width: 100%;
-  display: inline-block;
-  vertical-align: middle;
 }
 
 .link-area {
@@ -208,13 +219,12 @@ nav > h1 {
 }
 
 /*------ PRACTICE AREA --------*/
-
 .practice-container {
-  clear: both;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   flex-direction: column;
+  margin-bottom: 1em;
 }
 
 .practice-area {
@@ -225,23 +235,11 @@ nav > h1 {
 }
 
 .jabba-suit {
-  height: 33%;
+  width: 95%;
+  margin: 0 auto;
 }
 
 /*------ Feedback -------*/
-.feedback {
-  padding: 2em 0;
-}
-.correct {
-  color: green;
-  font-size: 1em;
-}
-
-.incorrect {
-  color: red;
-  font-size: 1em;
-}
-
 dl {
   display: block;
   margin: 1em auto;
@@ -249,23 +247,26 @@ dl {
 }
 
 dfn {
-  font-size: 1.5rem;
   font-weight: bolder;
 }
 
-dd > p {
+dd {
+  padding: 0;
+  margin: 0;
+}
+
+.correct {
+  color: #009900;
+}
+
+.incorrect {
+  color: #ff5121;
+}
+
+.word-def {
   text-align: left;
 }
 
-.one-third {
-  width: 33%;
-  margin: 0 1em;
-}
-
-.two-thirds {
-  width: 66%;
-  margin: 0 1em;
-}
 /*------ ABOUT AREA --------*/
 .about {
   padding-top: 5%;
@@ -289,27 +290,69 @@ dd > p {
 
 /*@media only screen and (max-width: 1200px) {*/
 
-@media only screen and (max-width: 736px) {
+@media only screen and (max-width: 936px) {
   html {
-    font-size: 16px;
+    font-size: 25px;
+  }
+
+  .one-third {
+    width: 100%;
+    margin: 1em;
+  }
+
+  .two-thirds {
+    width: 100%;
+    margin: 1em;
+  }
+
+  .Landing, .about {
+    padding-top: 10%;
+    padding-top: 10vh;
   }
 
   .logo {
     width: 95%;
   }
 
-  .bl-base {
-    font-size: 1.25em;
-  }
-
   .login-button {
     margin: 1em auto 0 auto;
     display: block;
   }
+
+  nav {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1em;
+  }
+
+  nav > h1 {
+    margin: 1em auto;
+    text-align: center;
+    width: 70%;
+  }
+
+  .link-area {
+    margin: 0;
+  }
+
+  .practice-area {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .jabba-suit {
+    width: 80%;
+  }
 }
-@media only screen and (max-width: 450px) {
+
+@media only screen and (max-width: 525px) {
   html {
-    font-size: 14px;
+    font-size: 20px;
+  }
+
+  .Landing, .about {
+    padding-top: 5%;
+    padding-top: 5vh;
   }
 
   .landing-subtext {

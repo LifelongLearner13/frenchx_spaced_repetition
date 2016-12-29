@@ -49,8 +49,10 @@ export class PracticeContainer extends React.Component {
       <div className="practice-container">
         <Navbar onLogoutClick={ this.props.onLogoutClick }/>
         <div className="practice-area">
-          <img className="jabba-suit one-third" src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
           { content }
+          <div className="one-third">
+            <img className="jabba-suit" src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
+          </div>
         </div>
       </div>
     )

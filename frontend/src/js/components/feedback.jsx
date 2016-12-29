@@ -12,8 +12,8 @@ export default function Feedback(props) {
           <dl className="word-def`">
             <dt><dfn>{ word }</dfn></dt>
             <dd>
-              <p>{ wordPron }</p>
-              <p><span className="bold">{ wordPOS }</span> { wordDef }</p>
+              <p className="word-pron">({ wordPron })</p>
+              <p className="word-def"><span className="bold">{ wordPOS }</span> { wordDef }</p>
             </dd>
           </dl>
         </section>
