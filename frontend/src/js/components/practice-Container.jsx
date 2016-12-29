@@ -1,10 +1,10 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 import * as actions from '../redux/actions';
 import store from '../redux/store.js';
 import Navbar from './navbar';
 import WordForm from './word-form';
-import Feedback from './score';
+import Feedback from './feedback';
 import StatDisplay from './stat-display';
 
 export class PracticeContainer extends React.Component {
@@ -12,78 +12,77 @@ export class PracticeContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onSubmit = this.submit.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onNext = this.onNext.bind(this);
   }
 
-  onSubmit(event) {
-    event.preventDefault;
-
-
+  onSubmit(userInput, id) {
+    store.dispatch(actions.fetchWord(userInput, id));
   }
 
-  onChange(event) {
-
+  // Load WordForm with the next word
+  onNext() {
+    store.dispatch(actions.nextWord());
   }
 
   render() {
 
-    let content = feedback ?
-      (
-        <section className="practice">
-          <WordForm onSubmit={ this.onFormSubmit }
-                    onChange={ this.onInputChange }
-                    word={ this.props.currentWord }
-                    wordID={ this.props.wordID } />
-        </section>
-      ) : (
-        <Feedback feedback={ this.props.feedback }
-                  previousWord={ this.props.previousWord }
-                  wordPOS={ this.props.wordPOS }
-                  wordPron={ this.props.wordPron }
-                  wordDef={ this.props.wordDef } />
-      );
+    const {
+      isCorrect,
+      showFeedback,
+      currentWord,
+      currentWordID,
+      previousWord,
+      previousWordPOS,
+      previousWordPron,
+      previousWordDef
+    } = this.props;
+
+    // Could have been accomplished via nested components or routes.
+    // I choose to nest components with a condition because bookmarking
+    // a /feedback route doesn't make sense with the current app logic.
+    // Drawback: have to fire action to switch between components
+    let content = showFeedback
+      ? (<Feedback isCorrect={isCorrect} word={previousWord} wordPOS={previousWordPOS} wordPron={previousWordPron} wordDef={previousWordDef} onNext={this.onNext}/>)
+      : (<WordForm onSubmit={this.onSubmit} word={currentWord} wordID={currentWordID}/>);
 
     return (
-      <div className="practice-area">
-        <Navbar onLogoutClick={ this.props.onLogoutClick }/>
-        <img src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
-        { content }
-        <StatDisplay score={ this.props.number }
-                     correct={ this.props.correct }
-                     incorrect={ this.props.incorrect }
-        incorrect: PropTypes.number,/>
+      <div className="practice-container">
+        <Navbar onLogoutClick={this.props.onLogoutClick}/>
+        <div className="practice-area">
+          {content}
+          <div className="col-2">
+            <img className="jabba-suit" src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit"/>
+          </div>
+        </div>
       </div>
     )
   }
 };
 
 const propTypes = {
-    onLogoutClick: PropTypes.func,
-    currentWord: PropTypes.string,
-    wordId: PropTypes.string,
-    feedback: PropTypes.string,
-    previousWord: PropTypes.string,
-    wordPOS: PropTypes.string,
-    wordPron: PropTypes.string,
-    wordDef: PropTypes.string,
-
+  onLogoutClick: PropTypes.func,
+  currentWord: PropTypes.string,
+  currentWordId: PropTypes.number,
+  showFeedback: PropTypes.bool,
+  isCorrect: PropTypes.bool,
+  previousWord: PropTypes.string,
+  previousWordPOS: PropTypes.string,
+  previousWordPron: PropTypes.string,
+  previousWordDef: PropTypes.string
 };
 PracticeContainer.propTypes = propTypes;
 
 var mapStateToProps = (state, props) => {
-    return {
-        word: state.word,
-        wordId: state.wordId,
-        feedback: PropTypes.string,
-        previousWord: PropTypes.string,
-        wordPOS: PropTypes.string,
-        wordPron: PropTypes.string,
-        wordDef: PropTypes.string,
-        score: state.score,
-        correct: state.correct,
-        incorrect: state.incorrect,
-    };
+  return {
+    currentWord: state.practice.currentWord,
+    currentWordID: state.practice.currentWordID,
+    showFeedback: state.practice.showFeedback,
+    previousWord: state.practice.previousWord,
+    previousWordPOS: state.practice.previousWordPOS,
+    previousWordPron: state.practice.previousWordPron,
+    previousWordDef: state.practice.previousWordDef
+  };
 };
 
 export default connect(mapStateToProps)(PracticeContainer);
