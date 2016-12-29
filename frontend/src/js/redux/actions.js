@@ -2,16 +2,17 @@ import fetch from 'isomorphic-fetch'
 
 const API_URL = `${window.location.origin}/api`;
 
-// ========= Action Types ============
+/*---------- ACTION TYPES ----------*/
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_ERROR = 'LOGOUT_ERROR';
-export const FORM_SUBMIT = 'FORM_SUBMIT';
-export const FORM_INPUT_CHANGE = 'FORM_INPUT_CHANGE';
+export const FETCH_WORD_REQUEST = 'FETCH_WORD_REQUEST';
+export const FETCH_WORD_SUCCESS = 'FETCH_WORD_SUCCESS';
+export const FETCH_WORD_ERROR = 'FETCH_WORD_ERROR';
+export const NEXT_WORD = 'NEXT_WORD';
 
-// ==== Auth Lock Action Creators ====
-
+/*------ AUTH ACTION CREATER -------*/
 export function loginSuccess(token, profile) {
   return {
     type: LOGIN_SUCCESS,
@@ -40,7 +41,36 @@ export function logoutError(error) {
   };
 };
 
-export function fetchOnFormSubmit(wordId, word) {
+export function fetchWordRequest() {
+  return {
+      type: FETCH_WORD_REQUEST,
+  };
+};
+
+export function fetchWordSuccess(wordID, word,
+                                 feedback, previousWord,
+                                 previousWordPOS, previousWordPron,
+                                 previousWordDef) {
+  return {
+    type: FETCH_WORD_SUCCESS,
+    wordID,
+    word,
+    isCorrect,
+    previousWord,
+    previousWordPOS,
+    previousWordPron,
+    previousWordDef
+  };
+};
+
+export function fetchWordError(error) {
+  return {
+    type: FETCH_WORD_ERROR,
+    error,
+  };
+};
+
+export function fetchword(userInput, wordId, word) {
   return (dispatch) => {
     let request = {
       method: 'POST',
@@ -48,8 +78,10 @@ export function fetchOnFormSubmit(wordId, word) {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify( { wordId, word } )
+      body: JSON.stringify( { userInput, wordId, word } )
     };
+
+    dispatch( fetchWordRequest() );
 
     return fetch(`${API_URL}/word`, request).then(
       (response) => {
@@ -63,18 +95,27 @@ export function fetchOnFormSubmit(wordId, word) {
       }).then(
         (data) => {
           console.log(data);
+          const { wordID, word, isCorrect,
+            previousWord, previousWordPOS,
+            previousWordPron, previousWordDef } = data;
           return dispatch(
-            fetchSubmitSuccess(wordID, word,
-                              feedback, previousWord,
-                              previousWordWordPOS, previousWordWordPron,
-                              previousWordDef)
+            fetchWordSuccess(wordID, word,
+                             isCorrect, previousWord,
+                             previousWordPOS, previousWordPron,
+                             previousWordDef)
           );
       }).catch(
         (error) => {
           return dispatch(
-            fetchSubmitError(error)
+            fetchWordError(error)
           )
         }
     );
   };
 };
+
+export function nextWord() {
+  return {
+    type: NEXT_WORD,
+  }
+}

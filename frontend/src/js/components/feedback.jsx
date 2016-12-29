@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 
 export default function Feedback(props) {
 
-    const { feedback, word, wordPOS, wordPron, wordDef, onNext } = props;
+    const { isCorrect, word, wordPOS, wordPron, wordDef, onNext } = props;
 
-    let userFeedback = feedback ? 'Correct' : 'Incorrect';
+    let userFeedback = isCorrect ? 'Correct' : 'Incorrect';
 
     return (
         <section className="feedback col-1">
@@ -22,7 +22,7 @@ export default function Feedback(props) {
 };
 
 const propTypes = {
-  feedback: PropTypes.bool,
+  isCorrect: PropTypes.bool,
   word: PropTypes.string,
   wordPOS: PropTypes.string,
   wordPron: PropTypes.string,

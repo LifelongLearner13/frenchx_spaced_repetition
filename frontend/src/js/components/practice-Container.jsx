@@ -27,7 +27,8 @@ export class PracticeContainer extends React.Component {
 
   render() {
 
-    const { feedback,
+    const { isCorrect,
+            showFeedback,
             currentWord,
             currentWordID,
             previousWord,
@@ -39,9 +40,9 @@ export class PracticeContainer extends React.Component {
     // I choose to nest components with a condition because bookmarking
     // a /feedback route doesn't make sense with the current app logic.
     // Drawback: have to fire action to switch between components
-    let content = feedback ?
+    let content = showFeedback ?
       (
-        <Feedback feedback={ feedback }
+        <Feedback isCorrect={ isCorrect }
                   word={ previousWord }
                   wordPOS={ previousWordPOS }
                   wordPron={ previousWordPron }
@@ -71,7 +72,8 @@ const propTypes = {
     onLogoutClick: PropTypes.func,
     currentWord: PropTypes.string,
     currentWordId: PropTypes.number,
-    feedback: PropTypes.bool,
+    showFeedback: PropTypes.bool,
+    isCorrect: PropTypes.bool,
     previousWord: PropTypes.string,
     previousWordPOS: PropTypes.string,
     previousWordPron: PropTypes.string,
@@ -83,7 +85,7 @@ var mapStateToProps = (state, props) => {
     return {
         currentWord: state.practice.currentWord,
         currentWordID: state.practice.currentWordID,
-        feedback: state.practice.feedback,
+        showFeedback: state.practice.showFeedback,
         previousWord: state.practice.previousWord,
         previousWordPOS: state.practice.previousWordPOS,
         previousWordPron: state.practice.previousWordPron,
