@@ -4,7 +4,7 @@ export default class WordForm extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log('WordForm props -> ', props)
+
     // After some research I decided to handle the form input as
     // suggested in the React Docs. There is no value in firing a new
     // action everytime a user types a character in the text field.
@@ -15,6 +15,7 @@ export default class WordForm extends React.Component {
     this.state = {
       value: '',
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -27,7 +28,10 @@ export default class WordForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.onSubmit(this.state.value, this.state.id);
+
+    this.props.onSubmit(this.state.value, this.props.wordID);
+
+    // Clear form
     this.setState({
       value: '',
     });
@@ -35,14 +39,14 @@ export default class WordForm extends React.Component {
 
   render () {
     return (
-      <section className="practice-area two-thirds">
+      <section className="practice-area col-1">
         <form className="practice-form" onSubmit={ this.handleSubmit }>
           <label>
-            { this.props.word }
+            <span className="word-text bold">{ this.props.word }</span>
             <input type="text" id={ this.state.wordID } value={ this.state.value } onChange={ this.handleChange } />
           </label>
 
-            <input type="submit" value="Submit" />
+          <button className="check-button bl-base" type="submit">Check</button>
         </form>
       </section>
     )

@@ -13,10 +13,16 @@ export class PracticeContainer extends React.Component {
     super(props);
 
     this.onSubmit = this.onSubmit.bind(this);
+    this.onNext = this.onNext.bind(this);
   }
 
   onSubmit(userInput, id) {
-    console.log(`onSubmit userInput -> ${userInput}`)
+    console.log(`onSubmit userInput -> ${userInput} and id is ${id}`)
+  }
+
+  // Load WordForm with the next word
+  onNext() {
+    console.log('Next word!')
   }
 
   render() {
@@ -27,18 +33,20 @@ export class PracticeContainer extends React.Component {
             previousWord,
             previousWordPOS,
             previousWordPron,
-            previousWordDef,
-            score,
-            correct,
-            incorrect } = this.props;
+            previousWordDef } = this.props;
 
+    // Could have been accomplished via nested components or routes.
+    // I choose to nest components with a condition because bookmarking
+    // a /feedback route doesn't make sense with the current app logic.
+    // Drawback: have to fire action to switch between components
     let content = feedback ?
       (
         <Feedback feedback={ feedback }
                   word={ previousWord }
                   wordPOS={ previousWordPOS }
                   wordPron={ previousWordPron }
-                  wordDef={ previousWordDef } />
+                  wordDef={ previousWordDef }
+                  onNext={ this.onNext } />
       ) : (
         <WordForm onSubmit={ this.onSubmit }
                   word={ currentWord }
@@ -50,7 +58,7 @@ export class PracticeContainer extends React.Component {
         <Navbar onLogoutClick={ this.props.onLogoutClick }/>
         <div className="practice-area">
           { content }
-          <div className="one-third">
+          <div className="col-2">
             <img className="jabba-suit" src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit" />
           </div>
         </div>

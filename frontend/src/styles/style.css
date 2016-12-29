@@ -6,16 +6,12 @@
 
 /*--------- GENERAL STYLES ---------*/
 html {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 30px;
   font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
 }
 
 *, *:before, *:after {
-  -webkit-box-sizing: inherit;
-  -moz-box-sizing: inherit;
   box-sizing: inherit;
 }
 
@@ -31,9 +27,12 @@ body {
   width: 100%;
   width: 100vw;
   color: #ffc021;
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
@@ -47,6 +46,14 @@ a {
 
 a:hover, a:active, a:focus {
   color: #ffc021;
+  text-decoration: none;
+}
+
+/* Show Keyboard focus */
+*:focus {
+  border: none;
+  outline: none;
+  outline: 5px #ffecbc dotted;
 }
 
 button {
@@ -70,18 +77,18 @@ button {
   font-weight: bolder;
 }
 
-/*------------ LAYOUT -------------*/
-.one-third {
-  width: 33%;
+/*------------- LAYOUT -------------*/
+.col-1 {
+  width: 60%;
   margin: 0 1em;
 }
 
-.two-thirds {
-  width: 66%;
+.col-2 {
+  width: 40%;
   margin: 0 1em;
 }
 
-/*--------- LANDING PAGE ---------*/
+/*---------- LANDING PAGE ----------*/
 .Landing, .about {
   padding-top: 15%;
   padding-top: 15vh;
@@ -109,6 +116,15 @@ button {
 }
 
 @-webkit-@keyframes grow {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width:80%;
+  }
+}
+
+@-webkit-keyframes grow {
   0% {
     width: 0%;
   }
@@ -146,14 +162,13 @@ button {
   }
 }
 
-/*-- Button and Link --*/
+/*--------- Button and Link --------*/
 .bl-base {
   position: relative;
   background-color: #ffc021;
   color: #000000;
   box-shadow: 0 8px #b28617;
   -webkit-transition: none;
-  -moz-transition: none;
   transition: none;
   border: none;
 }
@@ -182,14 +197,22 @@ button {
   display: block;
 }
 
-/*------- PRACTICE NAV ---------*/
+/*---------- PRACTICE NAV ----------*/
 nav {
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   margin-bottom: 2em;
 }
@@ -220,17 +243,23 @@ nav > h1 {
 
 /*------ PRACTICE AREA --------*/
 .practice-container {
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   margin-bottom: 1em;
 }
 
 .practice-area {
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
 }
 
@@ -239,7 +268,34 @@ nav > h1 {
   margin: 0 auto;
 }
 
-/*------ Feedback -------*/
+/*--------- PRACTICE FORM ----------*/
+.practice-form {
+  display: block;
+  margin: 0 auto;
+}
+
+.word-text {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 1em;
+}
+
+input[type="text"] {
+  display: block;
+  margin-bottom: 2em;
+  border-radius: 20px;
+  border: 6px #ffc021 solid;
+  padding: 0.5em 1em;
+  background-color: #ffecbc;
+}
+
+.check-button {
+  display: block;
+  margin: 0 auto;
+  padding: 0.15em 1em;
+}
+
+/*------------ Feedback ------------*/
 dl {
   display: block;
   margin: 1em auto;
@@ -257,9 +313,11 @@ dd {
 
 .correct {
   color: #009900;
+  margin-top: 0;
 }
 
 .incorrect {
+  margin-top: 0;
   color: #ff5121;
 }
 
@@ -267,7 +325,7 @@ dd {
   text-align: left;
 }
 
-/*------ ABOUT AREA --------*/
+/*----------- ABOUT AREA -----------*/
 .about {
   padding-top: 5%;
   padding-top: 5vh;
@@ -288,7 +346,6 @@ dd {
   list-style: none;
 }
 
-/*@media only screen and (max-width: 1200px) {*/
 
 @media only screen and (max-width: 936px) {
   html {
@@ -320,7 +377,12 @@ dd {
   }
 
   nav {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     margin-bottom: 1em;
   }
@@ -336,7 +398,12 @@ dd {
   }
 
   .practice-area {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
   }
 
@@ -358,15 +425,8 @@ dd {
   .landing-subtext {
     padding: 0.5em 0.5em;
   }
-}
 
-/* ----- Show Keyboard focus ------ */
-*:focus {
-  border: none;
-  outline: none;
-  outline: 5px #ffecbc dotted;
-}
-
-a:hover, a:focus {
-  text-decoration: none;
+  .link-area > * {
+    margin-bottom: 1em;
+  }
 }
