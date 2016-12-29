@@ -14,43 +14,26 @@ export const NEXT_WORD = 'NEXT_WORD';
 
 /*------ AUTH ACTION CREATER -------*/
 export function loginSuccess(token, profile) {
-  return {
-    type: LOGIN_SUCCESS,
-    profile,
-    token,
-  };
+  return {type: LOGIN_SUCCESS, profile, token};
 };
 
 export function loginError(error) {
-  return {
-    type: LOGIN_ERROR,
-    error,
-  };
+  return {type: LOGIN_ERROR, error};
 };
 
 export function logoutSuccess() {
-  return {
-    type: LOGOUT_SUCCESS,
-  };
+  return {type: LOGOUT_SUCCESS};
 };
 
 export function logoutError(error) {
-  return {
-    type: LOGOUT_ERROR,
-    error,
-  };
+  return {type: LOGOUT_ERROR, error};
 };
 
 export function fetchWordRequest() {
-  return {
-      type: FETCH_WORD_REQUEST,
-  };
+  return {type: FETCH_WORD_REQUEST};
 };
 
-export function fetchWordSuccess(wordID, word,
-                                 feedback, previousWord,
-                                 previousWordPOS, previousWordPron,
-                                 previousWordDef) {
+export function fetchWordSuccess(wordID, word, feedback, previousWord, previousWordPOS, previousWordPron, previousWordDef) {
   return {
     type: FETCH_WORD_SUCCESS,
     wordID,
@@ -64,58 +47,48 @@ export function fetchWordSuccess(wordID, word,
 };
 
 export function fetchWordError(error) {
-  return {
-    type: FETCH_WORD_ERROR,
-    error,
-  };
+  return {type: FETCH_WORD_ERROR, error};
 };
 
-export function fetchword(userInput, wordId, word) {
+export function fetchword(userInput, wordId) {
   return (dispatch) => {
     let request = {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify( { userInput, wordId, word } )
+      body: JSON.stringify({userInput, wordId}),
     };
 
-    dispatch( fetchWordRequest() );
+    dispatch(fetchWordRequest()); // Tell react the async request is starting
 
-    return fetch(`${API_URL}/word`, request).then(
-      (response) => {
-        if (response.status < 200 || response.status >= 300) {
-          let error = new Error(response.statusText)
-          error.response = response
-          throw error
-        }
+    return fetch(`${API_URL}/word`, request).then((response) => {
+      if (response.status < 200 || response.status >= 300) {
+        let error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
 
-        return response.json()
-      }).then(
-        (data) => {
-          console.log(data);
-          const { wordID, word, isCorrect,
-            previousWord, previousWordPOS,
-            previousWordPron, previousWordDef } = data;
-          return dispatch(
-            fetchWordSuccess(wordID, word,
-                             isCorrect, previousWord,
-                             previousWordPOS, previousWordPron,
-                             previousWordDef)
-          );
-      }).catch(
-        (error) => {
-          return dispatch(
-            fetchWordError(error)
-          )
-        }
-    );
+      return response.json()
+    }).then((data) => {
+      console.log(data);
+      const {
+        wordID,
+        word,
+        isCorrect,
+        previousWord,
+        previousWordPOS,
+        previousWordPron,
+        previousWordDef
+      } = data;
+      return dispatch(fetchWordSuccess(wordID, word, isCorrect, previousWord, previousWordPOS, previousWordPron, previousWordDef));
+    }).catch((error) => {
+      return dispatch(fetchWordError(error));
+    });
   };
 };
 
 export function nextWord() {
-  return {
-    type: NEXT_WORD,
-  }
+  return {type: NEXT_WORD}
 }

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 
 export default class WordForm extends React.Component {
 
@@ -13,7 +13,7 @@ export default class WordForm extends React.Component {
     // StackOverflow post discussing alternatives:
     // http://stackoverflow.com/questions/34952530/i-am-using-redux-should-i-manage-controlled-input-state-in-the-redux-store-or-u
     this.state = {
-      value: '',
+      value: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -21,9 +21,7 @@ export default class WordForm extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({
-      value: event.target.value,
-    });
+    this.setState({value: event.target.value});
   }
 
   handleSubmit(event) {
@@ -32,18 +30,16 @@ export default class WordForm extends React.Component {
     this.props.onSubmit(this.state.value, this.props.wordID);
 
     // Clear form
-    this.setState({
-      value: '',
-    });
+    this.setState({value: ''});
   }
 
-  render () {
+  render() {
     return (
       <section className="practice-area col-1">
-        <form className="practice-form" onSubmit={ this.handleSubmit }>
+        <form className="practice-form" onSubmit={this.handleSubmit}>
           <label>
-            <span className="word-text bold">{ this.props.word }</span>
-            <input type="text" id={ this.state.wordID } value={ this.state.value } onChange={ this.handleChange } />
+            <span className="word-text bold">{this.props.word}</span>
+            <input type="text" id={this.state.wordID} value={this.state.value} onChange={this.handleChange}/>
           </label>
 
           <button className="check-button bl-base" type="submit">Check</button>
@@ -54,8 +50,8 @@ export default class WordForm extends React.Component {
 };
 
 const propTypes = {
-    onSubmit: PropTypes.func,
-    word: PropTypes.string,
-    wordID: PropTypes.number,
+  onSubmit: PropTypes.func,
+  word: PropTypes.string,
+  wordID: PropTypes.number
 };
 WordForm.propTypes = propTypes;
