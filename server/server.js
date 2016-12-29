@@ -1,25 +1,19 @@
-// ========== General Setup ================
-const express       = require('express');
-const app           = express();
+/*--------- GENERAL SETUP --------- */
+const express = require('express');
+const app = express();
 const path = require('path')
-const port          = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
+const jsonParser = require('body-parser').json();
+if (!process.env.DEVELOPMENT) {
+  app.use(logger('dev')); // log every HTTP request to the console
+}
 
-const jsonParser    = require('body-parser').json();
-//const cookieParser  = require('cookie-parser');
-//const passport      = require('passport');
-//const flash         = require('connect-flash');
-//const session       = require('express-session');
-const logger        = require('morgan');
-//const spaced_repitition = require('./spaced_repitition');
 
-// ========== Database Setup ================
+/*----------- DATABASE -------------*/
 const mongoose      = require('mongoose');
-//const Word          = require('./models/word');
-//const User          = require('./models/user');
 // Determine database url
-const configDB      = require('./config/database'); 
-
-// ========= Authentication Setup ============
+const configDB      = require('./config/database');
+/*-------- AUTHENTICATION ----------*/
 //require('./config/passport')(passport)
 //app.use(cookieParser('changemelater'))
 //app.use(session({

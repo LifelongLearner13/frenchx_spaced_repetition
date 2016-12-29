@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from './reducers';
 import thunk, { default } from 'redux-thunk';
 const logger = createLogger();
-               
+
 const initialState = {
   auth: {
     isAuthenticated: false,
@@ -19,10 +19,19 @@ const initialState = {
   },
 };
 
-const store = createStore(rootReducer, 
+const middlewares = [thunk];
+
+// use redux-logger during development
+if (process.env.NODE_ENV === `development`) {
+  const createLogger = require(`redux-logger`);
+  const logger = createLogger();
+  middlewares.push(logger);
+}
+
+const store = createStore(rootReducer,
                 initialState,
                 compose(
-                applyMiddleware(thunk, logger)));
+                applyMiddleware({...middlewares})));
 
 
 export default store;
