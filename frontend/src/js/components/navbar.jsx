@@ -1,44 +1,24 @@
-import React, { PropTypes } from 'react';
-import Auth0Lock from 'auth0-lock';
-import { Link } from 'react-router';
+import React, {PropTypes} from 'react';
+import {Link} from 'react-router';
 
-const SERVER_URL = window.location.origin;
+export default function Navbar(props) {
 
-function Navbar(props) {
-  
-    const { onLoginClick, 
-           onLogoutClick, 
-           profile, 
-           isAuthenticated } = props;
-  
-    const content = isAuthenticated ? (
-        <div className="logout">
-            <Link to="/" onClick={onLogoutClick}>
-                Logout
-            </Link>
-        </div>
-    ) : (
-        <div className="login">
-            <Link to="" onClick={onLoginClick}>
-                Login
-            </Link>
-        </div>
-    );
+  const {onLogoutClick} = props;
 
-    return (
-        <header>
-            {content}
-        </header>
+  return (
+    <nav>
+      <h1>
+        <img className="nav-logo" src="img/huttstone_logo.png" alt="Hutt Stone"/>
+      </h1>
+      <div className="link-area">
+        <button className="logout-button bl-base" onClick={onLogoutClick}>Logout</button>
+        <Link className="about-link bl-base" to={'/about'}>About / Credits</Link>
+      </div>
+    </nav>
   );
 };
 
 const propTypes = {
-  onLoginClick: PropTypes.func,
-  onLogoutClick: PropTypes.func,
-  profile: PropTypes.object,
-  isAuthenticated: PropTypes.bool,
+  onLogoutClick: PropTypes.func
 };
-
 Navbar.propTypes = propTypes;
-
-export default Navbar;

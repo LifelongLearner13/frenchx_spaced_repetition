@@ -8,28 +8,23 @@
   },
   "scripts": {
     "start": "node server/server.js",
+    "dev": "nodemon server/server.js & npm run watch",
     "postinstall": "npm run build",
     "test": "mocha --compilers js:babel-register test/**/*.js*",
     "mkdir": "mkdir -p frontend/build",
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js && npm run build:img",
     "watch": "npm run watch:html & npm run watch:css & npm run watch:js",
     "clean": "rm -rf frontend/build",
-    "build:img": "cp frontend/src/img/* frontend/build/",
+    "build:img": "mkdir frontend/build/img && cp frontend/src/img/* frontend/build/img/",
     "build:html": "npm run clean:html && cp frontend/src/index.html frontend/build/",
     "watch:html": "npm run build:html && chokidar frontend/index.html -c 'npm run build:html'",
     "clean:html": "rm -f frontend/build/index.html",
-    "build:css": "npm run clean:css && cp frontend/src/style.css frontend/build/",
-    "clean:css": "rm -f frontend/build/style.css",
-    "watch:css": "npm run build:css && chokidar frontend/src/style.css -c 'npm run build:css'",
+    "build:css": "npm run clean:css && mkdir frontend/build/styles && cp frontend/src/styles/* frontend/build/styles",
+    "clean:css": "rm -rf frontend/build/styles",
+    "watch:css": "npm run build:css && chokidar frontend/src/styles/*.css -c 'npm run build:css'",
     "build:js": "npm run clean:js && webpack",
     "watch:js": "npm run build:js && webpack --watch",
     "clean:js": "rm -f frontend/build/$npm_package_name.$npm_package_version.js frontend/build/$npm_package_name.$npm_package_version.js.map"
-  },
-  "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ]
   },
   "repository": {
     "type": "git",
@@ -41,7 +36,9 @@
     "auth0-js": "^7.6.0",
     "auth0-lock": "^10.7.3",
     "body-parser": "^1.15.2",
+    "dotenv": "^2.0.0",
     "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
     "isomorphic-fetch": "^2.2.1",
     "jwt-decode": "^2.1.0",
     "method-override": "~1.0.0",
@@ -67,6 +64,7 @@
     "mocha": "^2.5.3",
     "morgan": "^1.7.0",
     "react-addons-test-utils": "^15.2.1",
-    "webpack": "^1.13.1"
+    "webpack": "^2.2.0-rc.3",
+    "webpack-merge": "^2.0.0"
   }
 }

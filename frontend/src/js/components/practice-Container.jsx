@@ -1,85 +1,92 @@
-import React , { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import * as actions from '../redux/actions'
-import Correct from './correct'
-import CurrentWord from './currentword'
-import Answer from './answer'
-import Score from './score'
-
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import * as actions from '../redux/actions';
+import store from '../redux/store.js';
+import Navbar from './navbar';
+import WordForm from './word-form';
+import Feedback from './feedback';
 
 export class PracticeContainer extends React.Component {
 
-//  // We need to manually bind instance methods in ES6
-//  constructor(props) {
-//    super(props)
-//    this.checkAnswer = this.checkAnswer.bind(this)
-//    this.hideCorrect = this.hideCorrect.bind(this)
-//  }
-//
-//  checkAnswer(answer) {
-//    let word2Array = this.props.word2;
-//    let foundWord;
-//
-//    // Loops through English words array for user's answer.
-//    for (var i = 0; i < word2Array.length; i++) {
-//      // If a match, show 'Correct!', increase score, fetch new words, submit to backend
-//      if (answer.toLowerCase() === word2Array[i].toLowerCase()) {
-//        foundWord = true;
-//        let score = this.props.score + 10
-//        this.props.dispatch(actions.correctDisplay());
-//        this.props.dispatch(actions.fetchSubmit('', '', score))
-//        break
-//      }
-//      // If not match, decrement score and fetch new word pair
-//      if (i === word2Array.length - 1 && !foundWord) {
-//        let score = this.props.score - 10
-//        this.props.dispatch(actions.fetchSubmit(this.props.wordId, 'false', score))
-//      }
-//    }
-//  }
-//
-//  // Fetches new word pair on initial mounting of component
-//  componentDidMount() {
-//    // On initial mount, send empty strings and receive a random word pair back
-//    this.props.dispatch(actions.fetchSubmit('', '', ''))
-//  }
-//
-//  // Toggles 'correct' state to false to hide 'Correct!' if state is true
-//  hideCorrect() {
-//    if (this.props.correct) {
-//        this.props.dispatch(actions.hideCorrect())
-//    }
-//  }
+  constructor(props) {
+    super(props);
+
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onNext = this.onNext.bind(this);
+  }
+
+  onSubmit(userInput, wordID) {
+    console.log('onSubmit -> ', userInput, wordID, this.props.userToken, this.props.userID)
+    store.dispatch(actions.fetchWord(userInput, wordID, this.props.userToken, this.props.userID));
+  }
+
+  // Load WordForm with the next word
+  onNext() {
+    store.dispatch(actions.nextWord());
+  }
 
   render() {
+
+    const {
+      isCorrect,
+      showFeedback,
+      currentWord,
+      currentWordID,
+      previousWord,
+      previousWordPOS,
+      previousWordPron,
+      previousWordDef
+    } = this.props;
+
+    // Could have been accomplished via nested components or routes.
+    // I choose to nest components with a condition because bookmarking
+    // a /feedback route doesn't make sense with the current app logic.
+    // Drawback: have to fire action to switch between components
+    let content = showFeedback
+      ? (<Feedback isCorrect={isCorrect} word={previousWord} wordPOS={previousWordPOS} wordPron={previousWordPron} wordDef={previousWordDef} onNext={this.onNext}/>)
+      : (<WordForm onSubmit={this.onSubmit} word={currentWord} wordID={currentWordID}/>);
+
     return (
-        <div className = "Quiz">
-          <h1>practice-Container</h1>
+      <div className="practice-container">
+        <Navbar onLogoutClick={this.props.onLogoutClick}/>
+        <div className="practice-area">
+          {content}
+          <div className="col-2">
+            <img className="jabba-suit" src="img/jabba_business.png" alt="Jabba The Hutt wearing a suit"/>
+          </div>
+        </div>
       </div>
     )
   }
-
-}
+};
 
 const propTypes = {
-    word: PropTypes.string,
-    wordId: PropTypes.string,
-    score: PropTypes.number,
-    correct: PropTypes.number,
-    incorrect: PropTypes.number,
-    answerInput: PropTypes.string,
+  onLogoutClick: PropTypes.func,
+  userToken: PropTypes.string,
+  userID: PropTypes.string,
+  currentWord: PropTypes.string,
+  currentWordId: PropTypes.number,
+  showFeedback: PropTypes.bool,
+  isCorrect: PropTypes.bool,
+  previousWord: PropTypes.string,
+  previousWordPOS: PropTypes.string,
+  previousWordPron: PropTypes.string,
+  previousWordDef: PropTypes.string
 };
 PracticeContainer.propTypes = propTypes;
 
 var mapStateToProps = (state, props) => {
-    return {
-        word: state.word,
-        wordId: state.wordId,
-        score: state.score,
-        correct: state.correct,
-        incorrect: state.incorrect,
-        answerInput: state.answerInput,
-    };
+  return {
+    userToken: state.auth.token,
+    userID: state.auth.profile.user_id,
+    currentWord: state.practice.currentWord,
+    currentWordID: state.practice.currentWordID,
+    showFeedback: state.practice.showFeedback,
+    previousWord: state.practice.previousWord,
+    previousWordPOS: state.practice.previousWordPOS,
+    previousWordPron: state.practice.previousWordPron,
+    previousWordDef: state.practice.previousWordDef
+  };
 };
 
-export default connect(mapStateToProps)(PracticeContainer)
+export default connect(mapStateToProps)(PracticeContainer);

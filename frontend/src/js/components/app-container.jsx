@@ -1,37 +1,72 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import NavContainer from './nav-container';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 import LandingPage from './landing-page';
+import actions from '../redux/actions';
+import AuthService from '../utils/auth-service';
+// import authConfig from '../config/auth0.js';
 
-// Display the landing page if no one is logged in or
-// render the practice area. 
-export function AppContainer(props) {
-  const display = !props.isAuthenticated ? (
-    <LandingPage />
-  ) : (
-    props.children
-  );
+export class AppContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(process.env.CLIENT_ID, process.env.DOMAIN)
+    this.auth = new AuthService(process.env.CLIENT_ID, process.env.DOMAIN);
 
-  return (
-    <div>
-      <NavContainer />
-      {display}
-    </div>
-  );
+    // auth-lock does not fire the authenticated event when
+    // user signs in with email and password.
+    // This hack trys to solve the problem by monitoring
+    // browserHistory for an appropriate hash.
+    // Similar, if not exact bug (There is no official fix):
+    // https://github.com/auth0/lock/issues/527
+    browserHistory.listen(location => {
+      if (/access_token/.test(location.hash) || /error/.test(location.hash)) {
+        this.auth.loginHash(location.hash);
+      }
+    });
+
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.auth.loggedIn();
+  }
+
+  handleLoginClick() {
+    console.log('handleLoginClick')
+    this.auth.login();
+  }
+
+  handleLogoutClick() {
+    this.auth.logout();
+  }
+
+  // Display the landing page if no one is logged in or
+  // render the practice area.
+  render() {
+
+    const {isAuthenticated, children} = this.props;
+    console.log(`AppContainer isAuthenticated -> ${isAuthenticated}`)
+    return (
+      <div>
+        {isAuthenticated
+          ? (children && React.cloneElement(children, {onLogoutClick: this.handleLogoutClick}))
+          : (<LandingPage onLoginClick={this.handleLoginClick}/>)}
+      </div>
+    );
+  }
 };
 
 // typechecking the props passed to the component
 // https://facebook.github.io/react/docs/typechecking-with-proptypes.html
 const propTypes = {
   isAuthenticated: PropTypes.bool,
-  children: PropTypes.object,
+  children: PropTypes.object
 };
 AppContainer.propTypes = propTypes;
 
 function mapStateToProps(state) {
-  return {
-    isAuthenticated: state.auth.isAuthenticated,
-  };
+  return {isAuthenticated: state.auth.isAuthenticated};
 };
 
 export default connect(mapStateToProps)(AppContainer);
