@@ -65,7 +65,7 @@ const propTypes = {
   userToken: PropTypes.string,
   userID: PropTypes.string,
   currentWord: PropTypes.string,
-  currentWordId: PropTypes.number,
+  currentWordId: PropTypes.string,
   showFeedback: PropTypes.bool,
   isCorrect: PropTypes.bool,
   previousWord: PropTypes.string,

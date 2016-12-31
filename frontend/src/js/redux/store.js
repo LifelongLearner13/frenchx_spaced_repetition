@@ -11,7 +11,7 @@ const initialState = {
   },
   practice: {
     currentWord: 'Backa',
-    currentWordID: 1,
+    currentWordID: '58682b744747f5de7bd048e4',
     userInput: '',
     showFeedback: false,
     isCorrect: false,

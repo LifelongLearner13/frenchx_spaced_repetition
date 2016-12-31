@@ -1,42 +1,25 @@
 const express = require('express');
 const jsonParser = require('body-parser').json();
-
+const spacedRepition = require('../spaced_repitition')
 const router = express.Router();
 
 router.put('/word', jsonParser, (request, response) => {
-    const wordId = request.body.wordID;
-    const userInput = request.body.userInput;
-    // Some user_id's are numbers and some are alphanumeric.
-  // const userIdentity = `${request.user.userID}`;
+    const { wordID, userInput, userID } = request.body;
 
-    response.json({
-      wordID: 2,
-      word: 'Backa',
-      isCorrect: true,
-      previousWord: 'Boska',
-      previousWordPOS: 'v.',
-      previousWordPron: 'bosh kah',
-      previousWordDef: '1. Search'
-    });
+    console.log(wordID, userInput, userID);
+
+
     // Check request body, send an error if a problem occurs
-    // wordId and isCorrect must be strings. isCorrect must be true, false, or
-    // empty string. Score must be a number or an empty string.
-    // if (typeof wordId !== 'string' || typeof isCorrect !== 'string') {
-    //     return res.status(422).json({
-    //         message: 'Incorrect field type: wordId and isCorrect must be a string'
-    //     })
-    // }
-    // if (typeof score !== 'number' && score !== '') {
-    //     return res.status(422).json({
-    //         message: 'Incorrect field type: score must be a number or ""'
-    //     })
-    // }
-    // if (!(isCorrect === 'true' || isCorrect === 'false' || isCorrect === '')) {
-    //     return res.status(422).json({
-    //         message: 'Incorrect value for isCorrect, must be "true", "false" or ""'
-    //     })
-    // }
-    //
+    // wordID, userInput, and userID must be strings.
+    if (typeof wordID !== 'string' || typeof userInput !== 'string' ||
+        typeof userID !== 'string') {
+        return response.status(422).json({
+            message: 'Incorrect field type: wordID, userInput, and userID must be a string'
+        })
+    }
+
+    spacedRepition.scoreAndUpdate('', wordID, userInput);
+
     // // User has just logged in and we need to load the first word
     // if (wordId === '' && isCorrect === '' && score === '') {
     //     spaced_repitition.getNextWord(userId).then((results, error) => {
@@ -56,6 +39,16 @@ router.put('/word', jsonParser, (request, response) => {
     //             res.json(results)
     //         })
     // }
+    //
+    response.json({
+      wordID: 2,
+      word: 'Backa',
+      isCorrect: true,
+      previousWord: 'Boska',
+      previousWordPOS: 'v.',
+      previousWordPron: 'bosh kah',
+      previousWordDef: '1. Search'
+    });
 });
 
 module.exports = router;

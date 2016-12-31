@@ -50,8 +50,8 @@ export function fetchWordError(error) {
   return {type: FETCH_WORD_ERROR, error};
 };
 
-export function fetchWord(userInput, wordId, token, userID) {
-  console.log('fetchWord: ', userInput, wordId, token, userID)
+export function fetchWord(userInput, wordID, token, userID) {
+
   return (dispatch) => {
     let request = {
       method: 'PUT',
@@ -60,7 +60,7 @@ export function fetchWord(userInput, wordId, token, userID) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({userInput, wordId, userID}),
+      body: JSON.stringify({userInput, wordID, userID}),
     };
 
     dispatch(fetchWordRequest()); // Tell react the async request is starting

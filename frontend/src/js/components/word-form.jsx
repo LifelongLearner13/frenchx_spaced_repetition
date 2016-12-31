@@ -52,6 +52,6 @@ export default class WordForm extends React.Component {
 const propTypes = {
   onSubmit: PropTypes.func,
   word: PropTypes.string,
-  wordID: PropTypes.number
+  wordID: PropTypes.string,
 };
 WordForm.propTypes = propTypes;

@@ -1,19 +1,23 @@
-'use strict'
-const mongoose = require('mongoose')
+/*----------- WORD SCHEMA ----------*/
+const mongoose = require('mongoose');
 
 const WordSchema = new mongoose.Schema({
-	word1: {
+  visibleWord: {
 		type: String,
 		required: true,
-		unique: true
 	},
-	word2: {
+	translation: {
 		type: String,
 		required: true,
-		unique: true
-	}
-})
+	},
+  partOfSpeach: {
+		type: String,
+	},
+  pronunciation: {
+    type: String,
+  },
+});
 
-const Word = mongoose.model('Word', WordSchema)
+const Word = mongoose.model('Word', WordSchema);
 
-module.exports = Word
+module.exports = Word;
