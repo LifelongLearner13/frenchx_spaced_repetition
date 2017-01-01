@@ -27,20 +27,16 @@ exports.scoreAndUpdate = function(userID, wordID, userAnswer) {
     }
 
     console.log(`Word.findById: isCorrect -> ${isCorrect}`)
-    // User.findByIdAndUpdate(userID, {
-    //   $push: {
-    //     'train': {
-    //       word: word._id
-    //     }
-    //   }
-    // }, {
-    //   upsert: true,
-    //   new: true,
-    //   setDefaultsOnInsert: true
-    // }, (userError, result) => {
-    //   console.log(`User.findByIdAndUpdate: error -> ${userError} result -> ${result}`)
-    //
-    // });
+    User.findByIdAndUpdate(userID, {}, {
+      upsert: true,
+      new: true,
+      setDefaultsOnInsert: true
+    }, (userError, result) => {
+      console.log(`User.findByIdAndUpdate: error -> ${userError} result`, result)
+
+      // Check if word is already in train array
+      // use thoes values, if not use default values
+    });
   });
 };
 

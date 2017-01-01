@@ -18,7 +18,7 @@ router.put('/word', jsonParser, (request, response) => {
         })
     }
 
-    spacedRepition.scoreAndUpdate('', wordID, userInput);
+    spacedRepition.scoreAndUpdate(userID, wordID, userInput);
 
     // // User has just logged in and we need to load the first word
     // if (wordId === '' && isCorrect === '' && score === '') {
