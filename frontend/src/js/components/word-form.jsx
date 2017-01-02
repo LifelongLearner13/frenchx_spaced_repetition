@@ -27,7 +27,7 @@ export default class WordForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    this.props.onSubmit(this.state.value, this.props.wordID);
+    this.props.onSubmit(this.state.value.trim(), this.props.wordID);
 
     // Clear form
     this.setState({value: ''});
@@ -52,6 +52,6 @@ export default class WordForm extends React.Component {
 const propTypes = {
   onSubmit: PropTypes.func,
   word: PropTypes.string,
-  wordID: PropTypes.number
+  wordID: PropTypes.string,
 };
 WordForm.propTypes = propTypes;

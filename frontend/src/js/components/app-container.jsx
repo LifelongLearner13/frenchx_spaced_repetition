@@ -4,12 +4,13 @@ import {browserHistory} from 'react-router';
 import LandingPage from './landing-page';
 import actions from '../redux/actions';
 import AuthService from '../utils/auth-service';
-import authConfig from '../config/auth0.js';
+// import authConfig from '../config/auth0.js';
 
 export class AppContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.auth = new AuthService(authConfig.clientID, authConfig.domain);
+    console.log(process.env.CLIENT_ID, process.env.DOMAIN)
+    this.auth = new AuthService(process.env.CLIENT_ID, process.env.DOMAIN);
 
     // auth-lock does not fire the authenticated event when
     // user signs in with email and password.
@@ -32,6 +33,7 @@ export class AppContainer extends React.Component {
   }
 
   handleLoginClick() {
+    console.log('handleLoginClick')
     this.auth.login();
   }
 

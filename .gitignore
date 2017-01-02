@@ -56,3 +56,5 @@ frontend/build
 # OS
 .DS_Store
 */.DS_Store
+.env
+basic_huttese_dictionary.txt

@@ -11,10 +11,8 @@ export default function Feedback(props) {
     onNext
   } = props;
 
-  let userFeedback = isCorrect
-    ? 'Correct'
-    : 'Incorrect';
-
+  let userFeedback = isCorrect ? 'Correct' : 'Incorrect';
+console.log('userFeedback ->', userFeedback);
   return (
     <section className="feedback col-1">
       <h2 className={userFeedback.toLowerCase()}>{userFeedback}</h2>
@@ -25,8 +23,7 @@ export default function Feedback(props) {
         <dd>
           <p className="word-pron">({wordPron})</p>
           <p className="word-def">
-            <span className="bold">{wordPOS}</span>
-            {wordDef}</p>
+            <span className="bold">{wordPOS}.</span> {wordDef}</p>
         </dd>
       </dl>
       <button className="check-button bl-base" type="submit" onClick={onNext}>Next</button>

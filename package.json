@@ -26,12 +26,6 @@
     "watch:js": "npm run build:js && webpack --watch",
     "clean:js": "rm -f frontend/build/$npm_package_name.$npm_package_version.js frontend/build/$npm_package_name.$npm_package_version.js.map"
   },
-  "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LifelongLearner13/huttese_stone_spaced_repetition.git"
@@ -42,7 +36,9 @@
     "auth0-js": "^7.6.0",
     "auth0-lock": "^10.7.3",
     "body-parser": "^1.15.2",
+    "dotenv": "^2.0.0",
     "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
     "isomorphic-fetch": "^2.2.1",
     "jwt-decode": "^2.1.0",
     "method-override": "~1.0.0",
@@ -68,6 +64,7 @@
     "mocha": "^2.5.3",
     "morgan": "^1.7.0",
     "react-addons-test-utils": "^15.2.1",
-    "webpack": "^1.13.1"
+    "webpack": "^2.2.0-rc.3",
+    "webpack-merge": "^2.0.0"
   }
 }

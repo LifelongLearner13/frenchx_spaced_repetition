@@ -18,7 +18,7 @@ export default class AuthService extends EventEmitter {
     this.lock = new Auth0Lock(clientId, domain, {
       auth: {
         redirectUrl: `${window.location.origin}`,
-        responseType: 'token'
+        responseType: 'token',
       }
     });
 
@@ -44,8 +44,9 @@ export default class AuthService extends EventEmitter {
         console.log('Error loading the Profile', error);
         store.dispatch(actions.loginError(error));
       } else {
-        store.dispatch(actions.loginSuccess(authResult.idToken, profile));
+        console.log(profile)
         this.setProfile(profile);
+        store.dispatch(actions.loginSuccess(authResult.idToken, profile));
       }
     });
   }
@@ -62,7 +63,9 @@ export default class AuthService extends EventEmitter {
     let result = this.auth0.parseHash(hash);
     console.log('loginHash ->', result)
     if (result && result.idToken) {
-      this.setToken(result.idToken);
+      this._doAuthentication(result);
+    } else {
+      this._authorizationError('No hash');
     }
   }
 

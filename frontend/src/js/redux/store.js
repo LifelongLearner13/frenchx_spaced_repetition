@@ -1,8 +1,6 @@
-import createLogger from 'redux-logger';
 import {createStore, applyMiddleware, compose} from 'redux';
 import rootReducer from './reducers';
-import thunk, {default} from 'redux-thunk';
-const logger = createLogger();
+import thunk from 'redux-thunk';
 
 const initialState = {
   auth: {
@@ -12,18 +10,28 @@ const initialState = {
     token: ''
   },
   practice: {
-    currentWord: 'Backa',
-    currentWordID: 1,
+    currentWord: '',
+    currentWordID: '',
     userInput: '',
-    showFeedback: true,
+    showFeedback: false,
     isCorrect: false,
-    previousWord: 'Boska',
-    previousWordPOS: 'v.',
-    previousWordPron: 'bosh kah',
-    previousWordDef: '1. Search'
+    previousWord: '',
+    previousWordPOS: '',
+    previousWordPron: '',
+    previousWordDef: ''
   }
 };
 
-const store = createStore(rootReducer, initialState, compose(applyMiddleware(thunk, logger)));
+const middlewares = [thunk];
+
+// use redux-logger during development
+if (process.env.NODE_ENV === `Development`) {
+  const createLogger = require(`redux-logger`);
+  const logger = createLogger();
+  middlewares.push(logger);
+}
+
+const store = createStore(rootReducer, initialState,
+  compose(applyMiddleware( ...middlewares )));
 
 export default store;

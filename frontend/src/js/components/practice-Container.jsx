@@ -5,7 +5,6 @@ import store from '../redux/store.js';
 import Navbar from './navbar';
 import WordForm from './word-form';
 import Feedback from './feedback';
-import StatDisplay from './stat-display';
 
 export class PracticeContainer extends React.Component {
 
@@ -16,8 +15,14 @@ export class PracticeContainer extends React.Component {
     this.onNext = this.onNext.bind(this);
   }
 
-  onSubmit(userInput, id) {
-    store.dispatch(actions.fetchWord(userInput, id));
+  componentDidMount() {
+    // Get the first word the user needs to train on
+    store.dispatch(actions.fetchFirstWord(this.props.userToken, this.props.userID));
+  }
+
+  onSubmit(userInput, wordID) {
+    console.log('onSubmit -> ', userInput, wordID, this.props.userToken, this.props.userID)
+    store.dispatch(actions.fetchWord(userInput, wordID, this.props.userToken, this.props.userID));
   }
 
   // Load WordForm with the next word
@@ -62,8 +67,10 @@ export class PracticeContainer extends React.Component {
 
 const propTypes = {
   onLogoutClick: PropTypes.func,
+  userToken: PropTypes.string,
+  userID: PropTypes.string,
   currentWord: PropTypes.string,
-  currentWordId: PropTypes.number,
+  currentWordId: PropTypes.string,
   showFeedback: PropTypes.bool,
   isCorrect: PropTypes.bool,
   previousWord: PropTypes.string,
@@ -75,8 +82,11 @@ PracticeContainer.propTypes = propTypes;
 
 var mapStateToProps = (state, props) => {
   return {
+    userToken: state.auth.token,
+    userID: state.auth.profile.user_id,
     currentWord: state.practice.currentWord,
     currentWordID: state.practice.currentWordID,
+    isCorrect: state.practice.isCorrect,
     showFeedback: state.practice.showFeedback,
     previousWord: state.practice.previousWord,
     previousWordPOS: state.practice.previousWordPOS,
