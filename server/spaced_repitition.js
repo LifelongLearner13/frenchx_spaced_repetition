@@ -231,16 +231,33 @@ function findNextWord(userID) {
 // Retrieve the next card the user needs to train on
 exports.getNextWord = function(userID, wordID, userAnswer) {
   return new Promise(function(resolve, reject) {
-    scoreAndUpdate(userID, wordID, userAnswer).then(function(response) {
-      console.log('scoreAndUpdate response -> ', response);
+    if(wordID === '' && userAnswer === '') {
       findNextWord(userID).then(function(nextWord) {
         console.log(nextWord);
-        let returnedWord = response;
-        returnedWord.word = nextWord.word;
-        returnedWord.wordID = nextWord.wordID;
+        let returnedWord = {
+          isCorrect: true,
+          previousWord: '',
+          previousWordPOS: '',
+          previousWordPron: '',
+          previousWordDef: '',
+        };
+        returnedWord.currentWord = nextWord.word;
+        returnedWord.currentWordID = nextWord.wordID;
         console.log('returnedWord -> ', returnedWord);
         resolve(returnedWord);
       });
-    });
+    } else {
+      scoreAndUpdate(userID, wordID, userAnswer).then(function(response) {
+        console.log('scoreAndUpdate response -> ', response);
+        findNextWord(userID).then(function(nextWord) {
+          console.log(nextWord);
+          let returnedWord = response;
+          returnedWord.currentWord = nextWord.word;
+          returnedWord.currentWordID = nextWord.wordID;
+          console.log('returnedWord -> ', returnedWord);
+          resolve(returnedWord);
+        });
+      });
+    }
   });
 }

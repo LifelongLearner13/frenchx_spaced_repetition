@@ -15,6 +15,11 @@ export class PracticeContainer extends React.Component {
     this.onNext = this.onNext.bind(this);
   }
 
+  componentDidMount() {
+    // Get the first word the user needs to train on
+    store.dispatch(actions.fetchFirstWord(this.props.userToken, this.props.userID));
+  }
+
   onSubmit(userInput, wordID) {
     console.log('onSubmit -> ', userInput, wordID, this.props.userToken, this.props.userID)
     store.dispatch(actions.fetchWord(userInput, wordID, this.props.userToken, this.props.userID));
@@ -81,6 +86,7 @@ var mapStateToProps = (state, props) => {
     userID: state.auth.profile.user_id,
     currentWord: state.practice.currentWord,
     currentWordID: state.practice.currentWordID,
+    isCorrect: state.practice.isCorrect,
     showFeedback: state.practice.showFeedback,
     previousWord: state.practice.previousWord,
     previousWordPOS: state.practice.previousWordPOS,

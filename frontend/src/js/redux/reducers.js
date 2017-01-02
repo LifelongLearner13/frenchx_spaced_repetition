@@ -45,23 +45,42 @@ function practiceReducer(state = {}, action) {
     case actionType.FETCH_WORD_SUCCESS:
       return {
         ...state,
-        showFeedback: true,
-        wordID: action.wordID,
-        word: action.word,
+        currentWordID: action.currentWordID,
+        currentWord: action.currentWord,
         isCorrect: action.isCorrect,
         previousWord: action.previousWord,
         previousWordPOS: action.previousWordPOS,
         previousWordPron: action.previousWordPron,
-        previousWordDef: action.previousWordDef
+        previousWordDef: action.previousWordDef,
+        showFeedback: true,
       };
     case actionType.FETCH_WORD_ERROR:
       return {
         ...state,
-        error: action.error
+        error: action.error,
       };
     case actionType.FETCH_WORD_REQUEST:
       return {
-        ...state
+        ...state,
+      };
+    case actionType.FETCH_FIRST_WORD:
+      return {
+        ...state,
+      };
+    case actionType.FETCH_FIRST_WORD_SUCCESS:
+      return {
+        ...state,
+        currentWordID: action.currentWordID,
+        currentWord: action.currentWord,
+        isCorrect: action.isCorrect,
+        previousWord: action.previousWord,
+        previousWordPOS: action.previousWordPOS,
+        previousWordPron: action.previousWordPron,
+        previousWordDef: action.previousWordDef,
+      };
+    case actionType.FETCH_FIRST_WORD_ERROR:
+      return {
+        ...state,
       };
     case actionType.NEXT_WORD:
       return {

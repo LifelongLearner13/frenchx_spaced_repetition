@@ -10,15 +10,15 @@ const initialState = {
     token: ''
   },
   practice: {
-    currentWord: 'Backa',
-    currentWordID: '58682b744747f5de7bd048e4',
+    currentWord: '',
+    currentWordID: '',
     userInput: '',
     showFeedback: false,
     isCorrect: false,
-    previousWord: 'Boska',
-    previousWordPOS: 'v.',
-    previousWordPron: 'bosh kah',
-    previousWordDef: '1. Search'
+    previousWord: '',
+    previousWordPOS: '',
+    previousWordPron: '',
+    previousWordDef: ''
   }
 };
 
