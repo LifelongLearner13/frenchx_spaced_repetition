@@ -18,37 +18,11 @@ router.put('/word', jsonParser, (request, response) => {
         })
     }
 
-    spacedRepition.scoreAndUpdate(userID, wordID, userInput);
-
-    // // User has just logged in and we need to load the first word
-    // if (wordId === '' && isCorrect === '' && score === '') {
-    //     spaced_repitition.getNextWord(userId).then((results, error) => {
-    //         if (error) {
-    //             throw error
-    //         }
-    //         res.json(results)
-    //     })
-    // // The user has answered a word and needs a new one to train on
-    // } else {
-    //     spaced_repitition
-    //         .getNextWord(userId, wordId, isCorrect === 'true', score)
-    //         .then((results, error) => {
-    //             if (error) {
-    //                 throw error
-    //             }
-    //             res.json(results)
-    //         })
-    // }
-    //
-    response.json({
-      wordID: 2,
-      word: 'Backa',
-      isCorrect: true,
-      previousWord: 'Boska',
-      previousWordPOS: 'v.',
-      previousWordPron: 'bosh kah',
-      previousWordDef: '1. Search'
-    });
+    let newWord = spacedRepition.getNextWord(userID, wordID, userInput).then(
+      function(newWord) {
+        console.log('newWord -> ', newWord)
+        response.send(newWord);
+      });
 });
 
 module.exports = router;

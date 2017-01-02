@@ -19,7 +19,9 @@ function calcIntervalEF(word, isCorrect) {
   } else {
     newEF = word.ef + (0.1 - (5 * (0.08 + (5 * 0.02))));
     // ef cannot go lower than 1.3
-    word.ef = newEF < 1.3 ? 1.3 : newEF;
+    word.ef = newEF < 1.3
+      ? 1.3
+      : newEF;
     word.reps = word.reps + 1;
 
     switch (word.reps) {
@@ -37,12 +39,10 @@ function calcIntervalEF(word, isCorrect) {
 
   // Update when the word should appear nextDate
   let today = new Date();
-  today.setHours(0, 0, 0, 0);
 
   word.prevDate = today;
 
   word.nextDate.setDate(today.getDate() + word.interval);
-  word.nextDate.setHours(0,0,0,0);
 
   return word;
 }
@@ -54,7 +54,7 @@ function formatDefinition(definition) {
 }
 
 function scoreAnswer(translation, userAnswer) {
-  let definitions= formatDefinition(translation);
+  let definitions = formatDefinition(translation);
 
   for (let i = 0; i < definitions.length; i++) {
     if (definitions[i].toLowerCase() === userAnswer.toLowerCase()) {
@@ -94,93 +94,153 @@ function updateWord(trainedArray, wordID, isCorrect) {
   }
 }
 
-// Retrieve the next card the user needs to train on
-exports.getNextCard = function(userID) {
-  trainedArray = trainedArray.filter((el) => {
-    return el.word === word._id;
-  });
-
-  console.log(`trainedArray -> ${trainedArray}`)
-
-  // Inishalize with default values
-  let updatedWord = {
-    word: word._id,
-    prevDate: new Date(),
-    nextDate: new Date(),
-    interval: 0,
-    reps: 0,
-    ef: 2.5
-  };
-
-  // Already trained on word
-  if (trainedArray.length > 1) {
-    updatedWord = calcIntervalEF(trainedArray[0], isCorrect);
-  } else {
-    updatedWord = calcIntervalEF(updatedWord, isCorrect);
-  }
+// Returns a random integer between min (included) and max (excluded)
+function getRandomIndex(max) {
+  max = Math.floor(max);
+  return Math.floor(Math.random() * max);
 }
 
-exports.scoreAndUpdate = function(userID, wordID, userAnswer) {
-  // Lookup word so it can be compared against the user's answer
-  Word.findById(wordID, (wordError, word) => {
-    console.log(`Word.findById: error -> ${wordError} result -> ${word}`)
-    // Check user's answer against translation
-    let isCorrect = scoreAnswer(word.translation, userAnswer);
+function getRandomWord() {
+  return new Promise(function(resolve, reject) {
+    Word.count().exec(function(err, count) {
+      let randIdx = getRandomIndex(count);
 
-    console.log(`Word.findById: isCorrect -> ${isCorrect}`)
-
-    // Lookup the words a user has trained on
-    User.findByIdAndUpdate(userID, {}, {
-      upsert: true,
-      new: true,
-      setDefaultsOnInsert: true
-    }, (userError, result) => {
-      console.log(`User.findByIdAndUpdate: error -> ${userError} result`, result)
-
-      let updatedWord = updateWord(result.train, word._id, isCorrect);
-
-      console.log(`updatedWord -> `, updatedWord)
-
-      // If the user has never trained with the word then
-      // it must be added to their document, otherwise the
-      // record must be updated.
-      let query = {};
-      let update = {};
-
-      if(result.train.length > 0) {
-        query = {
-          _id: result._id,
-          'train.word': word._id,
-        };
-        update = {
-          'train.$.word': updatedWord.word,
-          'train.$.prevDate': updatedWord.prevDate,
-          'train.$.nextDate': updatedWord.nextDate,
-          'train.$.interval': updatedWord.interval,
-          'train.$.reps': updatedWord.reps,
-          'train.$.ef': updatedWord.ef,
-        };
-      } else {
-        query = {
-          _id: result._id,
-        };
-        update = {
-          $push: {train: {
-            'word': updatedWord.word,
-            'prevDate': updatedWord.prevDate,
-            'nextDate': updatedWord.nextDate,
-            'interval': updatedWord.interval,
-            'reps': updatedWord.reps,
-            'ef': updatedWord.ef,
-          }}
-        };
-      }
-
-      User.findOneAndUpdate(query, update, {
-        new: true,
-      }, function(updateError, toReturn) {
-        console.log('User.update error ->', updateError, ' toReturn -> ', toReturn)
+      Word.findOne().skip(randIdx).exec(function(err, result) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({
+            word: result.visibleWord,
+            wordID: result._id,
+          });
+        }
       });
     });
   });
-};
+}
+
+function scoreAndUpdate(userID, wordID, userAnswer) {
+  return new Promise(function(resolve, reject) {
+    // Lookup word so it can be compared against the user's answer
+    Word.findById(wordID, (wordError, word) => {
+      if (wordError) {
+        reject(wordError);
+      }
+      console.log(`Word.findById: error -> ${wordError} result -> ${word}`)
+      // Check user's answer against translation
+      let isCorrect = scoreAnswer(word.translation, userAnswer);
+
+      console.log(`Word.findById: isCorrect -> ${isCorrect}`)
+
+      // Lookup the words a user has trained on
+      User.findByIdAndUpdate(userID, {}, {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true
+      }, (userError, result) => {
+        if (userError) {
+          reject(userError);
+        }
+        console.log(`User.findByIdAndUpdate: error -> ${userError} result`, result)
+
+        let updatedWord = updateWord(result.train, word._id, isCorrect);
+
+        console.log(`updatedWord -> `, updatedWord)
+
+        // If the user has never trained with the word then
+        // it must be added to their document, otherwise the
+        // record must be updated.
+        let query = {};
+        let update = {};
+
+        if (result.train.length > 0) {
+          query = {
+            _id: result._id,
+            'train.word': word._id
+          };
+          update = {
+            'train.$.word': updatedWord.word,
+            'train.$.prevDate': updatedWord.prevDate,
+            'train.$.nextDate': updatedWord.nextDate,
+            'train.$.interval': updatedWord.interval,
+            'train.$.reps': updatedWord.reps,
+            'train.$.ef': updatedWord.ef
+          };
+        } else {
+          query = {
+            _id: result._id
+          };
+          update = {
+            $push: {
+              train: {
+                'word': updatedWord.word,
+                'prevDate': updatedWord.prevDate,
+                'nextDate': updatedWord.nextDate,
+                'interval': updatedWord.interval,
+                'reps': updatedWord.reps,
+                'ef': updatedWord.ef
+              }
+            }
+          };
+        }
+
+        User.findOneAndUpdate(query, update, {new: true}).populate('train.word').exec(function(updateError, toReturn) {
+          if (updateError) {
+            reject(updateError);
+          }
+          console.log('User.update error ->', updateError, ' toReturn -> ', toReturn)
+          resolve({isCorrect, previousWord: word.visibleWord, previousWordPOS: word.partOfSpeach, previousWordPron: word.pronunciation, previousWordDef: word.translation})
+        });
+      });
+    });
+  });
+}
+
+function findNextWord(userID) {
+  return new Promise(function(resolve, reject) {
+    let d = new Date();
+    User.findOne({
+      _id: userID,
+      'train.nextDate': {
+        '$lte': d
+      }
+    }).populate('train.word').exec(function(error, result) {
+      console.log('findNextWord User.find error -> ', error, ' result -> ', result);
+      if (error) {
+        reject(error);
+      }
+
+      // If user still has words to train on today,
+      // return a random word from list
+      if (result) {
+        let train = result.train;
+        console.log('result[getRandomIndex(0, result.length)].word -> ', train[getRandomIndex(0, train.length)].word)
+        let word = train[getRandomIndex(0, train.length)].word;
+        resolve({
+          word: word.visibleWord,
+          wordID: word._id,
+        });
+      } else {
+        // return a random word from the database
+        resolve(getRandomWord());
+      }
+    });
+  });
+}
+
+// Retrieve the next card the user needs to train on
+exports.getNextWord = function(userID, wordID, userAnswer) {
+  return new Promise(function(resolve, reject) {
+    scoreAndUpdate(userID, wordID, userAnswer).then(function(response) {
+      console.log('scoreAndUpdate response -> ', response);
+      findNextWord(userID).then(function(nextWord) {
+        console.log(nextWord);
+        let returnedWord = response;
+        returnedWord.word = nextWord.word;
+        returnedWord.wordID = nextWord.wordID;
+        console.log('returnedWord -> ', returnedWord);
+        resolve(returnedWord);
+      });
+    });
+  });
+}

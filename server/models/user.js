@@ -14,11 +14,9 @@ const UserSchema = new mongoose.Schema({
       },
       prevDate: {
         type: Date,
-        default: Date.now,
       },
       nextDate: {
         type: Date,
-        default: Date.now,
       },
       interval: {
         type: Number,
