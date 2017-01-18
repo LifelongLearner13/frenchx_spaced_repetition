@@ -49,6 +49,8 @@ function calcIntervalEF(word, isCorrect) {
 
 // Format definition string by removing numbers and seperating
 // the alternatives into an array.
+// This is only necessary because definitions are stored as long strings.
+// Possible improvements would be to store definition pieces seperately.
 function formatDefinition(definition) {
   return definition.replace(/[0-9]./g, '').split('.').map(e => e.trim()).slice(0, -1);
 }
@@ -109,10 +111,7 @@ function getRandomWord() {
         if (err) {
           reject(err);
         } else {
-          resolve({
-            word: result.visibleWord,
-            wordID: result._id,
-          });
+          resolve({word: result.visibleWord, wordID: result._id});
         }
       });
     });
@@ -133,15 +132,11 @@ function scoreAndUpdate(userID, wordID, userAnswer) {
       console.log(`Word.findById: isCorrect -> ${isCorrect}`)
 
       // Lookup the words a user has trained on
-      User.findByIdAndUpdate(userID, {}, {
-        upsert: true,
-        new: true,
-        setDefaultsOnInsert: true
-      }, (userError, result) => {
+      User.findById(userID, (userError, result) => {
         if (userError) {
           reject(userError);
         }
-        console.log(`User.findByIdAndUpdate: error -> ${userError} result`, result)
+        console.log(`User.findById: error -> ${userError} result`, result)
 
         let updatedWord = updateWord(result.train, word._id, isCorrect);
 
@@ -150,46 +145,57 @@ function scoreAndUpdate(userID, wordID, userAnswer) {
         // If the user has never trained with the word then
         // it must be added to their document, otherwise the
         // record must be updated.
-        let query = {};
-        let update = {};
-
-        if (result.train.length > 0) {
-          query = {
-            _id: result._id,
-            'train.word': word._id
-          };
-          update = {
-            'train.$.word': updatedWord.word,
-            'train.$.prevDate': updatedWord.prevDate,
-            'train.$.nextDate': updatedWord.nextDate,
-            'train.$.interval': updatedWord.interval,
-            'train.$.reps': updatedWord.reps,
-            'train.$.ef': updatedWord.ef
-          };
-        } else {
-          query = {
-            _id: result._id
-          };
-          update = {
-            $push: {
-              train: {
-                'word': updatedWord.word,
-                'prevDate': updatedWord.prevDate,
-                'nextDate': updatedWord.nextDate,
-                'interval': updatedWord.interval,
-                'reps': updatedWord.reps,
-                'ef': updatedWord.ef
-              }
-            }
-          };
-        }
-
-        User.findOneAndUpdate(query, update, {new: true}).populate('train.word').exec(function(updateError, toReturn) {
+        update = User.findOneAndUpdate({
+          _id: result._id,
+          'train.word': word._id,
+        }, {
+          'train.$.word': updatedWord.word,
+          'train.$.prevDate': updatedWord.prevDate,
+          'train.$.nextDate': updatedWord.nextDate,
+          'train.$.interval': updatedWord.interval,
+          'train.$.reps': updatedWord.reps,
+          'train.$.ef': updatedWord.ef,
+        }, {new: true}).populate('train.word').exec(function(updateError, toReturn) {
           if (updateError) {
             reject(updateError);
           }
           console.log('User.update error ->', updateError, ' toReturn -> ', toReturn)
-          resolve({isCorrect, previousWord: word.visibleWord, previousWordPOS: word.partOfSpeach, previousWordPron: word.pronunciation, previousWordDef: word.translation})
+
+          if (!toReturn || toReturn === null) {
+            console.log('inside if')
+            User.findOneAndUpdate({
+              _id: result._id,
+            }, {
+              $push: {
+                train: {
+                  'word': updatedWord.word,
+                  'prevDate': updatedWord.prevDate,
+                  'nextDate': updatedWord.nextDate,
+                  'interval': updatedWord.interval,
+                  'reps': updatedWord.reps,
+                  'ef': updatedWord.ef,
+                }
+              }
+            }, {
+              upsert: true,
+              new: true,
+            }).populate('train.word').exec(function(pushUpdateError, response) {
+              console.log('User.findOneAndUpdate pushUpdateError -> ', pushUpdateError, ' response -> ', response)
+              let tempArray = response.train.filter((el) => {
+                console.log('inside filter: ', String(el.word._id), '==', String(updatedWord.word))
+                console.log(typeof String(el.word._id), ' ', typeof String(updatedWord.word))
+                return String(el.word._id) == String(updatedWord.word);
+              });
+              console.log('tempArray: ', tempArray)
+              let pushword = tempArray[0].word;
+              console.log('User.findOneAndUpdate pushUpdateError -> ', pushUpdateError, ' pushWord -> ', pushword)
+              resolve({isCorrect, previousWord: pushword.visibleWord, previousWordPOS: pushword.partOfSpeach, previousWordPron: pushword.pronunciation, previousWordDef: pushword.translation})
+            });
+          } else {
+            console.log(' toReturn -> ', toReturn, 'updatedWord ->', updatedWord)
+            // filter toReturn for updatedWord's id
+            resolve({isCorrect, previousWord: updatedWord.visibleWord, previousWordPOS: updatedWord.partOfSpeach, previousWordPron: updatedWord.pronunciation, previousWordDef: updatedWord.translation})
+          }
         });
       });
     });
@@ -202,9 +208,9 @@ function findNextWord(userID) {
     User.findOne({
       _id: userID,
       'train.nextDate': {
-        '$lte': d
+        '$lt': d
       }
-    }).populate('train.word').exec(function(error, result) {
+    }, {'train.nextDate.$': 1}).populate('train.word').exec(function(error, result) {
       console.log('findNextWord User.find error -> ', error, ' result -> ', result);
       if (error) {
         reject(error);
@@ -213,13 +219,9 @@ function findNextWord(userID) {
       // If user still has words to train on today,
       // return a random word from list
       if (result) {
-        let train = result.train;
-        console.log('result[getRandomIndex(0, result.length)].word -> ', train[getRandomIndex(0, train.length)].word)
-        let word = train[getRandomIndex(0, train.length)].word;
-        resolve({
-          word: word.visibleWord,
-          wordID: word._id,
-        });
+        let train = result.train.sort(function(x, y) { return y.ef - x.ef; })
+        let word = train[0].word;
+        resolve({word: word.visibleWord, wordID: word._id});
       } else {
         // return a random word from the database
         resolve(getRandomWord());
@@ -231,15 +233,15 @@ function findNextWord(userID) {
 // Retrieve the next card the user needs to train on
 exports.getNextWord = function(userID, wordID, userAnswer) {
   return new Promise(function(resolve, reject) {
-    if(wordID === '' && userAnswer === '') {
-      findNextWord(userID).then(function(nextWord) {
+    if (wordID === '' && userAnswer === '') {
+      getRandomWord().then(function(nextWord) {
         console.log(nextWord);
         let returnedWord = {
           isCorrect: true,
           previousWord: '',
           previousWordPOS: '',
           previousWordPron: '',
-          previousWordDef: '',
+          previousWordDef: ''
         };
         returnedWord.currentWord = nextWord.word;
         returnedWord.currentWordID = nextWord.wordID;
